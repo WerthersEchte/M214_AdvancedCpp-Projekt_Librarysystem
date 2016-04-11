@@ -1,16 +1,21 @@
-#include <QApplication>
-#include "gui/visiongui.h"
 #include <iostream>
+#include "core/library.h"
 
-int main(int argc, char *argv[])
-{
 
-    QApplication a(argc, argv);
-    mrvision::VisionGui vVisionGui;
-	if( argc >= 2 ){
-		//vVisionGui.loadConfig( argv[1] );
-	}
-    vVisionGui.show();
+using namespace library;
+using library::Book;
+using library::Library;
 
-    return a.exec();
+
+int main(int argc, char *argv[]){
+
+	Book book = Book("testBook");
+	Library library = Library();
+
+	library.addBook(book);
+	library.addBook(book);
+	
+	Book book2 = library.getBook(4);
+	std::cout << "Get book with name: " << book2.getName() << std::endl;
+
 }
