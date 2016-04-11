@@ -18,7 +18,7 @@ include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} )
 
 set( SOURCE
    ${SOURCE}
-   main.cpp
+   
    core/book.cpp
    core/library.cpp
    core/networkconnection.cpp
@@ -46,7 +46,8 @@ QT5_WRAP_UI( UI_HEADERS
 )
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-add_executable( ${MAIN_NAME} WIN32 ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES} )
+add_library (${MAIN_NAME}_library ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES} )
+add_executable( ${MAIN_NAME} WIN32 main.cpp )
 
 qt5_use_modules( ${MAIN_NAME} Widgets Core Gui )
-target_link_libraries( ${MAIN_NAME} ${Boost_LIBRARIES} )
+target_link_libraries( ${MAIN_NAME} ${MAIN_NAME}_library ${Boost_LIBRARIES} )

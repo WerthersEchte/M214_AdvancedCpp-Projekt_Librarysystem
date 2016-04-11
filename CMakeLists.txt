@@ -6,3 +6,7 @@ project ( ${MAIN_NAME} CXX )
 
 add_subdirectory(server)
 add_subdirectory(client)
+add_subdirectory(tests)
+
+enable_testing()
+add_test(NAME runtests COMMAND advanced_cpp_library_tests)
