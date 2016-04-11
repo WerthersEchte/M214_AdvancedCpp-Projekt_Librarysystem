@@ -1,5 +1,4 @@
 cmake_minimum_required (VERSION 2.8.11)
-cmake_policy(SET CMP0043 NEW)
 
 set(MAIN_NAME advanced_cpp_library_server)
 
@@ -13,7 +12,7 @@ find_package( Qt5Core REQUIRED )
 find_package( Qt5Gui REQUIRED )
 find_package( Qt5Concurrent REQUIRED )
 
-FIND_PACKAGE( Boost COMPONENTS system regex REQUIRED )
+FIND_PACKAGE( Boost COMPONENTS system REQUIRED )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} )
 
