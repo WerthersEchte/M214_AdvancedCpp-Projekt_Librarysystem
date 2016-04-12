@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-set(MAIN_NAME advanced_cpp_library_server)
+set(MAIN_NAME ${MAIN_NAME}_server)
 
 project ( ${MAIN_NAME} CXX )
 
@@ -18,7 +18,6 @@ include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} )
 
 set( SOURCE
    ${SOURCE}
-   
    core/book.cpp
    core/library.cpp
    core/networkconnection.cpp

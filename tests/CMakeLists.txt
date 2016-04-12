@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-set(MAIN_NAME advanced_cpp_library_tests)
+set(TESTS_NAME ${MAIN_NAME}_tests)
 
-project ( ${MAIN_NAME} CXX )
+project ( ${TESTS_NAME} CXX )
 
 FIND_PACKAGE( Boost COMPONENTS system unit_test_framework REQUIRED )
 
@@ -19,6 +19,6 @@ set( HEADERS
 )
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-add_executable( ${MAIN_NAME} WIN32 ${SOURCE} ${HEADERS}  )
+add_executable( ${TESTS_NAME} WIN32 ${SOURCE} ${HEADERS}  )
 
-target_link_libraries( ${MAIN_NAME} advanced_cpp_library_server_library ${Boost_LIBRARIES} )
+target_link_libraries( ${TESTS_NAME} ${MAIN_NAME}_server_library ${MAIN_NAME}_client_library ${Boost_LIBRARIES} )
