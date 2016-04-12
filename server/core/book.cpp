@@ -6,22 +6,22 @@ int Book::IDCOUNTER = 0;
 
 Book::Book() :
     mId(-1),
-    mName(""),
-    mBurrowed(false)
+    mTitle(""),
+    mBurrowed(Status::None)
 {};
 
-Book::Book( std::string aName ) :
+Book::Book( std::string aTitle ) :
     mId(IDCOUNTER++),
-    mName(aName),
-    mBurrowed(false)
+    mTitle(aTitle),
+    mBurrowed(Status::Available)
 {};
 
 Book::~Book()
 {};
 
-std::string Book::getName()
+std::string Book::getTitle()
 {
-    return mName;
+    return mTitle;
 };
 
 int Book::getId()
@@ -31,13 +31,13 @@ int Book::getId()
 
 bool Book::isAvailable()
 {
-    return !mBurrowed;
+    return mBurrowed == Status::Available;
 };
 
 bool Book::burrow()
 {
-    if(!mBurrowed){
-       mBurrowed = true;
+    if( mBurrowed == Status::Available){
+       mBurrowed = Status::Burrowed;
        return true;
     }
     return false;
@@ -45,11 +45,16 @@ bool Book::burrow()
 
 bool Book::bringBack()
 {
-    if(mBurrowed){
-       mBurrowed = false;
+    if(mBurrowed == Status::Burrowed){
+       mBurrowed = Status::Available;
        return true;
     }
     return false;
+};
+
+Status Book::getStatus()
+{
+    return mBurrowed;
 };
 
 }

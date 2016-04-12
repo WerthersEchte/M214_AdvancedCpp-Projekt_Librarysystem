@@ -2,25 +2,29 @@
 
 namespace library{
 
+enum Status{Burrowed, Available, None};
+
 class Book{
 
     static int IDCOUNTER;
 
     int mId;
-    std::string mName;
-    bool mBurrowed;
+    std::string mTitle;
+    Status mBurrowed;
 
 public:
     Book();
-    Book( std::string aName );
+    Book( std::string aTitle );
     ~Book();
 
-    std::string getName();
+    std::string getTitle();
     int getId();
 
     bool isAvailable();
     bool burrow();
     bool bringBack();
+
+    Status getStatus();
 
 };
 
