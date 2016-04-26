@@ -13,7 +13,7 @@ set(CMAKE_AUTOMOC ON)
 #find_package( Qt5Gui REQUIRED )
 #find_package( Qt5Concurrent REQUIRED )
 
-FIND_PACKAGE( Boost COMPONENTS system regex REQUIRED )
+FIND_PACKAGE( Boost COMPONENTS system regex context coroutine REQUIRED )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} )
 
