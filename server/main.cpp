@@ -1,16 +1,24 @@
-#include <QApplication>
-#include "gui/visiongui.h"
 #include <iostream>
+#include <boost/asio.hpp>
 
-int main(int argc, char *argv[])
-{
+#include "Server.cpp"
 
-    QApplication a(argc, argv);
-    mrvision::VisionGui vVisionGui;
-	if( argc >= 2 ){
-		//vVisionGui.loadConfig( argv[1] );
+int main(int argc, char *argv[]) {
+
+	try {
+		if (argc != 2) {
+			std::cerr << "Usage: async_tcp_echo_server <port>\n";
+			return 1;
+		}
+
+		boost::asio::io_service io_service;
+
+		library::Server s(io_service, std::atoi(argv[1]));
+
+		io_service.run();
+	} catch (std::exception& e) {
+		std::cerr << "Exception: " << e.what() << "\n";
 	}
-    vVisionGui.show();
 
-    return a.exec();
+	return 0;
 }
