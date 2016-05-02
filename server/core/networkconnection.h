@@ -16,9 +16,6 @@ namespace library{
 
     private:
         boost::asio::ip::tcp::socket socket_;
-        boost::asio::steady_timer timer_;
-        boost::asio::io_service::strand strand_;
         const int READ_DATA_BUFFER_LENGTH = 128;
-
     };
 }

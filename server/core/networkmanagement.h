@@ -16,8 +16,6 @@ namespace library{
     public:
         void start();
         void stop();
-        NetworkManagement(boost::asio::io_service& io_service);
         NetworkManagement();
-
     };
 }

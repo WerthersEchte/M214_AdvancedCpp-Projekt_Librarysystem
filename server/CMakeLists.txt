@@ -46,7 +46,7 @@ set( HEADERS
 #   ${UI_FILES}
 #)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 add_executable( ${MAIN_NAME} WIN32 ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES} )
 
 #qt5_use_modules( ${MAIN_NAME} Widgets Core Gui )

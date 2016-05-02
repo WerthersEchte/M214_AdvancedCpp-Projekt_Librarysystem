@@ -4,49 +4,50 @@
 #include <boost/asio/steady_timer.hpp>
 #include <boost/asio/write.hpp>
 #include <iostream>
-#include "core/networkconnection.h"
-#include <memory>
+#include "./networkconnection.h"
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+#include <thread>
 
 namespace library {
 
-    NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket socket) : socket_(std::move(socket)), timer_(socket_.get_io_service()), strand_(socket_.get_io_service()) { }
+    NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket socket) : socket_(boost::move(socket)) { }
 
 
     void NetworkConnection::start() {
-        auto self(shared_from_this());
-        boost::asio::spawn(strand_,
-                           [this, self](boost::asio::yield_context yield) {
+
+        boost::asio::spawn(socket_.get_io_service(),
+                           [&](boost::asio::yield_context yield) {
+                               std::cout << "Spawn client" << std::endl;
                                try {
                                    char data[READ_DATA_BUFFER_LENGTH];
 
                                    for (;;) {
-                                      // timer_.expires_from_now(std::chrono::seconds(10));
-                                       boost::system::error_code error;
+                                       //std::cout << "wait for msg" << std::endl;
+                                       //size_t len = socket_.receive(boost::asio::buffer(data, READ_DATA_BUFFER_LENGTH);
+                                               socket_.async_receive(boost::asio::buffer(data, READ_DATA_BUFFER_LENGTH), 0,
+                                                                          [&](const boost::system::error_code& error, std::size_t bytes_transferred) {
+                                                                              std::cout.write(data, bytes_transferred);
+                                                                              std::cout << std::endl;
+                                                                              boost::asio::async_write(socket_, boost::asio::buffer(data, bytes_transferred), yield);
+                                                                          });
 
-                                       size_t len = socket_.read_some(boost::asio::buffer(data, READ_DATA_BUFFER_LENGTH), error);
-                                       //size_t len = socket_.async_read_some(boost::asio::buffer(data), error);
-
-                                       //std::cout.write(data, READ_DATA_BUFFER_LENGTH);
-                                       boost::asio::async_write(socket_, boost::asio::buffer(data, len), yield);
+                                       //std::cout.write(data, len);
+                                     //  std::cout << std::endl;
+                                      // boost::asio::async_write(socket_, boost::asio::buffer(data, len), yield);
                                    }
                                }
-                               catch (std::exception& e)
-                               {
+                               catch (std::exception& e) {
+                                   std::cerr << "Exception: " << e.what() << "\n";
                                    socket_.close();
-                                   timer_.cancel();
                                }
                            });
 
-        boost::asio::spawn(strand_,
-                           [this, self](boost::asio::yield_context yield) {
-                               while (socket_.is_open()) {
-                                   boost::system::error_code ignored_ec;
-                                   timer_.async_wait(yield[ignored_ec]);
-                                   if (timer_.expires_from_now() <= std::chrono::seconds(0))
-                                       socket_.close();
-                               }
-                           });
+        std::thread clientThread{[&](){ socket_.get_io_service().run_one(); }};
+        std::cout << "Start client thread" << std::endl;
+        clientThread.join();
+
+
+
     }
 }

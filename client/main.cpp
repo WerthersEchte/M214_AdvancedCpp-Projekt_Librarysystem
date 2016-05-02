@@ -50,6 +50,7 @@ int main(int argc, char* argv[])
         std::cout << "Reply is: ";
         std::cout.write(reply, reply_length);
         std::cout << "\n";
+        std::cin.getline(request, max_length);
     }
     catch (std::exception& e)
     {
