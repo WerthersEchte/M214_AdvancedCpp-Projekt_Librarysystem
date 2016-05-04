@@ -9,25 +9,26 @@
 
 namespace library{
 
+    void  NetworkManagement::acceptHandler(const boost::system::error_code& error) {
+        library::NetworkConnection *client = new library::NetworkConnection(boost::move(socket));
+        socket = boost::asio::ip::tcp::socket(io_service);
+        client->start();
+        std::cout << "New client connect" << std::endl;
+        acceptor.async_accept(socket, bind(&NetworkManagement::acceptHandler, this, std::placeholders::_1));
+    }
+
+
+
     void NetworkManagement::start(){
 
         try {
-            boost::asio::ip::tcp::acceptor acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 8080));
+
             std::cout << "Listen on Port 8080" << std::endl;
+            acceptor.async_accept(socket, bind(&NetworkManagement::acceptHandler, this, std::placeholders::_1));
+
 
             for (;;) {
-
-                boost::asio::ip::tcp::socket socket(io_service);
-                std::cout << "Wait for client" << std::endl;
-                acceptor.accept(socket);
-
-                std::make_shared<library::NetworkConnection>(boost::move(socket))->start();
-
-                std::cout << "New client connect" << std::endl;
-                //std::thread clientThread{[&](){ io_service.run_one(); }};
-                //std::cout << "Start client thread" << std::endl;
-                //clientThread.join();
-             //   io_service.run();
+                io_service.run();
             }
 
         } catch (std::exception& e) {
@@ -37,9 +38,8 @@ namespace library{
 
     void NetworkManagement::stop(){ }
 
-    NetworkManagement::NetworkManagement(){}
+    NetworkManagement::NetworkManagement() : socket(boost::asio::ip::tcp::socket(io_service)), acceptor(boost::asio::ip::tcp::acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 8080))) { }
 
-  //  NetworkManagement::NetworkManagement(boost::asio::io_service& io_service) {  }
 }
 
 
