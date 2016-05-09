@@ -1,16 +1,14 @@
-#include <QApplication>
-#include "gui/visiongui.h"
 #include <iostream>
+#include "core/library.h"
+#include "core/networkmanagement.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char* argv[]) {
 
-    QApplication a(argc, argv);
-    mrvision::VisionGui vVisionGui;
-	if( argc >= 2 ){
-		//vVisionGui.loadConfig( argv[1] );
-	}
-    vVisionGui.show();
+	library::NetworkManagement server;
+	server.start();
+	char userInput[128];
+	std::cin.getline(userInput, 128);
 
-    return a.exec();
+	return 0;
+
 }

@@ -1,0 +1,19 @@
+
+----------------------------------------------------------------------------
+Offset (byte)	| Lenght (byte)	|	Type	|	Data
+----------------------------------------------------------------------------
+0				|	1			|	Byte	|	Message type
+1 - x			|	x			|	String	|	Message (0 terminated)
+
+
+
+----------------------------------------------------------------------------
+Message type 	| ASCII | Description
+----------------------------------------------------------------------------
+97				|	a	| Add book	
+				|	u	| Update book
+				|	l	| Get list of Books
+				|	s	| Change book state (Borrowed)
+				|	b	| Get list of borrowed books
+				|	c	| Get a list of customer
+
