@@ -13,7 +13,7 @@ set(CMAKE_AUTOMOC ON)
 #find_package( Qt5Gui REQUIRED )
 #find_package( Qt5Concurrent REQUIRED )
 
-FIND_PACKAGE( Boost COMPONENTS system regex REQUIRED )
+FIND_PACKAGE( Boost COMPONENTS system regex context coroutine REQUIRED )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} )
 
@@ -38,15 +38,15 @@ set( HEADERS
    core/usermanagement.h
 )
 
-set( UI_FILES
-   ${UI_FILES}
-)
+#set( UI_FILES
+#   ${UI_FILES}
+#)
 
 #QT5_WRAP_UI( UI_HEADERS
 #   ${UI_FILES}
 #)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 add_executable( ${MAIN_NAME} WIN32 ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES} )
 
 #qt5_use_modules( ${MAIN_NAME} Widgets Core Gui )

@@ -25,9 +25,9 @@ set( HEADERS
    ${HEADERS}
 )
 
-set( UI_FILES
-   ${UI_FILES}
-)
+#set( UI_FILES
+ #  ${UI_FILES}
+#)
 
 #QT5_WRAP_UI( UI_HEADERS
 #   ${UI_FILES}
@@ -37,4 +37,4 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_executable( ${MAIN_NAME} WIN32 ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES} )
 
 #qt5_use_modules( ${MAIN_NAME} Widgets Core Gui )
-target_link_libraries( ${MAIN_NAME} ${Boost_LIBRARIES} )
+target_link_libraries(${MAIN_NAME} ${Boost_LIBRARIES} -lpthread -lm )
