@@ -1,0 +1,3 @@
+/Users/orobsonpires/Documents/eclipse_workspace/M214_AdvancedCpp-Projekt_Librarysystem/server_build/CMakeFiles/edit_cache.dir
+/Users/orobsonpires/Documents/eclipse_workspace/M214_AdvancedCpp-Projekt_Librarysystem/server_build/CMakeFiles/rebuild_cache.dir
+/Users/orobsonpires/Documents/eclipse_workspace/M214_AdvancedCpp-Projekt_Librarysystem/server_build/CMakeFiles/advanced_cpp_library_server.dir
