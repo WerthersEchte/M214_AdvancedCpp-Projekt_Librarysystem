@@ -2,17 +2,21 @@
 
 #include <map>
 #include <stdexcept>
+#include <iostream>
 
 namespace library{
 
-Library Library::LIBRARY;
+Library* Library::LIBRARY = nullptr;
 
 Library::Library() :
 mLibrary()
 {};
 
-Library Library::getLibrary()
+Library* Library::getLibrary()
 {
+    if(LIBRARY == nullptr){
+        LIBRARY = new Library();
+    }
     return LIBRARY;
 };
 
@@ -21,6 +25,7 @@ bool Library::addBook( Book aBook )
     if( mLibrary.find( aBook.getId() ) == mLibrary.end() )
     {
         mLibrary[aBook.getId()] = aBook;
+        emit changed(aBook.getId());
         return true;
     }
     return false;
@@ -33,6 +38,11 @@ Book* Library::getBook( int aId )
     } catch ( const std::out_of_range& aNotFound ) {
         return nullptr;
     }
+};
+
+int Library::getNumberOfBooks()
+{
+    return mLibrary.size();
 };
 
 std::vector<Book> Library::searchBooks( std::string aTitle, Status aBurrowed )

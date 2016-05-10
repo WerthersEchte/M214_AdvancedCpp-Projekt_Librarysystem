@@ -26,6 +26,7 @@ set( SOURCE
    core/usermanagement.cpp
    gui/librarymaingui.cpp
    gui/add+editbook.cpp
+   gui/libraryviewmodel.cpp
 )
 
 set( HEADERS
@@ -38,6 +39,7 @@ set( HEADERS
    core/usermanagement.h
    gui/librarymaingui.h
    gui/add+editbook.h
+   gui/libraryviewmodel.h
 )
 
 set( UI_FILES

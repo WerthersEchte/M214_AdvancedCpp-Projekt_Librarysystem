@@ -5,14 +5,17 @@
 
 #include <map>
 #include <vector>
+#include <QObject>
 
 typedef std::map<int,library::Book> StoredBooks;
 
 namespace library{
 
-class Library{
+class Library: public QObject{
 
-    static Library LIBRARY;
+    Q_OBJECT
+
+    static Library *LIBRARY;
 
     StoredBooks mLibrary;
 
@@ -20,13 +23,18 @@ class Library{
 
 public:
 
-    static Library getLibrary();
+    static Library* getLibrary();
 
     bool addBook( Book aBook );
     Book* getBook( int aId );
 
+    int getNumberOfBooks();
+
     //TODO: add search
     std::vector<Book> searchBooks( std::string aTitle, Status aStatus );
+
+signals:
+    void changed( int vIndex );
 
 private:
     std::vector<Book> searchTitle( std::string aTitle, const std::vector<Book>& aBooks );

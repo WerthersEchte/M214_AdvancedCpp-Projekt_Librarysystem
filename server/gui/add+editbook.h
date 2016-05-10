@@ -8,7 +8,7 @@
 
 namespace library{
 
-class AddEditBook: public QDialog, private Ui::AddEditBook
+class AddEditBook: public QDialog, public Ui::AddEditBook
 {
     Q_OBJECT
 

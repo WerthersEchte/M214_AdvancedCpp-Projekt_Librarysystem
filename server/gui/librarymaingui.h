@@ -13,7 +13,14 @@ class MainGUI: public QMainWindow, private Ui::LibraryMainGUI
     Q_OBJECT
 
 public:
-    MainGUI(QWidget *parent = 0);
+    MainGUI( QWidget *vParent = 0 );
+
+public slots:
+    //void libraryChanged( int vId );
+
+private slots:
+    void addBook( bool vChecked );
+    void editBook( bool vChecked );
 
 };
 

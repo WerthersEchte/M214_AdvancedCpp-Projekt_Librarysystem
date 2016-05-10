@@ -42,13 +42,6 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pBBooksRemove">
-             <property name="text">
-              <string>Remove</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QPushButton" name="pBBooksEdit">
              <property name="text">
               <string>Edit</string>
@@ -81,28 +74,13 @@
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QListWidget" name="lWBooksList">
+            <widget class="QListView" name="lVBooksList">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <item>
-              <property name="text">
-               <string>TestBook1</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>TestBook2</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>TestBook3</string>
-              </property>
-             </item>
             </widget>
            </item>
            <item>
