@@ -21,6 +21,7 @@ public slots:
 private slots:
     void addBook( bool vChecked );
     void editBook( bool vChecked );
+    void selectBook(const QModelIndex &vIndex);
 
 };
 
