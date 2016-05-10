@@ -29,6 +29,8 @@ public:
 
     Status getStatus();
 
+    void editTitle( std::string aTitle );
+
 };
 
 }

@@ -24,6 +24,11 @@ std::string Book::getTitle()
     return mTitle;
 };
 
+void Book::editTitle( std::string aTitle )
+{
+    mTitle = aTitle;
+};
+
 int Book::getId()
 {
     return mId;

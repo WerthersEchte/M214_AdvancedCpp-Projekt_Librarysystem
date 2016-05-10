@@ -36,6 +36,20 @@ void MainGUI::addBook( bool vChecked )
 
 void MainGUI::editBook( bool vChecked )
 {
+    if( lVBooksList->selectionModel()->selectedIndexes().isEmpty() || Library::getLibrary()->getBook( lVBooksList->selectionModel()->selectedIndexes().first().row() ) == nullptr ){
+        return;
+    }
+
+    AddEditBook vAddEditBookDialog;
+    vAddEditBookDialog.setWindowTitle("Edit Book");
+    vAddEditBookDialog.lETitle->setText( QString::fromUtf8( Library::getLibrary()->getBook( lVBooksList->selectionModel()->selectedIndexes().first().row() )->getTitle().c_str()) );
+    vAddEditBookDialog.exec();
+    if( vAddEditBookDialog.result() == QDialog::Accepted ){
+
+        Library::getLibrary()->getBook( lVBooksList->selectionModel()->selectedIndexes().first().row() )->editTitle( vAddEditBookDialog.lETitle->text().toStdString() );
+
+    }
+
 };
 
 void MainGUI::selectBook(const QModelIndex &vIndex){
