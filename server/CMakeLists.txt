@@ -24,6 +24,8 @@ set( SOURCE
    core/networkmanagement.cpp
    core/user.cpp
    core/usermanagement.cpp
+   gui/librarymaingui.cpp
+   gui/add+editbook.cpp
 )
 
 set( HEADERS
@@ -34,10 +36,14 @@ set( HEADERS
    core/networkmanagement.h
    core/user.h
    core/usermanagement.h
+   gui/librarymaingui.h
+   gui/add+editbook.h
 )
 
 set( UI_FILES
    ${UI_FILES}
+   gui/librarymaingui.ui
+   gui/add+editbook.ui
 )
 
 QT5_WRAP_UI( UI_HEADERS
@@ -48,5 +54,5 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 add_library (${MAIN_NAME}_library ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES} )
 add_executable( ${MAIN_NAME} WIN32 main.cpp )
 
-qt5_use_modules( ${MAIN_NAME} Widgets Core Gui )
+qt5_use_modules( ${MAIN_NAME}_library Widgets Core Gui )
 target_link_libraries( ${MAIN_NAME} ${MAIN_NAME}_library ${Boost_LIBRARIES} )
