@@ -12,7 +12,7 @@ find_package( Qt5Core REQUIRED )
 find_package( Qt5Gui REQUIRED )
 find_package( Qt5Concurrent REQUIRED )
 
-FIND_PACKAGE( Boost COMPONENTS system REQUIRED )
+FIND_PACKAGE( Boost COMPONENTS system regex context coroutine REQUIRED )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} )
 
@@ -44,7 +44,7 @@ QT5_WRAP_UI( UI_HEADERS
    ${UI_FILES}
 )
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 add_library (${MAIN_NAME}_library ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES} )
 add_executable( ${MAIN_NAME} WIN32 main.cpp )
 

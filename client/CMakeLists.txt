@@ -31,7 +31,7 @@ QT5_WRAP_UI( UI_HEADERS
    ${UI_FILES}
 )
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 add_library (${MAIN_NAME}_library ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES} )
 add_executable( ${MAIN_NAME} WIN32 main.cpp )
 
