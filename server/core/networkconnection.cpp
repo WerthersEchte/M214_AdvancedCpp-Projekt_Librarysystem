@@ -11,7 +11,9 @@
 
 namespace library {
 
-    NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket socket) : socket_(boost::move(socket)) { }
+    NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket socket) :
+        socket_(boost::move(socket))
+    { }
 
     void NetworkConnection::writeHandler(const boost::system::error_code& error, std::size_t bytes_transferred) { }
 
@@ -27,6 +29,7 @@ namespace library {
         try {
 
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, this, std::placeholders::_1, std::placeholders::_2));
+            std::cout << "New client connected on " << socket_.remote_endpoint().address().to_string() << ":" << socket_.remote_endpoint().port() << std::endl;
 
         } catch (std::exception& e) {
             std::cerr << "Exception: " << e.what() << "\n";

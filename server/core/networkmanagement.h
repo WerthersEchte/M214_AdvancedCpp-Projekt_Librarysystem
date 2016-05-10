@@ -18,8 +18,9 @@ namespace library{
         boost::asio::ip::tcp::acceptor acceptor;
 
     public:
+        NetworkManagement( const int aPort = 8080 );
+
         void start();
         void stop();
-        NetworkManagement();
     };
 }

@@ -13,7 +13,6 @@ namespace library{
         library::NetworkConnection *client = new library::NetworkConnection(boost::move(socket));
         socket = boost::asio::ip::tcp::socket(io_service);
         client->start();
-        std::cout << "New client connect" << std::endl;
         acceptor.async_accept(socket, bind(&NetworkManagement::acceptHandler, this, std::placeholders::_1));
     }
 
@@ -23,9 +22,8 @@ namespace library{
 
         try {
 
-            std::cout << "Listen on Port 8080" << std::endl;
+            std::cout << "Listen on Port " << acceptor.local_endpoint().port() << std::endl;
             acceptor.async_accept(socket, bind(&NetworkManagement::acceptHandler, this, std::placeholders::_1));
-
 
             for (;;) {
                 io_service.run();
@@ -38,7 +36,17 @@ namespace library{
 
     void NetworkManagement::stop(){ }
 
-    NetworkManagement::NetworkManagement() : socket(boost::asio::ip::tcp::socket(io_service)), acceptor(boost::asio::ip::tcp::acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 8080))) { }
+    NetworkManagement::NetworkManagement( const int aPort ) :
+        socket(boost::asio::ip::tcp::socket(io_service)),
+        acceptor( boost::asio::ip::tcp::acceptor(
+                        io_service,
+                        boost::asio::ip::tcp::endpoint(
+                                boost::asio::ip::tcp::v4(),
+                                aPort)
+                        )
+        )
+    {
+    }
 
 }
 
