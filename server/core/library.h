@@ -1,3 +1,6 @@
+#ifndef _LibraryLibrary_
+#define _LibraryLibrary_
+
 #include "book.h"
 
 #include <map>
@@ -32,3 +35,5 @@ private:
 };
 
 }
+
+#endif // _LibraryLibrary_

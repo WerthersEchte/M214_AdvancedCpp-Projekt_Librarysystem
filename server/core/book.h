@@ -1,3 +1,6 @@
+#ifndef _LibraryBook_
+#define _LibraryBook_
+
 #include <string>
 
 namespace library{
@@ -29,3 +32,5 @@ public:
 };
 
 }
+
+#endif // _LibraryBook_
