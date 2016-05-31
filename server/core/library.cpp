@@ -4,6 +4,9 @@
 #include <stdexcept>
 #include <iostream>
 
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
+
 namespace library{
 
 Library* Library::LIBRARY = nullptr;
@@ -89,5 +92,32 @@ std::vector<Book> Library::searchBurrowed( Status aBurrowed, const std::vector<B
 
     return vFoundBooks;
 };
+
+std::string Library::parseCommand( const std::string& aCommand ){
+
+    std::vector< std::string > vCommandParts;
+
+    boost::split( vCommandParts,
+                  aCommand,
+                  [](char aCharacter) { return aCharacter == '|'; } );
+
+    if(!vCommandParts[0].compare("add_book")){
+
+        addBook(Book(vCommandParts[1]));
+
+    }
+
+    printLibrary();
+
+    return "blah";
+}
+
+void Library::printLibrary(){
+
+    for( StoredBooks::iterator it = mLibrary.begin(); it != mLibrary.end(); ++it ) {
+    	it->second.printBook();
+    }
+
+}
 
 }

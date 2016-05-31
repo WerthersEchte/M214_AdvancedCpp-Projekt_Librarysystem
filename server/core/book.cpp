@@ -1,5 +1,7 @@
 #include "book.h"
 
+#include <iostream>
+
 namespace library{
 
 int Book::IDCOUNTER = 0;
@@ -60,6 +62,11 @@ bool Book::bringBack()
 Status Book::getStatus()
 {
     return mBurrowed;
+};
+
+void Book::printBook()
+{
+    std::cout << mId << " " << mTitle << " " << mBurrowed << std::endl;
 };
 
 }

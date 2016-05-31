@@ -33,6 +33,12 @@ public:
     //TODO: add search
     std::vector<Book> searchBooks( std::string aTitle, Status aStatus );
 
+    // parse commands
+
+    std::string parseCommand( const std::string& aCommand );
+
+    void printLibrary();
+
 signals:
     void changed( int vIndex );
 

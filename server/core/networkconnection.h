@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 
+#define DL "|.|"
 
 namespace library{
 

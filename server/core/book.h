@@ -31,6 +31,8 @@ public:
 
     void editTitle( std::string aTitle );
 
+    void printBook();
+
 };
 
 }

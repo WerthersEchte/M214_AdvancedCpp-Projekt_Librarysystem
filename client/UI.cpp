@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <sstream>
 
 namespace library {
 
@@ -30,7 +31,7 @@ void UI::showMenu() {
 	cout << "*********************************" << endl
 			<< "* Welcome to library System *" << endl
 			<< "*********************************" << endl << endl << "Select: "
-			<< endl << "1 - Add book" << endl << "Choose one option(0-4): ";
+			<< endl << "1 - Send Command" << endl << "Choose one option(0-1): ";
 
 	cin >> opcao;
 
@@ -39,7 +40,7 @@ void UI::showMenu() {
 		exit(0);
 		break;
 	case 1:
-		this->addBook();
+		this->sendCommand();
 		break;
 	default:
 		this->showMenu();
@@ -47,25 +48,24 @@ void UI::showMenu() {
 	}
 }
 
-void UI::addBook() {
+void UI::sendCommand() {
 
-	string title;
-	string user = "test";
-	string action = "add_book";
+	std::stringstream vCommand;
+	string vPart;
 
-	cout << endl << "*********************" << endl << "* Add book *" << endl
-			<< "*********************" << endl << endl;
+	cout << "Enter Command" << endl;
 
-	cout << "Enter the title: ";
+    cin.ignore();
 
-	cin >> title;
-
-	cin.clear();
-	cin.ignore();
-
-	cout << endl;
-
-	_client.write(user, action, title);
+    while (std::getline(std::cin, vPart) && !vPart.empty()){
+	    if( !vCommand.str().empty() ){
+	        vCommand << '\007';
+	    }
+	    vCommand << vPart;
+        std::cout << "" << vCommand.str() << std::endl;
+	}
+    
+	_client.write("", "", vCommand.str());
 
 	showMenu();
 }

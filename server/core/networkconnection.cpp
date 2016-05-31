@@ -7,7 +7,14 @@
 #include "./networkconnection.h"
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
+
 #include <thread>
+#include <vector>
+#include <string>
+
+#include "core/library.h"
 
 namespace library {
 
@@ -21,6 +28,22 @@ namespace library {
         std::cout << "Receive message" << std::endl;
         std::cout.write(buffer, bytes_transferred);
         std::cout << std::endl;
+
+        std::string vMessage(buffer, bytes_transferred);
+        std::vector< std::string > vMessageParts;
+
+        boost::split( vMessageParts,
+                      vMessage,
+                      [](char aCharacter) { return aCharacter == 7; } );
+
+        for(std::string vPart : vMessageParts ){
+            std::cout << vPart << std::endl;
+        }
+
+        if(!vMessageParts[0].compare("book")){
+            Library::getLibrary()->parseCommand( vMessageParts[1] );
+        }
+
         boost::asio::async_write(socket_, boost::asio::buffer(buffer, bytes_transferred), std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
     }
 

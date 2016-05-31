@@ -26,7 +26,7 @@ void Client::write(std::string user, std::string action, std::string data) {
 
 	std::string fullData = "";
 
-	fullData.append(user + ";").append(action + ";").append(data);
+	fullData.append(user).append(action).append(data);
 
 	strncpy(request, fullData.c_str(), sizeof(request));
 

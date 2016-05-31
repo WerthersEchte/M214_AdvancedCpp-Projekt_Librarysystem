@@ -15,7 +15,7 @@ public:
 	virtual ~UI();
 	void showMenu();
 private:
-	void addBook();
+	void sendCommand();
 	Client _client;
 };
 
