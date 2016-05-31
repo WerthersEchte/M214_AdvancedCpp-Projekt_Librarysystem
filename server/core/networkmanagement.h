@@ -18,7 +18,7 @@ namespace library{
         boost::asio::ip::tcp::acceptor acceptor;
 
     public:
-        void start();
+        void run();
         void stop();
         NetworkManagement();
     };

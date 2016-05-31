@@ -7,7 +7,9 @@
 #include "./networkconnection.h"
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
-#include <thread>
+#include "./library.h"
+#include <string>
+#include <boost/algorithm/string.hpp>
 
 namespace library {
 
@@ -16,16 +18,40 @@ namespace library {
     void NetworkConnection::writeHandler(const boost::system::error_code& error, std::size_t bytes_transferred) { }
 
     void NetworkConnection::receiveHandler(const boost::system::error_code& error, std::size_t bytes_transferred) {
-        std::cout << "Receive message" << std::endl;
-        std::cout.write(buffer, bytes_transferred);
-        std::cout << std::endl;
-        boost::asio::async_write(socket_, boost::asio::buffer(buffer, bytes_transferred), std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
+
+        std::cout << error << std::endl;
+        if ((boost::asio::error::eof == error) || (boost::asio::error::connection_reset == error)) {
+            std::cout << "Client disconnect" << error.message();
+
+
+        } else {
+
+            std::vector<string> strs;
+            boost::split(strs, buffer, boost::is_any_of(";"));
+
+            string responseType = strs.at(0);
+
+            if (responseType == "book" && strs.size() >= 2) {
+                string responseSubType = strs.at(1);
+
+                if (responseSubType == "add" && strs.size() >= 3) {
+                    string responseData = strs.at(2);
+                    std::cout << "Add book" << std::endl;
+                }
+
+            } else {
+                std::cout << "Receive message: ";
+                std::cout.write(buffer, bytes_transferred) << std::endl;
+            }
+
+            boost::asio::async_write(socket_, boost::asio::buffer(buffer, bytes_transferred),
+                                     std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1,
+                                               std::placeholders::_2));
+        }
     }
 
     void NetworkConnection::start() {
-
         try {
-
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, this, std::placeholders::_1, std::placeholders::_2));
 
         } catch (std::exception& e) {
