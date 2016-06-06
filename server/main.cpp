@@ -1,9 +1,10 @@
 #include <iostream>
 #include "core/library.h"
 #include "core/networkmanagement.h"
+#include <memory>
 
 int main(int argc, char* argv[]) {
-	library::Library* library = new library::Library();
+	std::shared_ptr<library::Library> library = std::make_shared<library::Library>();
 	library::NetworkManagement server(library);
 	server.run();
 	char userInput[128];

@@ -7,17 +7,15 @@
 #include "networkconnection.h"
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
-//#include "library.h"
-//#include <string>
 #include <boost/algorithm/string.hpp>
 
 namespace library {
 
-    NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket _socket, library::Library* _library) : socket(boost::move(_socket)), library(_library)  { }
+    NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket _socket, std::shared_ptr<library::Library> _library) : socket(boost::move(_socket)), library(_library)  { }
 
     NetworkConnection::~NetworkConnection(){
         socket.close();
-        std::cout << "Delete connection object" << std::endl;
+        std::cout << "Delete NetworkConnection" << std::endl;
     }
 
 
@@ -73,8 +71,7 @@ namespace library {
              * Response
              **************/
            // boost::asio::async_write(socket, boost::asio::buffer(buffer, bytes_transferred), std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
-            boost::asio::async_write(socket, boost::asio::buffer(returnData, sizeof(returnData)), std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
-           // boost::asio::async_write(socket, returnData, std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
+            boost::asio::async_write(socket, boost::asio::buffer(returnData), std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
 
         }
     }

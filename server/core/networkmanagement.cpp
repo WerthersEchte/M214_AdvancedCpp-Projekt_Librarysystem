@@ -12,7 +12,7 @@ namespace library{
     void  NetworkManagement::acceptHandler(const boost::system::error_code& error) {
 
         std::cout << error << std::endl;
-        library::NetworkConnection *client = new library::NetworkConnection(boost::move(socket),  library); //TODO: Save client pointer
+        library::NetworkConnection *client = new library::NetworkConnection(boost::move(socket), library); //TODO: Save client pointer
         socket = boost::asio::ip::tcp::socket(io_service);
         client->start();
         std::cout << "New client connect" << std::endl;
@@ -34,7 +34,7 @@ namespace library{
 
     void NetworkManagement::stop(){ }
 
-    NetworkManagement::NetworkManagement(library::Library* _library) : socket(boost::asio::ip::tcp::socket(io_service)),
+    NetworkManagement::NetworkManagement(std::shared_ptr<library::Library> _library) : socket(boost::asio::ip::tcp::socket(io_service)),
                                                                       acceptor(boost::asio::ip::tcp::acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 8080))),
                                                                       stopManager(false),
                                                                       library(_library){ }

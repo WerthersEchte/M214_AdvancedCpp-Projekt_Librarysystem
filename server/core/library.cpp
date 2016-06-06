@@ -15,7 +15,6 @@ namespace library{
 
 		if( inventory.find(id) == inventory.end() ){
 		    inventory[id] = _book;
-			std::cout << inventory.size() << std::endl;
 			cout << "Add book with id: " << id << endl;
 		    return true;
 		}
@@ -29,7 +28,6 @@ namespace library{
 
 
 	Book Library::getBook(int _id){
-		std::cout << inventory.size() << std::endl;
 		Book book = inventory.at(_id);	
 		return book;
 	}
