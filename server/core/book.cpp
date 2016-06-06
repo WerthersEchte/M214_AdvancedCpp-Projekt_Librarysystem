@@ -11,8 +11,8 @@ namespace library{
 	****************************/
 	Book::Book(){}
 
-	Book::Book(std::string _name){
-		id = 4;
+	Book::Book(int _id, std::string _name){
+		id = _id;
 		name = _name;
 		cout << name << endl;
 	}
@@ -32,6 +32,13 @@ namespace library{
 	string Book::getName(){
 		return name;
 	}
+
+
+	string Book::toString() {
+		return std::to_string(id) + ";" + name;
+	}
+
+
 }
 
 

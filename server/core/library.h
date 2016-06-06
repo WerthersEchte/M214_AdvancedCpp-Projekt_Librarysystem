@@ -1,3 +1,6 @@
+#ifndef LIBRARY_LIBRARY_HEADER
+#define LIBRARY_LIBRARY_HEADER
+
 #include "book.h"
 #include <map>
 
@@ -7,6 +10,7 @@ namespace library{
 	using std::string;
 
 	class Library{
+	private:
 		map<int, Book> inventory;
 
 
@@ -20,3 +24,5 @@ namespace library{
 		Book getBook(int id);
 	};
 }
+
+#endif

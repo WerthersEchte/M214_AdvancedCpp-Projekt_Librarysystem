@@ -1,3 +1,6 @@
+#ifndef LIBRARY_BOOK_HEADER
+#define LIBRARY_BOOK_HEADER
+
 #include <string>
 
 namespace library{
@@ -11,7 +14,7 @@ namespace library{
 
 	public:
 		Book();
-		Book(string name);
+		Book(int _id, string _name);
 		~Book();
 
 
@@ -20,6 +23,9 @@ namespace library{
 		string setName(string name);
 		bool isBorrowed();
 		void setBorrowState(bool state);
+		string toString();
 	};
 
 }
+
+#endif

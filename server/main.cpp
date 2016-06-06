@@ -3,7 +3,8 @@
 #include "core/networkmanagement.h"
 
 int main(int argc, char* argv[]) {
-	library::NetworkManagement server;
+	library::Library* library = new library::Library();
+	library::NetworkManagement server(library);
 	server.run();
 	char userInput[128];
 	std::cin.getline(userInput, 128);

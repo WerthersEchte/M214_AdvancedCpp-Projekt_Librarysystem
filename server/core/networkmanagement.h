@@ -6,6 +6,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/spawn.hpp>
 #include <list>
+//#include "library.h"
 
 namespace library{
 
@@ -16,10 +17,11 @@ namespace library{
         void acceptHandler( const boost::system::error_code& error );
         boost::asio::ip::tcp::socket socket;
         boost::asio::ip::tcp::acceptor acceptor;
+        library::Library* library;
 
     public:
         void run();
         void stop();
-        NetworkManagement();
+        NetworkManagement(library::Library* library);
     };
 }
