@@ -48,6 +48,7 @@ int main(int argc, char* argv[])
         size_t reply_length = boost::asio::read(s,
                                                 boost::asio::buffer(reply, request_length));
         std::cout << "Reply is: ";
+        boost::asio::write(s, boost::asio::buffer(request, request_length));
         std::cout.write(reply, reply_length);
         std::cout << "\n";
         std::cin.getline(request, max_length);

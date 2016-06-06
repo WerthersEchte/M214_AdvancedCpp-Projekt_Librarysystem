@@ -19,10 +19,12 @@ namespace library {
 
     void NetworkConnection::receiveHandler(const boost::system::error_code& error, std::size_t bytes_transferred) {
 
-        std::cout << error << std::endl;
-        if ((boost::asio::error::eof == error) || (boost::asio::error::connection_reset == error)) {
-            std::cout << "Client disconnect" << error.message();
 
+        std::cout << error.value() << " - " << (int)boost::asio::error::connection_reset << std::endl;
+
+        if ((error.value() == boost::asio::error::connection_reset) || (error.value() == boost::asio::error::eof)){
+            std::cout << "Client disconnect!" << std::endl;
+            socket_.close();
 
         } else {
 
@@ -44,9 +46,9 @@ namespace library {
                 std::cout.write(buffer, bytes_transferred) << std::endl;
             }
 
-            boost::asio::async_write(socket_, boost::asio::buffer(buffer, bytes_transferred),
-                                     std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1,
-                                               std::placeholders::_2));
+            boost::asio::async_write(socket_, boost::asio::buffer(buffer, bytes_transferred), std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
+
+            socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, this, std::placeholders::_1, std::placeholders::_2));
         }
     }
 
