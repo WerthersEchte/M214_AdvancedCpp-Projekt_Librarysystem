@@ -11,15 +11,20 @@
 namespace library{
 
 MainGUI::MainGUI( QWidget *vParent )
-    : QMainWindow(vParent)
+    : QMainWindow(vParent),
+      mServer(nullptr)
 {
     setupUi(this);
+
+    pTENetworkMessages->setReadOnly(true);
 
     connect(pBBooksAdd, SIGNAL(clicked(bool)), this, SLOT(addBook(bool)));
     connect(pBBooksEdit, SIGNAL(clicked(bool)), this, SLOT(editBook(bool)));
     connect(lVBooksList, SIGNAL(clicked(QModelIndex)), this, SLOT(selectBook(QModelIndex)));
 
     lVBooksList->setModel(new LibraryViewModel(this));
+
+    connect(bNetworkStartStop, SIGNAL(clicked(bool)), this, SLOT(networkStartStop(bool)));
 };
 
 void MainGUI::addBook( bool vChecked )
@@ -69,6 +74,38 @@ void MainGUI::selectBook(const QModelIndex &vIndex){
                 lBooksStatus->setText( "Not Available" );
         }
     }
+
+};
+
+void MainGUI::networkStartStop( bool vChecked ){
+
+    if( mServer == nullptr ){
+        mServer = new library::NetworkManagement(lENetworkPort->text().toInt());
+        connect(mServer, SIGNAL(networkActivity(QString, QString)), this, SLOT(messageNetwork(QString, QString)));
+
+        mServer->startServer();
+
+        bNetworkStartStop->setText("Stop");
+
+    } else {
+
+        mServer->stopServer();
+        while(!mServer->isFinished()){} // better
+
+        disconnect( mServer, &NetworkManagement::networkActivity, this, &MainGUI::messageNetwork );
+
+        delete mServer; //do it with autoptr
+        mServer = nullptr;
+
+        bNetworkStartStop->setText("Start");
+
+    }
+
+};
+
+void MainGUI::messageNetwork( QString aId, QString aMessage ){
+
+    pTENetworkMessages->appendPlainText( aId.append(":").append(aMessage) );
 
 };
 

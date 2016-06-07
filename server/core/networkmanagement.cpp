@@ -11,6 +11,9 @@ namespace library{
 
     void  NetworkManagement::acceptHandler(const boost::system::error_code& error) {
         library::NetworkConnection *client = new library::NetworkConnection(boost::move(socket));
+
+        connect(client, SIGNAL(networkActivity(QString, QString)), this, SLOT(clientNetworkActivity(QString, QString)));
+
         socket = boost::asio::ip::tcp::socket(io_service);
         client->start();
         acceptor.async_accept(socket, bind(&NetworkManagement::acceptHandler, this, std::placeholders::_1));
@@ -18,25 +21,21 @@ namespace library{
 
 
 
-    void NetworkManagement::start(){
+    void NetworkManagement::startServer(){
 
-        try {
+        mRuns = true;
+        start();
 
-            std::cout << "Listen on Port " << acceptor.local_endpoint().port() << std::endl;
-            acceptor.async_accept(socket, bind(&NetworkManagement::acceptHandler, this, std::placeholders::_1));
-
-            for (;;) {
-                io_service.run();
-            }
-
-        } catch (std::exception& e) {
-            std::cerr << "Exception: " << e.what() << "\n";
-        }
     }
 
-    void NetworkManagement::stop(){ }
+    void NetworkManagement::stopServer(){
+
+        mRuns = false;
+
+    }
 
     NetworkManagement::NetworkManagement( const int aPort ) :
+        mRuns(false),
         socket(boost::asio::ip::tcp::socket(io_service)),
         acceptor( boost::asio::ip::tcp::acceptor(
                         io_service,
@@ -48,6 +47,28 @@ namespace library{
     {
     }
 
+    void NetworkManagement::run() {
+        try {
+
+            emit networkActivity( "Main", QString("Started listen on Port ").append( QString::number( acceptor.local_endpoint().port() ) ) );
+            acceptor.async_accept(socket, bind(&NetworkManagement::acceptHandler, this, std::placeholders::_1));
+
+            while(mRuns) {
+                io_service.run();
+            }
+
+            emit networkActivity( QString("Main"), QString("Stopped listen on Port ").append( QString::number( acceptor.local_endpoint().port() ) ) ) ;
+
+        } catch (std::exception& e) {
+            emit networkActivity( "Main", QString("Exception: ").append( QString(e.what()) ).append("\n") );
+        }
+    }
+
+    void NetworkManagement::clientNetworkActivity( QString aId, QString aActivity ){
+
+        emit networkActivity( aId, aActivity );
+
+    };
 }
 
 
