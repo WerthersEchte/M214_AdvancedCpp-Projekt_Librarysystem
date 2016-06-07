@@ -1,8 +1,6 @@
-#include <cstdlib>
-#include <cstring>
-#include <iostream>
-#include <boost/asio.hpp>
-#include "UI.cpp"
+#include "gui/librarymaingui.h"
+
+#include <QApplication>
 
 using boost::asio::ip::tcp;
 
@@ -10,6 +8,12 @@ enum { max_length = 1024 };
 
 int main(int argc, char* argv[])
 {
+
+    QApplication app(argc, argv);
+    library::MainGUI vMainGUI;
+    vMainGUI.show();
+    return app.exec();
+/*
   try
   {
     if (argc != 3)
@@ -37,5 +41,5 @@ int main(int argc, char* argv[])
     std::cerr << "Exception: " << e.what() << "\n";
   }
 
-  return 0;
+  return 0;*/
 }
