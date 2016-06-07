@@ -15,16 +15,6 @@ Library::Library() :
 mLibrary()
 {
 
-    for( char vI1 = 65; vI1 < 91; ++vI1 ){
-        for( char vI2 = 97; vI2 < 123; ++vI2 ){
-            for( char vI3 = 97; vI3 < 123; ++vI3 ){
-
-                addBook( library::Book( {vI1, vI2, vI3} ) );
-
-            }
-        }
-    }
-
 };
 
 Library* Library::getLibrary()
@@ -113,13 +103,11 @@ std::string Library::parseCommand( const std::string& aCommand ){
                   aCommand,
                   [](char aCharacter) { return aCharacter == '|'; } );
 
-    if(!vCommandParts[0].compare("add_book")){
+    if(!vCommandParts[0].compare("add")){
 
         addBook(Book(vCommandParts[1]));
 
     }
-
-    printLibrary();
 
     return "blah";
 }

@@ -12,9 +12,13 @@ Book::Book() :
     mBurrowed(Status::None)
 {};
 
-Book::Book( std::string aTitle ) :
+Book::Book( std::string aTitle, std::string aAuthor, std::string aPublisher, std::string aISBN, std::string aDatePublished ) :
     mId(IDCOUNTER++),
     mTitle(aTitle),
+    mAuthor(aAuthor),
+    mPublisher(aPublisher),
+    mISBN(aISBN),
+    mDatePublished(aDatePublished),
     mBurrowed(Status::Available)
 {};
 
@@ -29,6 +33,38 @@ std::string Book::getTitle()
 void Book::editTitle( std::string aTitle )
 {
     mTitle = aTitle;
+};
+std::string Book::getAuthor()
+{
+    return mAuthor;
+};
+void Book::editAuthor( std::string aAuthor )
+{
+    mAuthor = aAuthor;
+};
+std::string Book::getPublisher()
+{
+    return mPublisher;
+};
+void Book::editPublisher( std::string aPublisher )
+{
+    mPublisher = aPublisher;
+};
+std::string Book::getISBN()
+{
+    return mISBN;
+};
+void Book::editISBN( std::string aISBN )
+{
+    mISBN = aISBN;
+};
+std::string Book::getDatePublished()
+{
+    return mDatePublished;
+};
+void Book::editDatePublished( std::string aDatePublished )
+{
+    mDatePublished = aDatePublished;
 };
 
 int Book::getId()

@@ -30,6 +30,11 @@ private slots:
 
     void networkStartStop( bool vChecked );
 
+    void on_actionLoad_books_triggered();
+
+private:
+    void loadBooks( std::string aFileWithBooks );
+
 };
 
 }

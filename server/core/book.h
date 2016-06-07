@@ -12,16 +12,14 @@ class Book{
     static int IDCOUNTER;
 
     int mId;
-    std::string mTitle;
+    std::string mTitle, mISBN, mPublisher, mAuthor, mDatePublished;
     Status mBurrowed;
 
 public:
     Book();
-    Book( std::string aTitle );
+    Book( std::string aTitle, std::string aAuthor = "", std::string aPublisher = "", std::string aISBN = "", std::string aDatePublished = "" );
     ~Book();
 
-    std::string getTitle();
-    int getId();
 
     bool isAvailable();
     bool burrow();
@@ -29,7 +27,18 @@ public:
 
     Status getStatus();
 
+    int getId();
+
+    std::string getTitle();
     void editTitle( std::string aTitle );
+    std::string getAuthor();
+    void editAuthor( std::string aAuthor );
+    std::string getPublisher();
+    void editPublisher( std::string aPublisher );
+    std::string getISBN();
+    void editISBN( std::string aISBN );
+    std::string getDatePublished();
+    void editDatePublished( std::string aPublished );
 
     void printBook();
 
