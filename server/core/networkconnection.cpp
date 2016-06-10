@@ -29,7 +29,7 @@ namespace library {
          *********************************/
         if ((error.value() == boost::asio::error::connection_reset) || (error.value() == boost::asio::error::eof)){
             std::cout << "Client disconnect!" << std::endl;
-            delete this;    //Todo: Do it from outside
+       //     delete this;    //Todo: Do it from outside
 
 
         /*******************************
@@ -64,20 +64,20 @@ namespace library {
                 std::cout.write(buffer, bytes_transferred) << std::endl;
                 returnData = "unknownMessage!";
             }
-            socket.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, this, std::placeholders::_1, std::placeholders::_2));
+            socket.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
 
 
             /**************
              * Response
              **************/
-            boost::asio::async_write(socket, boost::asio::buffer(returnData), std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
+            boost::asio::async_write(socket, boost::asio::buffer(returnData), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
 
         }
     }
 
     void NetworkConnection::start() {
         try {
-            socket.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, this, std::placeholders::_1, std::placeholders::_2));
+            socket.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
 
         } catch (std::exception& e) {
             std::cerr << "Exception: " << e.what() << "\n";
