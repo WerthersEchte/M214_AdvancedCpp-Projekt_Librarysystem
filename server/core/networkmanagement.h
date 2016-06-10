@@ -9,19 +9,18 @@
 //#include "library.h"
 
 namespace library{
-
     class NetworkManagement{
     private:
-        bool stopManager;
         boost::asio::io_service io_service;
         void acceptHandler( const boost::system::error_code& error );
         boost::asio::ip::tcp::socket socket;
         boost::asio::ip::tcp::acceptor acceptor;
         std::shared_ptr<library::Library> library;
+        unsigned short port;
 
     public:
         void run();
         void stop();
-        NetworkManagement(std::shared_ptr<library::Library> _library);
+        NetworkManagement(std::shared_ptr<library::Library> _library, unsigned short _port);
     };
 }

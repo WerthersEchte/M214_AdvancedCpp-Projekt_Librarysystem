@@ -70,7 +70,6 @@ namespace library {
             /**************
              * Response
              **************/
-           // boost::asio::async_write(socket, boost::asio::buffer(buffer, bytes_transferred), std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
             boost::asio::async_write(socket, boost::asio::buffer(returnData), std::bind(&NetworkConnection::writeHandler, this, std::placeholders::_1, std::placeholders::_2));
 
         }
