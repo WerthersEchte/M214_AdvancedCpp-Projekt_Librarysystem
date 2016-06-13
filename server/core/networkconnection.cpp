@@ -1,17 +1,16 @@
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <boost/asio/spawn.hpp>
-#include <boost/asio/steady_timer.hpp>
 #include <boost/asio/write.hpp>
 #include <iostream>
 #include "networkconnection.h"
-#include <boost/array.hpp>
-#include <boost/asio.hpp>
 #include <boost/algorithm/string.hpp>
+#include "library.h"
+
+
 
 namespace library {
 
-    NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket _socket, std::shared_ptr<library::Library> _library) : socket(boost::move(_socket)), library(_library)  { }
+    NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket _socket) : socket(boost::move(_socket)) { }
 
     NetworkConnection::~NetworkConnection(){
         socket.close();
@@ -49,14 +48,14 @@ namespace library {
                     //Split message part
                     std::vector<string> vMsg;
                     boost::split(vMsg, vMessage.at(2), boost::is_any_of("#"));
-
                     //Add book
-                    library->addBook(library::Book(std::stoi(vMsg.at(0)), vMsg.at(1)));
+
+                    Library::getLibrary()->addBook(library::Book(std::stoi(vMsg.at(0)), vMsg.at(1)));
                     returnData = "addBook";
 
                 } else if (responseSubType == "get"){
                     int bookID = std::stoi(vMessage.at(2));
-                    returnData = library->getBook(bookID).toString().c_str();
+                    returnData = Library::getLibrary()->getBook(bookID).toString().c_str();
                 }
 
             } else {
@@ -64,20 +63,26 @@ namespace library {
                 std::cout.write(buffer, bytes_transferred) << std::endl;
                 returnData = "unknownMessage!";
             }
-            socket.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
+            socket.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH),
+                                 0,
+                                 std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
 
 
             /**************
              * Response
              **************/
-            boost::asio::async_write(socket, boost::asio::buffer(returnData), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
+            boost::asio::async_write(socket,
+                                     boost::asio::buffer(returnData),
+                                     std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
 
         }
     }
 
     void NetworkConnection::start() {
         try {
-            socket.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
+            socket.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH),
+                                 0,
+                                 std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
 
         } catch (std::exception& e) {
             std::cerr << "Exception: " << e.what() << "\n";

@@ -12,7 +12,7 @@ namespace library{
 	class Library{
 	private:
 		map<int, Book> inventory;
-
+		static Library* library;
 
 	public:
  		Library();
@@ -22,6 +22,7 @@ namespace library{
 		bool removeBook(int id);
 		bool updateBook(Book book);
 		Book getBook(int id);
+		static Library* getLibrary();
 	};
 }
 
