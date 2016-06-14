@@ -7,13 +7,17 @@
 #include "networkmanagement.h"
 #include <thread>
 #include <memory>
+#include <QMetaType>
+
 
 namespace library{
 
     void  NetworkManagement::acceptHandler(const boost::system::error_code& error) {
         std::cout << error << std::endl;
         std::shared_ptr<library::NetworkConnection> client(new library::NetworkConnection(boost::move(socket)));
-        //library::NetworkConnection *client = new library::NetworkConnection(boost::move(socket), library); //TODO: Save client pointer
+
+        connect(client.get(), SIGNAL(networkActivity(QString, QString)), this, SLOT(clientNetworkActivity(QString, QString)));
+
         socket = boost::asio::ip::tcp::socket(io_service);
         client->start();
         std::cout << "New client connect" << std::endl;

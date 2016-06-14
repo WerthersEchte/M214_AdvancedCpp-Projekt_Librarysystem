@@ -17,13 +17,19 @@ MainGUI::MainGUI( QWidget *vParent )
 
     connect(bConnect, SIGNAL(clicked(bool)), this, SLOT(connectToServer(bool)));
     connect(bSend, SIGNAL(clicked(bool)), this, SLOT(sendData(bool)));
+    
 };
 
 void MainGUI::connectToServer(bool){
 
+    if(mClient != nullptr){
+        delete mClient;
+    }    
+    
     endpoint_iterator = resolver.resolve({lEIP->text().toStdString(), lEPort->text().toStdString()});
 
     mClient = new Client(io_service, endpoint_iterator, s);
+    connect(mClient, SIGNAL(networkActivity(QString)), this, SLOT(getData(QString)));
 };
 void MainGUI::sendData(bool){
     if(mClient != nullptr){
@@ -31,6 +37,9 @@ void MainGUI::sendData(bool){
     }
 };
 void MainGUI::getData(QString aData){
+
+    pTERecive->appendPlainText( aData );
+
 };
 
 }

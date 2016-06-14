@@ -28,7 +28,8 @@ namespace library {
 
     NetworkConnection::~NetworkConnection(){
             socket_.close();
-            std::cout << "Delete NetworkConnection" << std::endl;
+            emit networkActivity( mId, QString("Client closed") );
+            // TODO: disconnect all slots
     }
 
     void NetworkConnection::writeHandler(const boost::system::error_code& error, std::size_t bytes_transferred) { }
@@ -36,19 +37,12 @@ namespace library {
     void NetworkConnection::receiveHandler(const boost::system::error_code& error, std::size_t bytes_transferred) {
 
         if ((error.value() == boost::asio::error::connection_reset) || (error.value() == boost::asio::error::eof)){
-            std::cout << "Client disconnect!" << std::endl;
-       //     delete this;    //Todo: Do it from outside
-
-
-        /*******************************
-         * Process request
-         *******************************/
+            emit networkActivity( mId, QString("Disconnected") );
         } else {
 
             emit networkActivity( mId, QString("Received message: ").append( QString( QByteArray(buffer, bytes_transferred) ) ) );
 
             std::string vMessage(buffer, bytes_transferred);
-            std::cout << vMessage << std::endl;
             std::vector< std::string > vMessageParts;
 
             boost::split( vMessageParts,
@@ -60,11 +54,6 @@ namespace library {
             }
 
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
-
-
-            /**************
-             * Response
-             **************/
             boost::asio::async_write(socket_, boost::asio::buffer(vMessage), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
         }
     }

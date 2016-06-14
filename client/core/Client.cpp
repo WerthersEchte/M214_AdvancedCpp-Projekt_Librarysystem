@@ -13,6 +13,7 @@ Client::Client(boost::asio::io_service& io_service,
 		tcp::resolver::iterator& endpoint_iterator, tcp::socket& socket) :
 		io_service_(io_service), socket_(socket) {
 	do_connect(endpoint_iterator);
+	emit networkActivity( QString("Connected") );
 }
 ;
 
@@ -34,17 +35,12 @@ void Client::write(std::string user, std::string action, std::string data) {
 
 	boost::asio::write(socket_, boost::asio::buffer(request, request_length));
 
-	// just a test
 	char reply[max_length];
 
-	size_t reply_length = boost::asio::read(socket_,
-			boost::asio::buffer(reply, request_length));
+	size_t reply_length = socket_.receive( boost::asio::buffer(reply, max_length) );
 
-	std::cout << "Reply is: ";
+	emit networkActivity( QString( QByteArray(reply, reply_length ) ) );
 
-	std::cout.write(reply, reply_length);
-
-	std::cout << "\n";
 }
 
 void Client::do_connect(tcp::resolver::iterator endpoint_iterator) {
