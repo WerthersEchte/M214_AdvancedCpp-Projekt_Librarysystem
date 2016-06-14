@@ -1,10 +1,15 @@
 #include "librarymaingui.h"
 
+#include <iostream>
+
 namespace library{
 
 MainGUI::MainGUI( QWidget *vParent )
     : QMainWindow(vParent),
-    mClient(nullptr)
+    mClient(nullptr),
+    io_service(),
+    resolver(io_service),
+    s(io_service)
 {
     setupUi(this);
 
@@ -13,14 +18,11 @@ MainGUI::MainGUI( QWidget *vParent )
     connect(bConnect, SIGNAL(clicked(bool)), this, SLOT(connectToServer(bool)));
     connect(bSend, SIGNAL(clicked(bool)), this, SLOT(sendData(bool)));
 };
-    
+
 void MainGUI::connectToServer(bool){
 
-    boost::asio::io_service io_service;
-    boost::asio::ip::tcp::resolver resolver(io_service);
-    auto endpoint_iterator = resolver.resolve({lEIP->text().toStdString(), lEPort->text().toStdString()});
-    boost::asio::ip::tcp::socket s(io_service);
-    
+    endpoint_iterator = resolver.resolve({lEIP->text().toStdString(), lEPort->text().toStdString()});
+
     mClient = new Client(io_service, endpoint_iterator, s);
 };
 void MainGUI::sendData(bool){

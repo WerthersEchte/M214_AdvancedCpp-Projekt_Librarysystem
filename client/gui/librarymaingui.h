@@ -14,6 +14,10 @@ class MainGUI: public QMainWindow, private Ui::ClientMainGUI
 {
     Q_OBJECT
 
+    boost::asio::ip::tcp::resolver::iterator endpoint_iterator;
+    boost::asio::io_service io_service;
+    boost::asio::ip::tcp::resolver resolver;
+    boost::asio::ip::tcp::socket s;
     Client* mClient;
 
 public:
@@ -22,7 +26,7 @@ public:
 private slots:
     void connectToServer(bool);
     void sendData(bool);
-    
+
 public slots:
     void getData(QString aData);
 
