@@ -6,16 +6,17 @@
 #include <boost/asio/spawn.hpp>
 #include "networkmanagement.h"
 #include <thread>
+#include <memory>
 
 namespace library{
 
     void  NetworkManagement::acceptHandler(const boost::system::error_code& error) {
-        library::NetworkConnection *client = new library::NetworkConnection(boost::move(socket));
-
-        connect(client, SIGNAL(networkActivity(QString, QString)), this, SLOT(clientNetworkActivity(QString, QString)));
-
+        std::cout << error << std::endl;
+        std::shared_ptr<library::NetworkConnection> client(new library::NetworkConnection(boost::move(socket)));
+        //library::NetworkConnection *client = new library::NetworkConnection(boost::move(socket), library); //TODO: Save client pointer
         socket = boost::asio::ip::tcp::socket(io_service);
         client->start();
+        std::cout << "New client connect" << std::endl;
         acceptor.async_accept(socket, bind(&NetworkManagement::acceptHandler, this, std::placeholders::_1));
     }
 
@@ -31,6 +32,7 @@ namespace library{
     void NetworkManagement::stopServer(){
 
         mRuns = false;
+        io_service.stop();
 
     }
 

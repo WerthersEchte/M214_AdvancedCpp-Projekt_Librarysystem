@@ -26,6 +26,7 @@ namespace library{
 
     public:
         explicit NetworkConnection(boost::asio::ip::tcp::socket socket);
+        ~NetworkConnection();
         void start();
 
     signals:
