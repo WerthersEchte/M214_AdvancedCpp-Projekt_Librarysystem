@@ -42,4 +42,5 @@ add_library (${MAIN_NAME}_library ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES}
 add_executable( ${MAIN_NAME} WIN32 main.cpp )
 
 qt5_use_modules( ${MAIN_NAME}_library Widgets Core Gui )
-target_link_libraries( ${MAIN_NAME} ${MAIN_NAME}_library ${Boost_LIBRARIES} )
+target_link_libraries( ${MAIN_NAME}_library ${Boost_LIBRARIES} )
+target_link_libraries( ${MAIN_NAME} ${MAIN_NAME}_library )
