@@ -22,6 +22,8 @@ User::User( std::string aUserName, std::string aPassword, const std::vector<Perm
 {
 };
 
+User::User( const User& aUser ){};
+
 User::~User()
 {};
 

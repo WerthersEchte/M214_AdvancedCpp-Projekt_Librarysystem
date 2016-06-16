@@ -16,6 +16,8 @@ class User{
     std::string mUserName, mPassword;
     std::vector<Permission> mPermissions;
 
+    User( const User& aUser );
+
 public:
     User();
     User( std::string mUserName, std::string mPassword, const std::vector<Permission>& aPermissions );

@@ -25,7 +25,7 @@ Library* Library::getLibrary()
     return LIBRARY;
 };
 
-bool Library::addBook( Book aBook )
+bool Library::addBook( const Book& aBook )
 {
     if( mLibrary.find( aBook.getId() ) == mLibrary.end() )
     {
@@ -53,7 +53,7 @@ int Library::getNumberOfBooks()
 std::vector<Book> Library::searchBooks( std::string aTitle, Status aBurrowed )
 {
     std::vector<Book> vBooks;
-
+    /*
     for( StoredBooks::iterator it = mLibrary.begin(); it != mLibrary.end(); ++it ) {
     	vBooks.push_back( it->second );
     }
@@ -65,33 +65,33 @@ std::vector<Book> Library::searchBooks( std::string aTitle, Status aBurrowed )
     if( aBurrowed != Status::None ){
         vBooks = searchBurrowed( aBurrowed, vBooks );
     }
-
+    */
     return vBooks;
 };
 
 std::vector<Book> Library::searchTitle( std::string aTitle, const std::vector<Book>& aBooks )
 {
     std::vector<Book> vFoundBooks;
-
+    /*
     for( Book vBook : aBooks ){
         if( vBook.getTitle().find( aTitle ) != std::string::npos ){
             vFoundBooks.push_back( vBook );
         }
     }
-
+    */
     return vFoundBooks;
 };
 
 std::vector<Book> Library::searchBurrowed( Status aBurrowed, const std::vector<Book>& aBooks )
 {
     std::vector<Book> vFoundBooks;
-
+    /*
     for( Book vBook : aBooks ){
         if( vBook.getStatus() == aBurrowed ){
             vFoundBooks.push_back( vBook );
         }
     }
-
+    */
     return vFoundBooks;
 };
 
