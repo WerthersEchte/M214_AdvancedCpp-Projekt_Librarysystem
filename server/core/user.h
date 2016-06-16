@@ -6,7 +6,7 @@
 
 namespace library{
 
-enum Permission{User, Book, None};
+enum Permission{Users, Books, None};
 
 class User{
 

@@ -5,17 +5,15 @@
 
 #include <vector>
 
-typedef std::vector<library::User> Users;
+typedef std::vector<library::User> UserMap;
 
-namespace Library{
+namespace library{
 
 class UserManagement{
 
-    Q_OBJECT
-
     static UserManagement *USERMANAGEMENT;
 
-    Users mUsers;
+    UserMap mUsers;
 
     UserManagement();
 
@@ -23,8 +21,8 @@ public:
 
     static UserManagement* getUserManagement();
 
-    User getUser();
-    void addUser( const User& aUser );
+    library::User getUser();
+    void addUser( const library::User& aUser );
 
 };
 
