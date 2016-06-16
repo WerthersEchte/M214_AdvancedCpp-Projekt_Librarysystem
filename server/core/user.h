@@ -22,8 +22,10 @@ public:
     ~User();
 
     std::string getUserName();
+    std::string getUserName() const;
     void editUserName( std::string aUserName );
     std::string getPassword();
+    std::string getPassword() const;
     void editPassword( std::string aPassword );
 
     bool hasPermission( Permission aPermission );

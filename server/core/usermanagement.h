@@ -3,9 +3,10 @@
 
 #include "user.h"
 
-#include <vector>
+#include <map>
+#include <string>
 
-typedef std::vector<library::User> UserMap;
+typedef std::map<std::string, library::User> UserMap;
 
 namespace library{
 
@@ -21,8 +22,8 @@ public:
 
     static UserManagement* getUserManagement();
 
-    library::User getUser();
-    void addUser( const library::User& aUser );
+    library::User* getUser(const std::string& mUserName);
+    bool addUser( const library::User& aUser );
 
 };
 

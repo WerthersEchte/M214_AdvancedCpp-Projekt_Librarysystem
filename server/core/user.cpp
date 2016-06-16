@@ -28,10 +28,16 @@ User::~User()
 std::string User::getUserName(){
     return mUserName;
 };
+std::string User::getUserName() const{
+    return mUserName;
+};
 void User::editUserName( std::string aUserName ){
     mUserName = aUserName;
 };
 std::string User::getPassword(){
+    return mPassword;
+};
+std::string User::getPassword() const{
     return mPassword;
 };
 void User::editPassword( std::string aPassword ){
