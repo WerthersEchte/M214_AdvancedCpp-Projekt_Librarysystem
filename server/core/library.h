@@ -1,22 +1,53 @@
-#include "book.h"
-#include <map>
+#ifndef _LibraryLibrary_
+#define _LibraryLibrary_
 
+#include "book.h"
+
+#include <map>
+#include <vector>
+#include <QObject>
+
+typedef std::map<int,library::Book> StoredBooks;
 
 namespace library{
-	using std::map;
-	using std::string;
 
-	class Library{
-		map<int, Book> inventory;
+class Library: public QObject{
 
+    Q_OBJECT
 
-	public:
- 		Library();
-		~Library();
+    static Library *LIBRARY;
 
-		bool addBook(Book book);
-		bool removeBook(int id);
-		bool updateBook(Book book);
-		Book getBook(int id);
-	};
+    StoredBooks mLibrary;
+
+    Library();
+
+public:
+
+    static Library* getLibrary();
+
+    bool addBook( const Book& aBook );
+    Book* getBook( int aId );
+
+    int getNumberOfBooks();
+
+    //TODO: add search
+    std::vector<Book> searchBooks( std::string aTitle, Status aStatus );
+
+    // parse commands
+
+    std::string parseCommand( const std::string& aCommand );
+
+    void printLibrary();
+
+signals:
+    void changed( int vIndex );
+
+private:
+    std::vector<Book> searchTitle( std::string aTitle, const std::vector<Book>& aBooks );
+    std::vector<Book> searchBurrowed( Status aBurrowed, const std::vector<Book>& aBooks );
+
+};
+
 }
+
+#endif // _LibraryLibrary_

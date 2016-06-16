@@ -1,14 +1,14 @@
-#include <iostream>
-#include "core/library.h"
-#include "core/networkmanagement.h"
+#include "gui/librarymaingui.h"
+
+#include <QApplication>
+#include <QCoreApplication>
 
 int main(int argc, char* argv[]) {
 
-	library::NetworkManagement server;
-	server.start();
-	char userInput[128];
-	std::cin.getline(userInput, 128);
-
-	return 0;
+	QApplication app(argc, argv);
+	QCoreApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
+    library::MainGUI vMainGUI;
+    vMainGUI.show();
+    return app.exec();
 
 }
