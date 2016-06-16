@@ -10,8 +10,7 @@
 
 namespace library{
 
-class MainGUI: public QMainWindow, private Ui::ClientMainGUI
-{
+class MainGUI: public QMainWindow, private Ui::ClientMainGUI {
     Q_OBJECT
 
     boost::asio::ip::tcp::resolver::iterator endpoint_iterator;
@@ -23,8 +22,13 @@ class MainGUI: public QMainWindow, private Ui::ClientMainGUI
 public:
     MainGUI( QWidget *vParent = 0 );
 
+signals:
+	void sendMessage( QString msg );
+
 private slots:
     void connectToServer(bool);
+	void disconnectFromServer(bool);
+	void messageNetwork(QString aMessage );
     void sendData(bool);
 
 public slots:
