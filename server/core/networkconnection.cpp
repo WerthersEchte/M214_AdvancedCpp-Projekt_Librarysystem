@@ -18,12 +18,15 @@
 #include <QString>
 
 #include "core/library.h"
+#include "core/usermanagement.h"
+#include "core/user.h"
 
 namespace library {
 
     NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket socket) :
         socket_(boost::move(socket)),
-        mId(QString("Client(").append( QString::fromUtf8(socket.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket.remote_endpoint().port())).append(")"))
+        mId(QString("UnkownUser(").append( QString::fromUtf8(socket.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket.remote_endpoint().port())).append(")")),
+        mUser()
     { }
 
     NetworkConnection::~NetworkConnection(){
@@ -47,10 +50,34 @@ namespace library {
 
             boost::split( vMessageParts,
                           vMessage,
-                          [](char aCharacter) { return aCharacter == 7; } );
+                          [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::TYPE); } );
 
-            if(!vMessageParts[0].compare("book")){
-                Library::getLibrary()->parseCommand( vMessageParts[1] );
+            if( mUser.isEmpty() ){
+
+                if( !vMessageParts[0].compare("login") ){
+                    boost::split(   vMessageParts,
+                                    vMessageParts[1],
+                                    [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
+                    if( UserManagement::getUserManagement()->getUser( vMessageParts[0] ) != nullptr && !UserManagement::getUserManagement()->getUser( vMessageParts[0] )->getPassword().compare(vMessageParts[1]) ){
+                        mUser = QString( vMessageParts[0].c_str() );
+                        mId = mUser + QString("(").append( QString::fromUtf8(socket_.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket_.remote_endpoint().port())).append(")");
+                        emit networkActivity( mId, mUser + QString(" logged in") ) );
+                        vMessage = "logged in";
+                    } else {
+                        vMessage = "not logged in, wrong username or password";
+                        emit networkActivity( mId, QString("User tried to log in") );
+                    }
+
+                }
+
+            } else {
+
+                if(!vMessageParts[0].compare("book")){
+                    Library::getLibrary()->parseCommand( vMessageParts[1] );
+                } else {
+
+                }
+
             }
 
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));

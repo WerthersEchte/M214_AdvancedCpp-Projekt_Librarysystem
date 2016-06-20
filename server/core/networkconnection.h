@@ -18,11 +18,13 @@
 
 namespace library{
 
+    enum class Splitter: char{ TYPE=':', COMMAND=';'};
+
     class NetworkConnection : public QObject, public std::enable_shared_from_this<NetworkConnection> {
 
         Q_OBJECT
 
-        QString mId;
+        QString mId, mUser;
 
     public:
         explicit NetworkConnection(boost::asio::ip::tcp::socket socket);
