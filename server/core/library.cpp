@@ -1,44 +1,123 @@
 #include "library.h"
+
+#include <map>
+#include <stdexcept>
 #include <iostream>
 
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
+
 namespace library{
-	using std::cout;
-	using std::endl;
 
-	Library* Library::library = nullptr;
+Library* Library::LIBRARY = nullptr;
 
-	Library::Library(){}
+Library::Library() :
+mLibrary()
+{
 
-	Library::~Library(){}
+};
 
-	bool Library::addBook(Book _book){
-		int id = _book.getId();
-		cout << inventory.size() << endl;
-		if( inventory.find(id) == inventory.end() ){
-		    inventory[id] = _book;
-			cout << "Add book with id: " << id << endl;
-		    return true;
-		}
-		return false;
-	}
+Library* Library::getLibrary()
+{
+    if(LIBRARY == nullptr){
+        LIBRARY = new Library();
+    }
+    return LIBRARY;
+};
 
-	//Library::removeBook(int id){}
+bool Library::addBook( const Book& aBook )
+{
+    if( mLibrary.find( aBook.getId() ) == mLibrary.end() )
+    {
+        mLibrary[aBook.getId()] = aBook;
+        emit changed(aBook.getId());
+        return true;
+    }
+    return false;
+};
 
-	//Library::updateBook(Book book){}
+Book* Library::getBook( int aId )
+{
+    try{
+        return &(mLibrary.at(aId));
+    } catch ( const std::out_of_range& aNotFound ) {
+        return nullptr;
+    }
+};
 
+int Library::getNumberOfBooks()
+{
+    return mLibrary.size();
+};
 
+std::vector<Book> Library::searchBooks( std::string aTitle, Status aBurrowed )
+{
+    std::vector<Book> vBooks;
+    /*
+    for( StoredBooks::iterator it = mLibrary.begin(); it != mLibrary.end(); ++it ) {
+    	vBooks.push_back( it->second );
+    }
 
-	Book Library::getBook(int _id){
-		Book book = inventory.at(_id);	
-		return book;
-	}
+    if( !aTitle.empty() ){
+        vBooks = searchTitle( aTitle, vBooks );
+    }
 
-	Library* Library::getLibrary(){
-		if(library == nullptr){
-			library= new Library();
-		}
-		return library;
-	};
+    if( aBurrowed != Status::None ){
+        vBooks = searchBurrowed( aBurrowed, vBooks );
+    }
+    */
+    return vBooks;
+};
+
+std::vector<Book> Library::searchTitle( std::string aTitle, const std::vector<Book>& aBooks )
+{
+    std::vector<Book> vFoundBooks;
+    /*
+    for( Book vBook : aBooks ){
+        if( vBook.getTitle().find( aTitle ) != std::string::npos ){
+            vFoundBooks.push_back( vBook );
+        }
+    }
+    */
+    return vFoundBooks;
+};
+
+std::vector<Book> Library::searchBurrowed( Status aBurrowed, const std::vector<Book>& aBooks )
+{
+    std::vector<Book> vFoundBooks;
+    /*
+    for( Book vBook : aBooks ){
+        if( vBook.getStatus() == aBurrowed ){
+            vFoundBooks.push_back( vBook );
+        }
+    }
+    */
+    return vFoundBooks;
+};
+
+std::string Library::parseCommand( const std::string& aCommand ){
+
+    std::vector< std::string > vCommandParts;
+
+    boost::split( vCommandParts,
+                  aCommand,
+                  [](char aCharacter) { return aCharacter == '|'; } );
+
+    if(!vCommandParts[0].compare("add")){
+
+        addBook(Book(vCommandParts[1]));
+
+    }
+
+    return "blah";
+}
+
+void Library::printLibrary(){
+
+    for( StoredBooks::iterator it = mLibrary.begin(); it != mLibrary.end(); ++it ) {
+    	it->second.printBook();
+    }
 
 }
 
+}
