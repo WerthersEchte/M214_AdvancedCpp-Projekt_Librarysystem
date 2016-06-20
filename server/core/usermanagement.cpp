@@ -15,10 +15,10 @@ UserManagement* UserManagement::getUserManagement()
     if(USERMANAGEMENT == nullptr){
         USERMANAGEMENT = new UserManagement();
         std::vector<Permission> vPermissions;
-        USERMANAGEMENT->addUser(User("Guest", "", vPermissions ));
+        USERMANAGEMENT->addUser(User("guest", "", vPermissions ));
         vPermissions.push_back(Permission::Books);
         vPermissions.push_back(Permission::Users);
-        USERMANAGEMENT->addUser(User("Admin", "Admin", vPermissions));
+        USERMANAGEMENT->addUser(User("admin", "admin", vPermissions));
     }
     return USERMANAGEMENT;
 };

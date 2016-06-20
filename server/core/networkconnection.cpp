@@ -46,38 +46,48 @@ namespace library {
             emit networkActivity( mId, QString("Received message: ").append( QString( QByteArray(buffer, bytes_transferred) ) ) );
 
             std::string vMessage(buffer, bytes_transferred);
-            std::vector< std::string > vMessageParts;
+            try {
+                std::vector< std::string > vMessageParts;
 
-            boost::split( vMessageParts,
-                          vMessage,
-                          [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::TYPE); } );
+                boost::split( vMessageParts,
+                              vMessage,
+                              [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::TYPE); } );
 
-            if( mUser.isEmpty() ){
+                if( mUser.isEmpty() ){
 
-                if( !vMessageParts[0].compare("login") ){
-                    boost::split(   vMessageParts,
-                                    vMessageParts[1],
-                                    [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
-                    if( UserManagement::getUserManagement()->getUser( vMessageParts[0] ) != nullptr && !UserManagement::getUserManagement()->getUser( vMessageParts[0] )->getPassword().compare(vMessageParts[1]) ){
-                        mUser = QString( vMessageParts[0].c_str() );
-                        mId = mUser + QString("(").append( QString::fromUtf8(socket_.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket_.remote_endpoint().port())).append(")");
-                        emit networkActivity( mId, mUser + QString(" logged in") ) );
-                        vMessage = "logged in";
+                    if( !vMessageParts[0].compare("login") ){
+                        boost::split(   vMessageParts,
+                                        vMessageParts[1],
+                                        [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
+                        if( UserManagement::getUserManagement()->getUser( vMessageParts[0] ) != nullptr && !UserManagement::getUserManagement()->getUser( vMessageParts[0] )->getPassword().compare(vMessageParts[1]) ){
+                            mUser = QString( vMessageParts[0].c_str() );
+                            mId = mUser + QString("(").append( QString::fromUtf8(socket_.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket_.remote_endpoint().port())).append(")");
+                            emit networkActivity( mId, mUser + QString(" logged in") );
+                            vMessage = "logged in";
+                        } else {
+                            vMessage = "not logged in, wrong username or password";
+                            emit networkActivity( mId, QString("User tried to log in") );
+                        }
+
                     } else {
-                        vMessage = "not logged in, wrong username or password";
-                        emit networkActivity( mId, QString("User tried to log in") );
+                        vMessage = "need to login to use library";
+                    }
+
+
+                } else {
+
+                    if(!vMessageParts[0].compare("book")){
+                    std::cout << "book " << mUser.toStdString() << std::endl;
+                        vMessage = Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1] );
+                    } else {
+                        vMessage = "need to send valid command to interact with library";
                     }
 
                 }
-
-            } else {
-
-                if(!vMessageParts[0].compare("book")){
-                    Library::getLibrary()->parseCommand( vMessageParts[1] );
-                } else {
-
-                }
-
+            } catch( std::exception vException ){
+                vMessage = "error parsing command";
+                std::cout << vException.what() << std::endl;
+                emit networkActivity( mId, QString("Exception: ").append( QString(vException.what()) ) );
             }
 
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
@@ -93,7 +103,7 @@ namespace library {
             emit networkActivity( mId, QString("New client connected on ").append( QString::fromUtf8(socket_.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket_.remote_endpoint().port())) );
 
         } catch (std::exception& e) {
-            emit networkActivity( mId, QString("Exception: ").append( QString(e.what()) ).append("\n") );
+            emit networkActivity( mId, QString("Exception: ").append( QString(e.what()) ) );
             socket_.close();
         }
 

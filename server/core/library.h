@@ -35,12 +35,13 @@ public:
 
     // parse commands
 
-    std::string parseCommand( const std::string& aCommand );
+    std::string parseCommand( const std::string& aUser, const std::string& aCommand );
 
     void printLibrary();
 
 signals:
     void changed( int vIndex );
+    void libraryActivity( QString aActivity );
 
 private:
     std::vector<Book> searchTitle( std::string aTitle, const std::vector<Book>& aBooks );

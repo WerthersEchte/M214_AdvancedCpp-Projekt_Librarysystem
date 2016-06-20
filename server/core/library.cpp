@@ -7,6 +7,10 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
+#include "core/usermanagement.h"
+#include "core/user.h"
+#include "core/networkconnection.h"
+
 namespace library{
 
 Library* Library::LIBRARY = nullptr;
@@ -95,21 +99,28 @@ std::vector<Book> Library::searchBurrowed( Status aBurrowed, const std::vector<B
     return vFoundBooks;
 };
 
-std::string Library::parseCommand( const std::string& aCommand ){
+std::string Library::parseCommand( const std::string& aUser, const std::string& aCommand ){
 
     std::vector< std::string > vCommandParts;
 
     boost::split( vCommandParts,
                   aCommand,
-                  [](char aCharacter) { return aCharacter == '|'; } );
+                  [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
 
-    if(!vCommandParts[0].compare("add")){
+    if( vCommandParts.size() > 1 ){
+        if( UserManagement::getUserManagement()->getUser(aUser)->hasPermission(Permission::Books) && !vCommandParts[0].compare("add") ){
 
-        addBook(Book(vCommandParts[1]));
+            if( addBook(Book(vCommandParts[1], vCommandParts.size() >= 3?vCommandParts[2]:"", vCommandParts.size() >= 4?vCommandParts[3]:"", vCommandParts.size() >= 5?vCommandParts[4]:"", vCommandParts.size() >= 6?vCommandParts[5]:"")) ){
+                return std::string("added book to library");
+            } else {
+                return std::string("can not add book to library");
+            };
 
+        }
     }
 
-    return "blah";
+    return std::string("unkown command");
+
 }
 
 void Library::printLibrary(){
