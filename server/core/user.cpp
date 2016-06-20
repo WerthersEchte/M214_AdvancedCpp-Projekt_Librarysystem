@@ -22,11 +22,37 @@ User::User( std::string aUserName, std::string aPassword, const std::vector<Perm
 {
 };
 
-User::User( const User& aUser ){};
+User::User( const User& aUser ):
+    mId(aUser.mId),
+    mUserName(aUser.mUserName),
+    mPassword(aUser.mPassword),
+    mPermissions(aUser.mPermissions)
+{
+
+    std::cout << mId << " " << mUserName << " " << mPassword << " " << std::endl;
+
+};
+
+User::User( User&& aUser ):
+    mId(aUser.mId),
+    mUserName(aUser.mUserName),
+    mPassword(aUser.mPassword),
+    mPermissions(aUser.mPermissions)
+{
+    aUser.mId = -1;
+    aUser.mUserName.clear();
+    aUser.mPassword.clear();
+    aUser.mPermissions.clear();
+};
 
 User::~User()
 {};
 
+int User::getId(){
+
+    return mId;
+
+};
 std::string User::getUserName(){
     return mUserName;
 };
@@ -35,6 +61,7 @@ std::string User::getUserName() const{
 };
 void User::editUserName( std::string aUserName ){
     mUserName = aUserName;
+    emit changed(mUserName.c_str());
 };
 std::string User::getPassword(){
     return mPassword;
@@ -44,6 +71,7 @@ std::string User::getPassword() const{
 };
 void User::editPassword( std::string aPassword ){
     mPassword = aPassword;
+    emit changed(mUserName.c_str());
 };
 
 bool User::hasPermission( Permission aPermission ){
@@ -52,12 +80,14 @@ bool User::hasPermission( Permission aPermission ){
 void User::addPermission( Permission aPermission ){
     if( !hasPermission(aPermission) ){
         mPermissions.push_back(aPermission);
+        emit changed(mUserName.c_str());
     }
 };
 void User::removePermission( Permission aPermission ){
     std::vector<Permission>::iterator it;
     if( (it = std::find(mPermissions.begin(), mPermissions.end(), aPermission)) != mPermissions.end() ){
         mPermissions.erase(it);
+        emit changed(mUserName.c_str());
     }
 };
 

@@ -2,9 +2,12 @@
 
 #include "add+editbook.h"
 #include "libraryviewmodel.h"
+#include "userviewmodel.h"
 
 #include "core/library.h"
 #include "core/book.h"
+#include "core/usermanagement.h"
+#include "core/user.h"
 
 #include <iostream>
 #include <fstream>
@@ -19,7 +22,8 @@ namespace library{
 
 MainGUI::MainGUI( QWidget *vParent )
     : QMainWindow(vParent),
-      mServer(nullptr)
+      mServer(nullptr),
+      mPermissions()
 {
     setupUi(this);
 
@@ -29,8 +33,18 @@ MainGUI::MainGUI( QWidget *vParent )
     connect(pBBooksAdd, SIGNAL(clicked(bool)), this, SLOT(addBook(bool)));
     connect(pBBooksEdit, SIGNAL(clicked(bool)), this, SLOT(editBook(bool)));
     connect(lVBooksList, SIGNAL(clicked(QModelIndex)), this, SLOT(selectBook(QModelIndex)));
+    connect(lVUserList, SIGNAL(clicked(QModelIndex)), this, SLOT(selectUser(QModelIndex)));
 
     lVBooksList->setModel(new LibraryViewModel(this));
+    lVUserList->setModel(new UserViewModel(this));
+
+    mPermissions[Permission::Users] = new QCheckBox("Users",wUserRights);
+    mPermissions[Permission::Books] = new QCheckBox("Books",wUserRights);
+
+    for( std::map<library::Permission, QCheckBox*>::iterator it = mPermissions.begin(); it != mPermissions.end(); ++it ) {
+    	wUserRights->layout()->addWidget(it->second);
+        connect(it->second, SIGNAL(stateChanged(int)), this, SLOT(changedPermissions(int)));
+    }
 
     connect(bNetworkStartStop, SIGNAL(clicked(bool)), this, SLOT(networkStartStop(bool)));
 };
@@ -73,6 +87,27 @@ void MainGUI::editBook( bool vChecked )
 
 };
 
+void MainGUI::changedPermissions(int aState){
+
+    if( lVUserList->selectionModel()->selectedIndexes().isEmpty() || UserManagement::getUserManagement()->getUser( lVUserList->selectionModel()->selectedIndexes().first().row() ) == nullptr ){
+        return;
+    }
+
+    const std::string mUserName = UserManagement::getUserManagement()->getUser( lVUserList->selectionModel()->selectedIndexes().first().row() )->getUserName();
+
+    for( std::map<library::Permission, QCheckBox*>::iterator it = mPermissions.begin(); it != mPermissions.end(); ++it ) {
+        if( Qt::Checked == aState && !UserManagement::getUserManagement()->getUser( mUserName )->hasPermission(it->first)){
+            UserManagement::getUserManagement()->getUser( mUserName )->addPermission( it->first );
+            return;
+        } else if( Qt::Unchecked == aState && UserManagement::getUserManagement()->getUser( mUserName )->hasPermission(it->first)){
+            UserManagement::getUserManagement()->getUser( mUserName )->removePermission( it->first );
+            return;
+        }
+    }
+
+
+};
+
 void MainGUI::selectBook(const QModelIndex &vIndex){
 
     if( Library::getLibrary()->getBook( vIndex.row() ) != nullptr ){
@@ -94,6 +129,23 @@ void MainGUI::selectBook(const QModelIndex &vIndex){
             default:
                 lBooksStatus->setText( "Not Available" );
         }
+    }
+
+};
+
+void MainGUI::selectUser(const QModelIndex &vIndex){
+
+    if( UserManagement::getUserManagement()->getUser( vIndex.row() ) != nullptr ){
+
+        const std::string mUserName = UserManagement::getUserManagement()->getUser( vIndex.row() )->getUserName();
+
+        lUserName->setText( QString::fromUtf8( mUserName.c_str() ) );
+        lUserPassword->setText( QString::fromUtf8( UserManagement::getUserManagement()->getUser( mUserName )->getPassword().c_str()) );
+
+        for( std::map<library::Permission, QCheckBox*>::iterator it = mPermissions.begin(); it != mPermissions.end(); ++it ) {
+            it->second->setChecked(UserManagement::getUserManagement()->getUser( mUserName )->hasPermission(it->first));
+        }
+
     }
 
 };

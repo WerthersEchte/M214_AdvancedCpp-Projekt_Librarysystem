@@ -4,11 +4,16 @@
 #include <string>
 #include <vector>
 
+#include <QObject>
+#include <QString>
+
 namespace library{
 
-enum Permission{Users, Books, None};
+enum class Permission{Users, Books};
 
-class User{
+class User: public QObject{
+
+    Q_OBJECT
 
     static int IDCOUNTER;
 
@@ -16,13 +21,14 @@ class User{
     std::string mUserName, mPassword;
     std::vector<Permission> mPermissions;
 
-    User( const User& aUser );
-
 public:
     User();
     User( std::string mUserName, std::string mPassword, const std::vector<Permission>& aPermissions );
+    User( User&& aUser );
+    User( const User& aUser );
     ~User();
 
+    int getId();
     std::string getUserName();
     std::string getUserName() const;
     void editUserName( std::string aUserName );
@@ -34,6 +40,8 @@ public:
     void addPermission( Permission aPermission );
     void removePermission( Permission aPermission );
 
+signals:
+    void changed( QString vUserName );
 };
 
 }
