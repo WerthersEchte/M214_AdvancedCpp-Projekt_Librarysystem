@@ -116,6 +116,21 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
                 return std::string("can not add book to library");
             };
 
+        } else if( UserManagement::getUserManagement()->getUser(aUser)->hasPermission(Permission::Books) && !vCommandParts[0].compare("edit") ){
+
+            if( getBook(stoi(vCommandParts[1])) != nullptr ){
+
+                getBook(stoi(vCommandParts[1]))->editTitle( vCommandParts.size() >= 3?vCommandParts[2]:"" );
+                getBook(stoi(vCommandParts[1]))->editAuthor( vCommandParts.size() >= 4?vCommandParts[3]:"" );
+                getBook(stoi(vCommandParts[1]))->editPublisher( vCommandParts.size() >= 5?vCommandParts[4]:"" );
+                getBook(stoi(vCommandParts[1]))->editISBN( vCommandParts.size() >= 6?vCommandParts[5]:"" );
+                getBook(stoi(vCommandParts[1]))->editDatePublished(  vCommandParts.size() >= 7?vCommandParts[6]:"" );
+
+                return std::string("edited book");
+            } else {
+                return std::string("unkown book to edit");
+            };
+
         }
     }
 
