@@ -88,9 +88,69 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
             }
 
             return vBooks.str();
+        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare("get") ){
+
+            std::stringstream vUsers;
+
+            for( int vI = 1; vI < vCommandParts.size(); ++vI ){
+                if( getUser(vCommandParts[vI]) != nullptr ){
+                    vUsers << getUser(vCommandParts[vI])->printUser();
+                } else {
+                    vUsers << "unknown user: " << vCommandParts[vI] << "\n";
+                }
+            }
+
+            return vBooks.str();
+
         }
 
     } else if( vCommandParts.size() > 1 ){
+
+        if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare("add") ){
+
+            std::vector<Permission> mPermissions;
+
+            for(int vI = 3; vI < vCommandParts.size(); ++vI){
+
+                if( !vCommandParts[vI].compare("Books") ){
+                    mPermissions.push_back(Permission::Books);
+                } else if( !vCommandParts[vI].compare("Users") ){
+                    mPermissions.push_back(Permission::Users);
+                }
+
+            }
+
+            if( addUser( User(vCommandParts[1], vCommandParts.size() >= 3?vCommandParts[2]:"", mPermissions) ) ){
+                return std::string("added user to library");
+            } else {
+                return std::string("can not add user to library");
+            }
+
+        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare("changepassword") ){
+
+            if( getUser(vCommandParts[1]) != nullptr ){
+                getUser(vCommandParts[1])->editPassword(vCommandParts.size() >= 3?vCommandParts[2]:"");
+                return std::string("edited password");
+            } else {
+                return std::string("unknown user to changepassword");
+            }
+
+        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare("get") ){
+
+            std::stringstream vUsers;
+
+            for( int vI = 1; vI < vCommandParts.size(); ++vI ){
+                if( getUser(vCommandParts[vI]) != nullptr ){
+                    vUsers << getUser(vCommandParts[vI])->printUser();
+                } else {
+                    vUsers << "unknown user: " << vCommandParts[vI] << "\n";
+                }
+            }
+
+            return vBooks.str();
+
+        }
+
     }
 
 
