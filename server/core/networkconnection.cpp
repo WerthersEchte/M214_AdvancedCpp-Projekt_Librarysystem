@@ -77,8 +77,12 @@ namespace library {
                 } else {
 
                     if(!vMessageParts[0].compare("book")){
-                    std::cout << "book " << mUser.toStdString() << std::endl;
                         vMessage = Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1] );
+                    } else if(!vMessageParts[0].compare("user")){
+                        vMessage = UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] );
+                    } else if(!vMessageParts[0].compare("logout")){
+                        boost::asio::async_write(socket_, boost::asio::buffer("logged out"), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
+                        return;
                     } else {
                         vMessage = "need to send valid command to interact with library";
                     }

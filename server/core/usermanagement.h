@@ -33,6 +33,8 @@ public:
 
     int getNumberOfUsers();
 
+    std::string parseCommand( const std::string& aUser, const std::string& aCommand );
+
 signals:
     void userAdded( QString aUserName );
 

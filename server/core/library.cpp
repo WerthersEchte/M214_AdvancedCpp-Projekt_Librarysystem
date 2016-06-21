@@ -190,22 +190,6 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
             return vBooks.str();
         }
 
-    } else if( vCommandParts.size() == 1  ){
-
-        if( !vCommandParts[0].compare("borrowedbooks") ){
-
-            std::stringstream vBooks;
-
-            for( int vBookId : UserManagement::getUserManagement()->getUser(aUser)->getBorrowedBooks() ){
-
-                if( getBook(vBookId) != nullptr ){
-                    vBooks << getBook(vBookId)->printBook();
-                }
-            }
-
-            return vBooks.str();
-        }
-
     }
 
     return std::string("unknown command");

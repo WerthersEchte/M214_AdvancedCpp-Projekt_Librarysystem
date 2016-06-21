@@ -1,5 +1,11 @@
 #include "usermanagement.h"
 
+#include "core/networkconnection.h"
+#include "core/library.h"
+
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
+
 namespace library{
 
 UserManagement* UserManagement::USERMANAGEMENT = nullptr;
@@ -58,6 +64,37 @@ bool UserManagement::addUser( const library::User& aUser ){
 int UserManagement::getNumberOfUsers(){
 
     return mUsers.size();
+
+};
+std::string UserManagement::parseCommand( const std::string& aUser, const std::string& aCommand ){
+
+    std::vector< std::string > vCommandParts;
+
+    boost::split( vCommandParts,
+                  aCommand,
+                  [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
+
+    if( vCommandParts.size() == 1  ){
+
+        if( !vCommandParts[0].compare("borrowedbooks") ){
+
+            std::stringstream vBooks;
+
+            for( int vBookId : getUser(aUser)->getBorrowedBooks() ){
+
+                if( Library::getLibrary()->getBook(vBookId) != nullptr ){
+                    vBooks << Library::getLibrary()->getBook(vBookId)->printBook();
+                }
+            }
+
+            return vBooks.str();
+        }
+
+    } else if( vCommandParts.size() > 1 ){
+    }
+
+
+    return std::string("unknown command");
 
 };
 
