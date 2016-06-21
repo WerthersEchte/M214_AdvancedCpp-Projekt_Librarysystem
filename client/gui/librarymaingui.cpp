@@ -1,4 +1,5 @@
 #include "librarymaingui.h"
+#include "add+editbook.h"
 
 #include <iostream>
 
@@ -14,6 +15,7 @@ MainGUI::MainGUI( QWidget *vParent ) : QMainWindow(vParent),
 
     connect(bConnect, SIGNAL(clicked(bool)), this, SLOT(connectToServer(bool)));
     connect(bSend, SIGNAL(clicked(bool)), this, SLOT(sendData(bool)));
+	connect(bAddBook, SIGNAL(clicked(bool)), this, SLOT(addBook(bool)));
 
 	connect(this, SIGNAL(sendMessage(QString)), this, SLOT(messageNetwork(QString)));
 
@@ -22,7 +24,30 @@ MainGUI::MainGUI( QWidget *vParent ) : QMainWindow(vParent),
     
 };
 
-void MainGUI::connectToServer(bool){
+
+void MainGUI::addBook( bool vChecked ) {
+		AddEditBook vAddEditBookDialog;
+		vAddEditBookDialog.setWindowTitle("Add Book");
+		vAddEditBookDialog.exec();
+		if( vAddEditBookDialog.result() == QDialog::Accepted ){
+			if(mClient != nullptr){
+				std::string data = "";
+
+				data = vAddEditBookDialog.lETitle->text().toStdString() + ";";
+				data +=vAddEditBookDialog.lEAuthor->text().toStdString() + ";";
+				data +=vAddEditBookDialog.lEPublisher->text().toStdString() + ";";
+				data +=vAddEditBookDialog.lEISBN->text().toStdString() + ";";
+				data +=vAddEditBookDialog.lEDate->text().toStdString();
+
+				mClient->write("User1","add#book", data);
+			}
+		}
+	};
+
+
+
+
+	void MainGUI::connectToServer(bool){
 
     if(mClient == nullptr) {
 

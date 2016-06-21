@@ -30,6 +30,7 @@ private slots:
 	void disconnectFromServer(bool);
 	void messageNetwork(QString aMessage );
     void sendData(bool);
+	void addBook( bool vChecked );
 
 public slots:
     void getData(QString aData);
