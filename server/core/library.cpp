@@ -55,51 +55,6 @@ int Library::getNumberOfBooks()
     return mLibrary.size();
 };
 
-std::vector<Book> Library::searchBooks( std::string aTitle, Status aBurrowed )
-{
-    std::vector<Book> vBooks;
-    /*
-    for( StoredBooks::iterator it = mLibrary.begin(); it != mLibrary.end(); ++it ) {
-    	vBooks.push_back( it->second );
-    }
-
-    if( !aTitle.empty() ){
-        vBooks = searchTitle( aTitle, vBooks );
-    }
-
-    if( aBurrowed != Status::None ){
-        vBooks = searchBurrowed( aBurrowed, vBooks );
-    }
-    */
-    return vBooks;
-};
-
-std::vector<Book> Library::searchTitle( std::string aTitle, const std::vector<Book>& aBooks )
-{
-    std::vector<Book> vFoundBooks;
-    /*
-    for( Book vBook : aBooks ){
-        if( vBook.getTitle().find( aTitle ) != std::string::npos ){
-            vFoundBooks.push_back( vBook );
-        }
-    }
-    */
-    return vFoundBooks;
-};
-
-std::vector<Book> Library::searchBurrowed( Status aBurrowed, const std::vector<Book>& aBooks )
-{
-    std::vector<Book> vFoundBooks;
-    /*
-    for( Book vBook : aBooks ){
-        if( vBook.getStatus() == aBurrowed ){
-            vFoundBooks.push_back( vBook );
-        }
-    }
-    */
-    return vFoundBooks;
-};
-
 std::string Library::parseCommand( const std::string& aUser, const std::string& aCommand ){
 
     std::vector< std::string > vCommandParts;
@@ -132,7 +87,35 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
                 return std::string("unknown book to edit");
             }
 
-        } else if( !vCommandParts[0].compare("get") ){
+        } else if( !vCommandParts[0].compare("search") ){
+
+            std::vector<int> vBookIds;
+
+            for( StoredBooks::iterator it = mLibrary.begin(); it != mLibrary.end(); ++it ) {
+                for( int vI = 1; vI < vCommandParts.size(); ++vI ){
+                    if( it->second.getTitle().find( vCommandParts[vI] ) != std::string::npos ||
+                        it->second.getAuthor().find( vCommandParts[vI] ) != std::string::npos ||
+                        it->second.getPublisher().find( vCommandParts[vI] ) != std::string::npos ||
+                        it->second.getISBN().find( vCommandParts[vI] ) != std::string::npos ||
+                        it->second.getDatePublished().find( vCommandParts[vI] ) != std::string::npos ){
+
+                        vBookIds.push_back( it->second.getId() );
+                        break;
+                    }
+                }
+            }
+
+            std::stringstream vBooks;
+
+            for( int vBookId : vBookIds ){
+                if( getBook(vBookId) != nullptr ){
+                    vBooks << getBook(vBookId)->printBook();
+                }
+            }
+
+            return vBooks.str();
+
+        }  else if( !vCommandParts[0].compare("get") ){
 
             std::stringstream vBooks;
 

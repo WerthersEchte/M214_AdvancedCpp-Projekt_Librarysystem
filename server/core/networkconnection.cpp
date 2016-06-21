@@ -55,11 +55,11 @@ namespace library {
 
                 if( mUser.isEmpty() ){
 
-                    if( !vMessageParts[0].compare("login") ){
+                    if( vMessageParts.size() >= 2 && !vMessageParts[0].compare("login") ){
                         boost::split(   vMessageParts,
                                         vMessageParts[1],
                                         [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
-                        if( UserManagement::getUserManagement()->getUser( vMessageParts[0] ) != nullptr && !UserManagement::getUserManagement()->getUser( vMessageParts[0] )->getPassword().compare(vMessageParts[1]) ){
+                        if( UserManagement::getUserManagement()->getUser( vMessageParts[0] ) != nullptr && !UserManagement::getUserManagement()->getUser( vMessageParts[0] )->getPassword().compare(vMessageParts.size() >= 2?vMessageParts[1]:"") ){
                             mUser = QString( vMessageParts[0].c_str() );
                             mId = mUser + QString("(").append( QString::fromUtf8(socket_.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket_.remote_endpoint().port())).append(")");
                             emit networkActivity( mId, mUser + QString(" logged in") );
