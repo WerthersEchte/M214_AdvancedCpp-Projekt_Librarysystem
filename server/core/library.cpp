@@ -8,9 +8,9 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
+#include "core/definitions.h"
 #include "core/usermanagement.h"
 #include "core/user.h"
-#include "core/networkconnection.h"
 
 namespace library{
 
@@ -64,7 +64,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
                   [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
 
     if( vCommandParts.size() > 1 ){
-        if( UserManagement::getUserManagement()->getUser(aUser)->hasPermission(Permission::Books) && !vCommandParts[0].compare("add") ){
+        if( UserManagement::getUserManagement()->getUser(aUser)->hasPermission(Permission::Books) && !vCommandParts[0].compare(command::book::ADD) ){
 
             if( addBook(Book(vCommandParts[1], vCommandParts.size() >= 3?vCommandParts[2]:"", vCommandParts.size() >= 4?vCommandParts[3]:"", vCommandParts.size() >= 5?vCommandParts[4]:"", vCommandParts.size() >= 6?vCommandParts[5]:"")) ){
                 return std::string("added book to library");
@@ -72,7 +72,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
                 return std::string("can not add book to library");
             }
 
-        } else if( UserManagement::getUserManagement()->getUser(aUser)->hasPermission(Permission::Books) && !vCommandParts[0].compare("edit") ){
+        } else if( UserManagement::getUserManagement()->getUser(aUser)->hasPermission(Permission::Books) && !vCommandParts[0].compare(command::book::EDIT) ){
 
             if( getBook(stoi(vCommandParts[1])) != nullptr ){
 
@@ -87,7 +87,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
                 return std::string("unknown book to edit");
             }
 
-        } else if( !vCommandParts[0].compare("search") ){
+        } else if( !vCommandParts[0].compare(command::book::SEARCH) ){
 
             std::vector<int> vBookIds;
 
@@ -115,7 +115,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
 
             return vBooks.str();
 
-        }  else if( !vCommandParts[0].compare("get") ){
+        }  else if( !vCommandParts[0].compare(command::book::GET) ){
 
             std::stringstream vBooks;
 
@@ -129,7 +129,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
 
             return vBooks.str();
 
-        } else if( !vCommandParts[0].compare("borrow") ){
+        } else if( !vCommandParts[0].compare(command::book::BURROW) ){
 
             std::stringstream vBooks;
 
@@ -151,7 +151,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
 
             return vBooks.str();
 
-        } else if( !vCommandParts[0].compare("return") ){
+        } else if( !vCommandParts[0].compare(command::book::RETURN) ){
 
             std::stringstream vBooks;
 

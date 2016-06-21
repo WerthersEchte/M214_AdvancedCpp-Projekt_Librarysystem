@@ -1,6 +1,8 @@
 #ifndef _LibraryUser_
 #define _LibraryUser_
 
+#include "core/definitions.h"
+
 #include <string>
 #include <vector>
 
@@ -8,8 +10,6 @@
 #include <QString>
 
 namespace library{
-
-enum class Permission{Users, Books};
 
 class User: public QObject{
 

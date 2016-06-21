@@ -32,6 +32,7 @@ set( SOURCE
 
 set( HEADERS
    ${HEADERS}
+   core/definitions.h
    core/book.h
    core/library.h
    core/networkconnection.h

@@ -1,11 +1,11 @@
 #ifndef _LibraryBook_
 #define _LibraryBook_
 
+#include "core/definitions.h"
+
 #include <string>
 
 namespace library{
-
-enum Status{Burrowed, Available, None};
 
 class Book{
 

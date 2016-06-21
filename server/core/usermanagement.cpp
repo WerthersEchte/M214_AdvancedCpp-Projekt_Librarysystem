@@ -1,10 +1,12 @@
 #include "usermanagement.h"
 
-#include "core/networkconnection.h"
+#include "core/definitions.h"
 #include "core/library.h"
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
+
+#include <sstream>
 
 namespace library{
 
@@ -76,7 +78,7 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
 
     if( vCommandParts.size() == 1  ){
 
-        if( !vCommandParts[0].compare("borrowedbooks") ){
+        if( !vCommandParts[0].compare(command::user::BURROWEDBOOKS) ){
 
             std::stringstream vBooks;
 
@@ -92,7 +94,7 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
 
     } else if( vCommandParts.size() > 1 ){
 
-        if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare("add") ){
+        if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare(command::user::ADD) ){
 
             std::vector<Permission> mPermissions;
 
@@ -112,7 +114,7 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
                 return std::string("can not add user to library");
             }
 
-        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare("changepassword") ){
+        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare(command::user::CHANGEPASSWORD) ){
 
             if( getUser(vCommandParts[1]) != nullptr ){
                 getUser(vCommandParts[1])->editPassword(vCommandParts.size() >= 3?vCommandParts[2]:"");
@@ -121,7 +123,7 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
                 return std::string("unknown user to changepassword");
             }
 
-        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare("get") ){
+        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare(command::user::GET) ){
 
             std::stringstream vUsers;
 

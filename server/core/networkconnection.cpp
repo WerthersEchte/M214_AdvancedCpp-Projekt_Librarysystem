@@ -17,9 +17,11 @@
 
 #include <QString>
 
+#include "core/definitions.h"
 #include "core/library.h"
 #include "core/usermanagement.h"
 #include "core/user.h"
+
 
 namespace library {
 
@@ -55,7 +57,7 @@ namespace library {
 
                 if( mUser.isEmpty() ){
 
-                    if( vMessageParts.size() >= 2 && !vMessageParts[0].compare("login") ){
+                    if( vMessageParts.size() >= 2 && !vMessageParts[0].compare(command::LOGIN) ){
                         boost::split(   vMessageParts,
                                         vMessageParts[1],
                                         [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
@@ -76,11 +78,11 @@ namespace library {
 
                 } else {
 
-                    if(!vMessageParts[0].compare("book")){
+                    if(!vMessageParts[0].compare(command::BOOK)){
                         vMessage = Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1] );
-                    } else if(!vMessageParts[0].compare("user")){
+                    } else if(!vMessageParts[0].compare(command::USER)){
                         vMessage = UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] );
-                    } else if(!vMessageParts[0].compare("logout")){
+                    } else if(!vMessageParts[0].compare(command::LOGOUT)){
                         boost::asio::async_write(socket_, boost::asio::buffer("logged out"), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
                         return;
                     } else {
