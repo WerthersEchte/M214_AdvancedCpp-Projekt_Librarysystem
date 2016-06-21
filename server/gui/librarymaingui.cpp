@@ -146,6 +146,15 @@ void MainGUI::selectUser(const QModelIndex &vIndex){
             it->second->setChecked(UserManagement::getUserManagement()->getUser( mUserName )->hasPermission(it->first));
         }
 
+        lUserBorrowedBooks->setText("");
+        for( int vBookId : UserManagement::getUserManagement()->getUser(mUserName)->getBorrowedBooks() ){
+
+            if( Library::getLibrary()->getBook(vBookId) != nullptr ){
+                lUserBorrowedBooks->setText( lUserBorrowedBooks->text().append( Library::getLibrary()->getBook(vBookId)->printBook().c_str() ) );
+            }
+
+        }
+
     }
 
 };

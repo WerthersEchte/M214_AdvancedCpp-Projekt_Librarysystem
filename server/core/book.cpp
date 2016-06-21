@@ -24,8 +24,6 @@ Book::Book( std::string aTitle, std::string aAuthor, std::string aPublisher, std
 {
 };
 
-Book::Book( const Book& aBook ){};
-
 Book::~Book()
 {};
 

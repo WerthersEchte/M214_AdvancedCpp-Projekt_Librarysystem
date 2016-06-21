@@ -20,11 +20,11 @@ class User: public QObject{
     int mId;
     std::string mUserName, mPassword;
     std::vector<Permission> mPermissions;
+    std::vector<int> mBorrowedBooks;
 
 public:
     User();
     User( std::string mUserName, std::string mPassword, const std::vector<Permission>& aPermissions );
-    User( User&& aUser );
     User( const User& aUser );
     ~User();
 
@@ -39,6 +39,11 @@ public:
     bool hasPermission( Permission aPermission );
     void addPermission( Permission aPermission );
     void removePermission( Permission aPermission );
+
+    std::vector<int> getBorrowedBooks();
+    bool addBorrowedBook( int aBookId );
+    bool removeBorrowedBook( int aBookId );
+
 
 signals:
     void changed( QString vUserName );

@@ -11,14 +11,16 @@ User::User() :
     mId(-1),
     mUserName(""),
     mPassword(""),
-    mPermissions()
+    mPermissions(),
+    mBorrowedBooks()
 {};
 
 User::User( std::string aUserName, std::string aPassword, const std::vector<Permission>& aPermissions ) :
     mId(IDCOUNTER++),
     mUserName(aUserName),
     mPassword(aPassword),
-    mPermissions(aPermissions)
+    mPermissions(aPermissions),
+    mBorrowedBooks()
 {
 };
 
@@ -26,24 +28,9 @@ User::User( const User& aUser ):
     mId(aUser.mId),
     mUserName(aUser.mUserName),
     mPassword(aUser.mPassword),
-    mPermissions(aUser.mPermissions)
-{
-
-    std::cout << mId << " " << mUserName << " " << mPassword << " " << std::endl;
-
-};
-
-User::User( User&& aUser ):
-    mId(aUser.mId),
-    mUserName(aUser.mUserName),
-    mPassword(aUser.mPassword),
-    mPermissions(aUser.mPermissions)
-{
-    aUser.mId = -1;
-    aUser.mUserName.clear();
-    aUser.mPassword.clear();
-    aUser.mPermissions.clear();
-};
+    mPermissions(aUser.mPermissions),
+    mBorrowedBooks(aUser.mBorrowedBooks)
+{};
 
 User::~User()
 {};
@@ -89,6 +76,29 @@ void User::removePermission( Permission aPermission ){
         mPermissions.erase(it);
         emit changed(mUserName.c_str());
     }
+};
+
+std::vector<int> User::getBorrowedBooks(){
+    return mBorrowedBooks;
+};
+
+bool User::addBorrowedBook( int aBookId ){
+    if( std::find(mBorrowedBooks.begin(), mBorrowedBooks.end(), aBookId) == mBorrowedBooks.end() ){
+        mBorrowedBooks.push_back(aBookId);
+        emit changed(mUserName.c_str());
+        return true;
+    }
+    return false;
+};
+
+bool User::removeBorrowedBook( int aBookId ){
+    std::vector<int>::iterator it;
+    if( (it = std::find(mBorrowedBooks.begin(), mBorrowedBooks.end(), aBookId)) != mBorrowedBooks.end() ){
+        mBorrowedBooks.erase(it);
+        emit changed(mUserName.c_str());
+        return true;
+    }
+    return false;
 };
 
 }

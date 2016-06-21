@@ -15,8 +15,6 @@ class Book{
     std::string mTitle, mISBN, mPublisher, mAuthor, mDatePublished;
     Status mBurrowed;
 
-    Book( const Book& aBook );
-
 public:
     Book();
     Book( std::string aTitle, std::string aAuthor = "", std::string aPublisher = "", std::string aISBN = "", std::string aDatePublished = "" );

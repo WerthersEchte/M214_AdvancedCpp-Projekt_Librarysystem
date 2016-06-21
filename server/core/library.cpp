@@ -115,7 +115,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
                 return std::string("added book to library");
             } else {
                 return std::string("can not add book to library");
-            };
+            }
 
         } else if( UserManagement::getUserManagement()->getUser(aUser)->hasPermission(Permission::Books) && !vCommandParts[0].compare("edit") ){
 
@@ -130,7 +130,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
                 return std::string("edited book");
             } else {
                 return std::string("unknown book to edit");
-            };
+            }
 
         } else if( !vCommandParts[0].compare("get") ){
 
@@ -140,12 +140,72 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
                 if( getBook(stoi(vCommandParts[vI])) != nullptr ){
                     vBooks << getBook(stoi(vCommandParts[vI]))->printBook();
                 } else {
-                    vBooks << std::string("unknown book\n");
-                };
+                    vBooks << "unknown bookid: " << vCommandParts[vI] << "\n";
+                }
+            }
+
+            return vBooks.str();
+
+        } else if( !vCommandParts[0].compare("borrow") ){
+
+            std::stringstream vBooks;
+
+            for( int vI = 1; vI < vCommandParts.size(); ++vI ){
+
+                if( getBook(stoi(vCommandParts[vI])) != nullptr ){
+
+                    if( getBook(stoi(vCommandParts[vI]))->burrow() && UserManagement::getUserManagement()->getUser(aUser)->addBorrowedBook( stoi( vCommandParts[vI] ) ) ){
+                        vBooks << "borrowed book: " << vCommandParts[vI] << "\n";
+                    } else {
+                        vBooks << "can not borrow book: " << vCommandParts[vI] << "\n";
+                    }
+
+                } else {
+                    vBooks << "unknown bookid: " << vCommandParts[vI] << "\n";
+                }
+
+            }
+
+            return vBooks.str();
+
+        } else if( !vCommandParts[0].compare("return") ){
+
+            std::stringstream vBooks;
+
+            for( int vI = 1; vI < vCommandParts.size(); ++vI ){
+
+                if( getBook(stoi(vCommandParts[vI])) != nullptr ){
+
+                    if( getBook(stoi(vCommandParts[vI]))->bringBack() && UserManagement::getUserManagement()->getUser(aUser)->removeBorrowedBook( stoi(vCommandParts[vI] ) ) ){
+                        vBooks << "returned book: " << vCommandParts[vI] << "\n";
+                    } else {
+                        vBooks << "can not return book: " << vCommandParts[vI] << "\n";
+                    }
+
+                } else {
+                    vBooks << "unknown bookid: " << vCommandParts[vI] << "\n";
+                }
             }
 
             return vBooks.str();
         }
+
+    } else if( vCommandParts.size() == 1  ){
+
+        if( !vCommandParts[0].compare("borrowedbooks") ){
+
+            std::stringstream vBooks;
+
+            for( int vBookId : UserManagement::getUserManagement()->getUser(aUser)->getBorrowedBooks() ){
+
+                if( getBook(vBookId) != nullptr ){
+                    vBooks << getBook(vBookId)->printBook();
+                }
+            }
+
+            return vBooks.str();
+        }
+
     }
 
     return std::string("unknown command");
