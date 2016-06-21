@@ -3,6 +3,7 @@
 #include <map>
 #include <stdexcept>
 #include <iostream>
+#include <sstream>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -128,13 +129,26 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
 
                 return std::string("edited book");
             } else {
-                return std::string("unkown book to edit");
+                return std::string("unknown book to edit");
             };
 
+        } else if( !vCommandParts[0].compare("get") ){
+
+            std::stringstream vBooks;
+
+            for( int vI = 1; vI < vCommandParts.size(); ++vI ){
+                if( getBook(stoi(vCommandParts[vI])) != nullptr ){
+                    vBooks << getBook(stoi(vCommandParts[vI]))->printBook();
+                } else {
+                    vBooks << std::string("unknown book\n");
+                };
+            }
+
+            return vBooks.str();
         }
     }
 
-    return std::string("unkown command");
+    return std::string("unknown command");
 
 }
 

@@ -1,6 +1,7 @@
 #include "book.h"
 
 #include <iostream>
+#include <sstream>
 
 namespace library{
 
@@ -138,9 +139,14 @@ Status Book::getStatus() const
     return mBurrowed;
 };
 
-void Book::printBook()
+std::string Book::printBook( bool aEndLine )
 {
-    std::cout << mId << " " << mTitle << " " << mBurrowed << std::endl;
+    std::stringstream vBook;
+    vBook << "\"" << mId << "\",\"" << mTitle << "\",\"" << mAuthor << "\",\"" << mPublisher << "\",\"" << mDatePublished << "\",\"" << mISBN << "\",\"" << mBurrowed << "\"";
+    if(aEndLine){
+        vBook << std::endl;
+    }
+    return vBook.str();
 };
 
 }

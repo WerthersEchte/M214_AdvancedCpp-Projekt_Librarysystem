@@ -50,7 +50,7 @@ public:
     std::string getDatePublished() const;
     void editDatePublished( std::string aPublished );
 
-    void printBook();
+    std::string printBook( bool aEndLine = true );
 
 };
 
