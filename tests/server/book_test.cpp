@@ -1,15 +1,19 @@
-#define BOOST_TEST_MAIN
-#if !defined( WIN32 )
-    #define BOOST_TEST_DYN_LINK
-#endif
+//#define BOOST_TEST_MODULE ServerBookTest
 #include <boost/test/unit_test.hpp>
-
 #include "core/book.h"
+
+struct BookFixture {
+    BookFixture() {vTestTitle = "Die Abenteuer von Wurstmann";}
+    ~BookFixture() {}
+    std::string vTestTitle;
+};
+
+BOOST_AUTO_TEST_SUITE( BookTests )
 
 // This is a bad test, as it depends on position in execution
 BOOST_AUTO_TEST_CASE( Book_test_getID_bad ) {
-    std::string vTestTitle = "Die Abenteuer von Wurstmann";
-    library::Book vBook( vTestTitle );
+    BookFixture bookFixture;
+    library::Book vBook( bookFixture.vTestTitle );
     BOOST_CHECK_EQUAL( 0, vBook.getId() );
 }
 
@@ -19,7 +23,21 @@ BOOST_AUTO_TEST_CASE( Book_test_getID_unique ) {
 }
 
 BOOST_AUTO_TEST_CASE( Book_test_getName ) {
-    std::string vTestTitle = "Die Abenteuer von Wurstmann";
-    library::Book vBook( vTestTitle );
-    BOOST_CHECK_EQUAL( vTestTitle, vBook.getTitle() );
+    BookFixture bookFixture;
+    library::Book vBook( bookFixture.vTestTitle );
+    BOOST_CHECK_EQUAL( bookFixture.vTestTitle, vBook.getTitle() );
 }
+
+BOOST_AUTO_TEST_CASE( Book_test_noTitle ) {
+   std::string vTestTitle = "";
+    library::Book vBook( vTestTitle );
+    BOOST_CHECK( vBook.getTitle() != "" );
+	//BOOST_WARN_THROW(library::Book vBook( "" ), std::exception);
+    BOOST_TEST_MESSAGE("Test Message");
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+
+

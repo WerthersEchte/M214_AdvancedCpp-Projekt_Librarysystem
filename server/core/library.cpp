@@ -25,15 +25,15 @@ Library* Library::getLibrary()
     return LIBRARY;
 };
 
-bool Library::addBook( const Book& aBook )
+int Library::addBook( const Book& aBook )
 {
     if( mLibrary.find( aBook.getId() ) == mLibrary.end() )
     {
         mLibrary[aBook.getId()] = aBook;
         emit changed(aBook.getId());
-        return true;
+        return aBook.getId();
     }
-    return false;
+    return 0;
 };
 
 Book* Library::getBook( int aId )
