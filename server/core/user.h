@@ -44,6 +44,7 @@ public:
     bool addBorrowedBook( int aBookId );
     bool removeBorrowedBook( int aBookId );
 
+    std::string printUser( bool aEndLine = true );
 
 signals:
     void changed( QString vUserName );

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <sstream>
 
 namespace library{
 
@@ -19,9 +20,12 @@ User::User( std::string aUserName, std::string aPassword, const std::vector<Perm
     mId(IDCOUNTER++),
     mUserName(aUserName),
     mPassword(aPassword),
-    mPermissions(aPermissions),
+    mPermissions(),
     mBorrowedBooks()
 {
+    for( Permission vPermission : aPermissions){
+        addPermission(vPermission);
+    }
 };
 
 User::User( const User& aUser ):
@@ -99,6 +103,31 @@ bool User::removeBorrowedBook( int aBookId ){
         return true;
     }
     return false;
+};
+
+
+std::string User::printUser( bool aEndLine ){
+
+    std::stringstream vUser;
+    vUser << "\"" << mId << "\",\"" << mUserName << "\",\"" << mPassword << "\",\"Permissions{";
+    for( Permission vPermission : mPermissions){
+        switch(vPermission){
+        case Permission::Books:
+            vUser << " Books";
+        case Permission::Users:
+            vUser << " Users";
+        }
+    }
+    vUser << " }\",\"BorrowedBooks{";
+    for( int vBookId : mBorrowedBooks){
+        vUser << " " << vBookId;
+    }
+    vUser << " }\"";
+    if(aEndLine){
+        vUser << std::endl;
+    }
+    return vUser.str();
+
 };
 
 }

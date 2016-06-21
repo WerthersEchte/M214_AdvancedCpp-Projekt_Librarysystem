@@ -88,20 +88,6 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
             }
 
             return vBooks.str();
-        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare("get") ){
-
-            std::stringstream vUsers;
-
-            for( int vI = 1; vI < vCommandParts.size(); ++vI ){
-                if( getUser(vCommandParts[vI]) != nullptr ){
-                    vUsers << getUser(vCommandParts[vI])->printUser();
-                } else {
-                    vUsers << "unknown user: " << vCommandParts[vI] << "\n";
-                }
-            }
-
-            return vBooks.str();
-
         }
 
     } else if( vCommandParts.size() > 1 ){
@@ -139,6 +125,15 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
 
             std::stringstream vUsers;
 
+            if( !vCommandParts[1].compare("") ){
+
+                for( UserMap::iterator it = mUsers.begin(); it != mUsers.end(); ++it ) {
+                    vUsers << it->second.printUser();
+                }
+
+                return vUsers.str();
+            }
+
             for( int vI = 1; vI < vCommandParts.size(); ++vI ){
                 if( getUser(vCommandParts[vI]) != nullptr ){
                     vUsers << getUser(vCommandParts[vI])->printUser();
@@ -147,7 +142,7 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
                 }
             }
 
-            return vBooks.str();
+            return vUsers.str();
 
         }
 
