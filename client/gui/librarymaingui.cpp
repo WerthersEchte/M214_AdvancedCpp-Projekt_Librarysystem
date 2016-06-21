@@ -15,6 +15,7 @@ MainGUI::MainGUI( QWidget *vParent ) : QMainWindow(vParent),
 
     connect(bConnect, SIGNAL(clicked(bool)), this, SLOT(connectToServer(bool)));
     connect(bSend, SIGNAL(clicked(bool)), this, SLOT(sendData(bool)));
+    connect(lESend, SIGNAL(returnPressed()), this, SLOT(sendData()));
 	connect(bAddBook, SIGNAL(clicked(bool)), this, SLOT(addBook(bool)));
 
 	connect(this, SIGNAL(sendMessage(QString)), this, SLOT(messageNetwork(QString)));

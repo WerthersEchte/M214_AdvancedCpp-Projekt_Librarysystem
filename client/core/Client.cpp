@@ -21,13 +21,25 @@ void Client::write(std::string user, std::string action, std::string data) {
 	char request[max_length];
 	std::string fullData = "";
 	fullData.append(user).append(action).append(data);
+    if(fullData.empty()){
+        return;
+    }
 	strncpy(request, fullData.c_str(), sizeof(request));
 	size_t request_length = std::strlen(request);
 
 	boost::asio::write(socket_, boost::asio::buffer(request, request_length));
 	char reply[max_length];
-	size_t reply_length = socket_.receive( boost::asio::buffer(reply, max_length) );
-	emit networkActivity( QString( QByteArray(reply, reply_length ) ) );
+	size_t reply_length;
+	QString receiveData = "";
+
+	do {
+		reply_length = socket_.receive(boost::asio::buffer(reply, max_length));
+		receiveData.append(QByteArray(reply, reply_length ) );
+	} while (receiveData[receiveData.length()-1] != 7);
+    std::cout << std::endl;
+
+    //emit networkActivity( QString( QByteArray(reply, reply_length ) ) );
+    emit networkActivity(receiveData);
 }
 
 void Client::do_connect(tcp::resolver::iterator endpoint_iterator) {

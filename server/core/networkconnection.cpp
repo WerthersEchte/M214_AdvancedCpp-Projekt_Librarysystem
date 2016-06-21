@@ -95,7 +95,7 @@ namespace library {
                 std::cout << vException.what() << std::endl;
                 emit networkActivity( mId, QString("Exception: ").append( QString(vException.what()) ) );
             }
-
+            vMessage.append(1, 7);
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
             boost::asio::async_write(socket_, boost::asio::buffer(vMessage), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
         }
