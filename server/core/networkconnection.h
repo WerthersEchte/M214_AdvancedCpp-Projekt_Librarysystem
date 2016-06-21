@@ -1,6 +1,8 @@
 #ifndef _LibraryNetworkConnection_
 #define _LibraryNetworkConnection_
 
+#include "core/definitions.h"
+
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/spawn.hpp>
@@ -14,15 +16,13 @@
 
 #include <QObject>
 
-#define DL "|.|"
-
 namespace library{
 
     class NetworkConnection : public QObject, public std::enable_shared_from_this<NetworkConnection> {
 
         Q_OBJECT
 
-        QString mId;
+        QString mId, mUser;
 
     public:
         explicit NetworkConnection(boost::asio::ip::tcp::socket socket);

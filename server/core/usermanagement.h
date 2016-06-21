@@ -6,11 +6,16 @@
 #include <map>
 #include <string>
 
+#include <QObject>
+#include <QString>
+
 typedef std::map<std::string, library::User> UserMap;
 
 namespace library{
 
-class UserManagement{
+class UserManagement: public QObject{
+
+    Q_OBJECT
 
     static UserManagement *USERMANAGEMENT;
 
@@ -23,7 +28,15 @@ public:
     static UserManagement* getUserManagement();
 
     library::User* getUser(const std::string& mUserName);
+    library::User* getUser( int aId );
     bool addUser( const library::User& aUser );
+
+    int getNumberOfUsers();
+
+    std::string parseCommand( const std::string& aUser, const std::string& aCommand );
+
+signals:
+    void userAdded( QString aUserName );
 
 };
 

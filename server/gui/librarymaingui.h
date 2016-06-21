@@ -3,10 +3,14 @@
 
 #include "ui_librarymaingui.h"
 #include "core/networkmanagement.h"
+#include "core/user.h"
+
+#include <map>
 
 #include <QWidget>
 #include <QMainWindow>
 #include <QString>
+#include <QCheckBox>
 
 namespace library{
 
@@ -16,6 +20,7 @@ class MainGUI: public QMainWindow, private Ui::LibraryMainGUI
 
     library::NetworkManagement* mServer;
 
+    std::map<library::Permission, QCheckBox*> mPermissions;
 
 public:
     MainGUI( QWidget *vParent = 0 );
@@ -27,6 +32,9 @@ private slots:
     void addBook( bool vChecked );
     void editBook( bool vChecked );
     void selectBook(const QModelIndex &vIndex);
+
+    void selectUser(const QModelIndex &vIndex);
+    void changedPermissions(int aState);
 
     void networkStartStop( bool vChecked );
 

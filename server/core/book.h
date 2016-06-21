@@ -1,11 +1,11 @@
 #ifndef _LibraryBook_
 #define _LibraryBook_
 
+#include "core/definitions.h"
+
 #include <string>
 
 namespace library{
-
-enum Status{Burrowed, Available, None};
 
 class Book{
 
@@ -14,8 +14,6 @@ class Book{
     int mId;
     std::string mTitle, mISBN, mPublisher, mAuthor, mDatePublished;
     Status mBurrowed;
-
-    Book( const Book& aBook );
 
 public:
     Book();
@@ -50,7 +48,7 @@ public:
     std::string getDatePublished() const;
     void editDatePublished( std::string aPublished );
 
-    void printBook();
+    std::string printBook( bool aEndLine = true );
 
 };
 

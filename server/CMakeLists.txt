@@ -27,10 +27,12 @@ set( SOURCE
    gui/librarymaingui.cpp
    gui/add+editbook.cpp
    gui/libraryviewmodel.cpp
+   gui/userviewmodel.cpp
 )
 
 set( HEADERS
    ${HEADERS}
+   core/definitions.h
    core/book.h
    core/library.h
    core/networkconnection.h
@@ -40,6 +42,7 @@ set( HEADERS
    gui/librarymaingui.h
    gui/add+editbook.h
    gui/libraryviewmodel.h
+   gui/userviewmodel.h
 )
 
 set( UI_FILES
