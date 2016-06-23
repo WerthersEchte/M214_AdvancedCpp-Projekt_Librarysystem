@@ -39,6 +39,7 @@ namespace library {
 
     void NetworkConnection::writeHandler(const boost::system::error_code& error, std::size_t bytes_transferred) { }
 
+
     void NetworkConnection::receiveHandler(const boost::system::error_code& error, std::size_t bytes_transferred) {
 
         if ((error.value() == boost::asio::error::connection_reset) || (error.value() == boost::asio::error::eof)){
@@ -104,7 +105,6 @@ namespace library {
     void NetworkConnection::start() {
 
         try {
-
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
             emit networkActivity( mId, QString("New client connected on ").append( QString::fromUtf8(socket_.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket_.remote_endpoint().port())) );
 
