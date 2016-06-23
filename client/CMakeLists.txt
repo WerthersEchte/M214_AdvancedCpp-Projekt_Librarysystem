@@ -28,6 +28,7 @@ set( HEADERS
    gui/librarymaingui.h
    core/Client.h
     gui/add+editbook.h
+    core/definitions.h
 )
 
 set( UI_FILES
