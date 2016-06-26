@@ -49,6 +49,9 @@ namespace library {
             emit networkActivity( mId, QString("Received message: ").append( QString( QByteArray(buffer, bytes_transferred) ) ) );
 
             std::string vMessage(buffer, bytes_transferred);
+            std::string responseMessage;
+
+
             try {
                 std::vector< std::string > vMessageParts;
 
@@ -56,7 +59,9 @@ namespace library {
                               vMessage,
                               [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::TYPE); } );
 
-                if( mUser.isEmpty() ){
+
+
+                if(mUser.isEmpty() ){
 
                     if( vMessageParts.size() >= 2 && !vMessageParts[0].compare(command::LOGIN) ){
                         boost::split(   vMessageParts,
@@ -66,9 +71,18 @@ namespace library {
                             mUser = QString( vMessageParts[0].c_str() );
                             mId = mUser + QString("(").append( QString::fromUtf8(socket_.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket_.remote_endpoint().port())).append(")");
                             emit networkActivity( mId, mUser + QString(" logged in") );
-                            vMessage = "logged in";
+
+
+							responseMessage = command::LOGIN;
+							responseMessage.append(1, static_cast<char>(Splitter::TYPE));
+							responseMessage.append("true");
+
+                            //vMessage = "logged in";
                         } else {
-                            vMessage = "not logged in, wrong username or password";
+							responseMessage = command::LOGIN;
+							responseMessage.append(1, static_cast<char>(Splitter::TYPE));
+							responseMessage.append("false");
+                            //vMessage = "not logged in, wrong username or password";
                             emit networkActivity( mId, QString("User tried to log in") );
                         }
 
@@ -84,7 +98,9 @@ namespace library {
                     } else if(!vMessageParts[0].compare(command::USER)){
                         vMessage = UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] );
                     } else if(!vMessageParts[0].compare(command::LOGOUT)){
-                        boost::asio::async_write(socket_, boost::asio::buffer("logged out"), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
+						responseMessage = command::LOGOUT;
+						responseMessage.append(1, 7);
+                        boost::asio::async_write(socket_, boost::asio::buffer(responseMessage), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
                         return;
                     } else {
                         vMessage = "need to send valid command to interact with library";
@@ -96,9 +112,9 @@ namespace library {
                 std::cout << vException.what() << std::endl;
                 emit networkActivity( mId, QString("Exception: ").append( QString(vException.what()) ) );
             }
-            vMessage.append(1, 7);
+			responseMessage.append(1, 7);
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
-            boost::asio::async_write(socket_, boost::asio::buffer(vMessage), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
+            boost::asio::async_write(socket_, boost::asio::buffer(responseMessage), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
         }
     }
 
