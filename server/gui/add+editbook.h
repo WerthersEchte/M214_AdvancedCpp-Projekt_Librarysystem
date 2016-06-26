@@ -13,7 +13,7 @@ class AddEditBook: public QDialog, public Ui::AddEditBook
     Q_OBJECT
 
 public:
-    AddEditBook(QWidget *parent = 0);
+    explicit AddEditBook(QWidget *parent = 0);
 
 };
 

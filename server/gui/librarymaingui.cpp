@@ -229,7 +229,7 @@ void MainGUI::loadBooks( const std::string& aFileWithBooks ){
             }
 
         }
-	} catch ( std::exception vEveryThing ){
+	} catch ( const std::exception& vEveryThing ){
 
 		std::string aHeader("Exception loading file " + aFileWithBooks);
 		QMessageBox::critical(this, tr( aHeader.c_str() ), tr( vEveryThing.what() ));

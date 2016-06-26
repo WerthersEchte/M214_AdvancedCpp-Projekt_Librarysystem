@@ -23,7 +23,7 @@ class MainGUI: public QMainWindow, private Ui::LibraryMainGUI
     std::map<library::Permission, QCheckBox*> mPermissions;
 
 public:
-    MainGUI( QWidget *vParent = 0 );
+    explicit MainGUI( QWidget *vParent = 0 );
 
 public slots:
     void messageNetwork( const QString& aId, const QString& aMessage );

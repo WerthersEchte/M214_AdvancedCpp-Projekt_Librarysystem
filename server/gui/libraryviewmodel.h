@@ -12,7 +12,7 @@ class LibraryViewModel: public QAbstractListModel
 
 public:
 
-    LibraryViewModel(QObject *vParent);
+    explicit LibraryViewModel(QObject *vParent);
 
     int rowCount(const QModelIndex &vParent = QModelIndex()) const ;
     QVariant data(const QModelIndex &vIndex, int vRole = Qt::DisplayRole) const;

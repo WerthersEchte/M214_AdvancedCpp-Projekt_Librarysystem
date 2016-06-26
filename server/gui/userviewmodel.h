@@ -13,7 +13,7 @@ class UserViewModel: public QAbstractListModel
 
 public:
 
-    UserViewModel(QObject *vParent);
+    explicit UserViewModel(QObject *vParent);
 
     int rowCount(const QModelIndex &aParent = QModelIndex()) const ;
     QVariant data(const QModelIndex &aIndex, int aRole = Qt::DisplayRole) const;

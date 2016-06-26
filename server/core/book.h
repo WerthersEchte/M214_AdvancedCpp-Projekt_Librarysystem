@@ -12,7 +12,7 @@ class Book{
     static int IDCOUNTER;
 
     int mId;
-    std::string mTitle, mISBN, mPublisher, mAuthor, mDatePublished;
+    std::string mTitle, mAuthor, mPublisher, mISBN, mDatePublished;
     Status mBurrowed;
 
 public:
