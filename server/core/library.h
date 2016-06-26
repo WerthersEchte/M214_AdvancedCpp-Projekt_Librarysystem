@@ -28,19 +28,17 @@ public:
     bool addBook( const Book& aBook );
     Book* getBook( int aId );
 
-    int getNumberOfBooks();
+    int getNumberOfBooks() const;
 
     // parse commands
 
     std::string parseCommand( const std::string& aUser, const std::string& aCommand );
 
-    void printLibrary();
+    void printLibrary() const;
 
 signals:
     void changed( int vIndex );
     void libraryActivity( QString aActivity );
-
-private:
 };
 
 }

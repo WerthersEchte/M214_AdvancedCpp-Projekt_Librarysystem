@@ -30,12 +30,12 @@ QVariant UserViewModel::data(const QModelIndex &aIndex, int aRole ) const
     return QVariant();
 };
 
-void UserViewModel::changed( QString aUserName ){
+void UserViewModel::changed( const QString& aUserName ){
     QModelIndex vPosition = createIndex(UserManagement::getUserManagement()->getUser( aUserName.toStdString() )->getId(),0);
     emit dataChanged(vPosition, vPosition);
 }
 
-void UserViewModel::userAdded( QString aUserName ){
+void UserViewModel::userAdded( const QString& aUserName ){
     connect(UserManagement::getUserManagement()->getUser( aUserName.toStdString() ), SIGNAL(changed(QString)), this, SLOT(changed(QString)));
     changed(aUserName);
 }

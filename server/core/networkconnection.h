@@ -30,7 +30,7 @@ namespace library{
         void start();
 
     signals:
-        void networkActivity( QString aId, QString aActivity );
+        void networkActivity( const QString& aId, const QString& aActivity );
 
     private:
         boost::asio::ip::tcp::socket socket_;

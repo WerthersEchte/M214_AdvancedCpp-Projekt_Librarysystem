@@ -16,7 +16,7 @@ User::User() :
     mBorrowedBooks()
 {};
 
-User::User( std::string aUserName, std::string aPassword, const std::vector<Permission>& aPermissions ) :
+User::User( const std::string& aUserName, const std::string& aPassword, const std::vector<Permission>& aPermissions ) :
     mId(IDCOUNTER++),
     mUserName(aUserName),
     mPassword(aPassword),
@@ -39,33 +39,29 @@ User::User( const User& aUser ):
 User::~User()
 {};
 
-int User::getId(){
+int User::getId() const{
 
     return mId;
 
 };
-std::string User::getUserName(){
-    return mUserName;
-};
+
 std::string User::getUserName() const{
     return mUserName;
 };
-void User::editUserName( std::string aUserName ){
+void User::editUserName( const std::string& aUserName ){
     mUserName = aUserName;
     emit changed(mUserName.c_str());
 };
-std::string User::getPassword(){
-    return mPassword;
-};
+
 std::string User::getPassword() const{
     return mPassword;
 };
-void User::editPassword( std::string aPassword ){
+void User::editPassword( const std::string& aPassword ){
     mPassword = aPassword;
     emit changed(mUserName.c_str());
 };
 
-bool User::hasPermission( Permission aPermission ){
+bool User::hasPermission( Permission aPermission ) const{
     return std::find(mPermissions.begin(), mPermissions.end(), aPermission) != mPermissions.end();
 };
 void User::addPermission( Permission aPermission ){
@@ -82,7 +78,7 @@ void User::removePermission( Permission aPermission ){
     }
 };
 
-std::vector<int> User::getBorrowedBooks(){
+std::vector<int> User::getBorrowedBooks() const{
     return mBorrowedBooks;
 };
 
@@ -106,7 +102,7 @@ bool User::removeBorrowedBook( int aBookId ){
 };
 
 
-std::string User::printUser( bool aEndLine ){
+std::string User::printUser( bool aEndLine ) const{
 
     std::stringstream vUser;
     vUser << "\"" << mId << "\",\"" << mUserName << "\",\"" << mPassword << "\",\"Permissions{";

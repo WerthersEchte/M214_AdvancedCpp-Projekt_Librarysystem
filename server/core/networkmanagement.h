@@ -29,16 +29,16 @@ namespace library{
         void run() Q_DECL_OVERRIDE;
 
     public:
-        NetworkManagement( const int aPort = 8080 );
+        NetworkManagement( int aPort = 8080 );
 
         void startServer();
         void stopServer();
 
     signals:
-        void networkActivity( QString aId, QString aActivity );
+        void networkActivity( const QString& aId, const QString& aActivity );
 
     private slots:
-        void clientNetworkActivity( QString aId, QString aActivity );
+        void clientNetworkActivity( const QString& aId, const QString& aActivity );
 
     };
 }

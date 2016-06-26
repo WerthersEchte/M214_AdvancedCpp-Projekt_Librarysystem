@@ -26,7 +26,7 @@ public:
     MainGUI( QWidget *vParent = 0 );
 
 public slots:
-    void messageNetwork( QString aId, QString aMessage );
+    void messageNetwork( const QString& aId, const QString& aMessage );
 
 private slots:
     void addBook( bool vChecked );
@@ -41,7 +41,7 @@ private slots:
     void on_actionLoad_books_triggered();
 
 private:
-    void loadBooks( std::string aFileWithBooks );
+    void loadBooks( const std::string& aFileWithBooks );
 
 };
 

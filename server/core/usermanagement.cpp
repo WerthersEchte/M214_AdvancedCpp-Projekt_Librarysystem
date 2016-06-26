@@ -63,7 +63,7 @@ bool UserManagement::addUser( const library::User& aUser ){
     return false;
 }
 
-int UserManagement::getNumberOfUsers(){
+int UserManagement::getNumberOfUsers() const{
 
     return mUsers.size();
 

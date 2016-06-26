@@ -13,7 +13,7 @@ Book::Book() :
     mBurrowed(Status::None)
 {};
 
-Book::Book( std::string aTitle, std::string aAuthor, std::string aPublisher, std::string aISBN, std::string aDatePublished ) :
+Book::Book( const std::string& aTitle, const std::string& aAuthor, const std::string& aPublisher, const std::string& aISBN, const std::string& aDatePublished ) :
     mId(IDCOUNTER++),
     mTitle(aTitle),
     mAuthor(aAuthor),
@@ -26,85 +26,56 @@ Book::Book( std::string aTitle, std::string aAuthor, std::string aPublisher, std
 
 Book::~Book()
 {};
-
-std::string Book::getTitle()
-{
-    return mTitle;
-};
 std::string Book::getTitle() const
 {
     return getTitle();
 };
-void Book::editTitle( std::string aTitle )
+void Book::editTitle( const std::string& aTitle )
 {
     mTitle = aTitle;
 };
 
-std::string Book::getAuthor()
-{
-    return mAuthor;
-};
 std::string Book::getAuthor() const
 {
     return mAuthor;
 };
-void Book::editAuthor( std::string aAuthor )
+void Book::editAuthor( const std::string& aAuthor )
 {
     mAuthor = aAuthor;
 };
 
-std::string Book::getPublisher()
-{
-    return mPublisher;
-};
 std::string Book::getPublisher() const
 {
     return mPublisher;
 };
-void Book::editPublisher( std::string aPublisher )
+void Book::editPublisher( const std::string& aPublisher )
 {
     mPublisher = aPublisher;
 };
 
-std::string Book::getISBN()
-{
-    return mISBN;
-};
 std::string Book::getISBN() const
 {
     return mISBN;
 };
-void Book::editISBN( std::string aISBN )
+void Book::editISBN( const std::string& aISBN )
 {
     mISBN = aISBN;
 };
 
-std::string Book::getDatePublished()
-{
-    return mDatePublished;
-};
 std::string Book::getDatePublished() const
 {
     return mDatePublished;
 };
-void Book::editDatePublished( std::string aDatePublished )
+void Book::editDatePublished( const std::string& aDatePublished )
 {
     mDatePublished = aDatePublished;
 };
 
-int Book::getId()
-{
-    return mId;
-};
 int Book::getId() const
 {
     return mId;
 };
 
-bool Book::isAvailable()
-{
-    return mBurrowed == Status::Available;
-};
 bool Book::isAvailable() const
 {
     return mBurrowed == Status::Available;
@@ -128,16 +99,12 @@ bool Book::bringBack()
     return false;
 };
 
-Status Book::getStatus()
-{
-    return mBurrowed;
-};
 Status Book::getStatus() const
 {
     return mBurrowed;
 };
 
-std::string Book::printBook( bool aEndLine )
+std::string Book::printBook( bool aEndLine ) const
 {
     std::stringstream vBook;
     vBook << "\"" << mId << "\",\"" << mTitle << "\",\"" << mAuthor << "\",\"" << mPublisher << "\",\"" << mDatePublished << "\",\"" << mISBN << "\",\"" << mBurrowed << "\"";
