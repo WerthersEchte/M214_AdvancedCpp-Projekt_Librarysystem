@@ -17,10 +17,10 @@ Client::~Client() {
 	socket_.close();
 };
 
-void Client::write(std::string user, std::string action, std::string data) {
+void Client::write(std::string data) {
 	char request[max_length];
 	std::string fullData = "";
-	fullData.append(user).append(action).append(data);
+	fullData.append(data);
     if(fullData.empty()){
         return;
     }

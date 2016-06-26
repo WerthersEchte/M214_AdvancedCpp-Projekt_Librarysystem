@@ -25,7 +25,7 @@ public:
 	      tcp::resolver::iterator& endpoint_iterator,  tcp::socket& socket);
 	~Client();
 
-	void write(std::string user, std::string action, std::string data );
+	void write(std::string data);
 signals:
     void networkActivity( QString aActivity );
 	

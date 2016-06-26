@@ -20,7 +20,6 @@ public:
     Book( std::string aTitle, std::string aAuthor = "", std::string aPublisher = "", std::string aISBN = "", std::string aDatePublished = "" );
     ~Book();
 
-
     bool isAvailable();
     bool isAvailable() const;
     bool burrow();

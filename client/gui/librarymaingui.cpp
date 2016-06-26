@@ -36,17 +36,13 @@ void MainGUI::getBook( bool vChecked ) {
 	vAddEditBookDialog.exec();
 	if( vAddEditBookDialog.result() == QDialog::Accepted ){
 		if(mClient != nullptr){
-
-			std::string data;
+			std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::ADD + static_cast<char>(library::Splitter::COMMAND);
 			data = vAddEditBookDialog.lETitle->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEAuthor->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEPublisher->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEISBN->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEDate->text().toStdString();
-
-			mClient->write("",
-						   library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::ADD + static_cast<char>(library::Splitter::COMMAND),
-						   data);
+			mClient->write(data);
 		}
 	}
 };
@@ -62,17 +58,13 @@ void MainGUI::editBook( bool vChecked ) {
 	vAddEditBookDialog.exec();
 	if( vAddEditBookDialog.result() == QDialog::Accepted ){
 		if(mClient != nullptr){
-
-			std::string data;
+			std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::ADD + static_cast<char>(library::Splitter::COMMAND);
 			data = vAddEditBookDialog.lETitle->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEAuthor->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEPublisher->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEISBN->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEDate->text().toStdString();
-
-			mClient->write("",
-						   library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::ADD + static_cast<char>(library::Splitter::COMMAND),
-						   data);
+			mClient->write(data);
 		}
 	}
 };
@@ -88,16 +80,13 @@ void MainGUI::addBook( bool vChecked ) {
 	if( vAddEditBookDialog.result() == QDialog::Accepted ){
 		if(mClient != nullptr){
 
-			std::string data;
+			std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::ADD + static_cast<char>(library::Splitter::COMMAND);
 			data = vAddEditBookDialog.lETitle->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEAuthor->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEPublisher->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEISBN->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
 			data +=vAddEditBookDialog.lEDate->text().toStdString();
-
-			mClient->write("",
-						   library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::ADD + static_cast<char>(library::Splitter::COMMAND),
-						   data);
+			mClient->write(data);
 		}
 	}
 };
@@ -105,23 +94,19 @@ void MainGUI::addBook( bool vChecked ) {
 
 void MainGUI::searchBook(bool vChecked){
 	if(mClient != nullptr){
-		std::string data;
+		std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::SEARCH + static_cast<char>(library::Splitter::COMMAND);
 		data = lEBook->text().toStdString();
-		mClient->write("",
-					   library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::SEARCH + static_cast<char>(library::Splitter::COMMAND),
-					   data);
+		mClient->write(data);
 	}
 };
 
 
 void MainGUI::userLogin(bool vChecked){
 	if(mClient != nullptr){
-		std::string data;
+		std::string data = library::command::LOGIN + static_cast<char>(library::Splitter::TYPE);
 		data = lESend->text().toStdString();
 		pendingUser = data;
-		mClient->write("",
-					   library::command::LOGIN + static_cast<char>(library::Splitter::TYPE),
-					   data);
+		mClient->write(data);
 	}
 };
 
@@ -164,7 +149,7 @@ void MainGUI::disconnectFromServer(bool){
 
 void MainGUI::sendData(bool){
     if(mClient != nullptr){
-        mClient->write(lESend->text().toStdString(),"","");
+        mClient->write(lESend->text().toStdString());
     }
 };
 
