@@ -1,7 +1,7 @@
 #ifndef _LibraryBook_
 #define _LibraryBook_
 
-#include "core/definitions.h"
+#include "definitions.h"
 
 #include <string>
 

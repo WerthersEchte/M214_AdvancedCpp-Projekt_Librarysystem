@@ -1,7 +1,7 @@
 #ifndef _LibraryUser_
 #define _LibraryUser_
 
-#include "core/definitions.h"
+#include "definitions.h"
 
 #include <string>
 #include <vector>

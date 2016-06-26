@@ -1,7 +1,7 @@
 #ifndef _LibraryNetworkConnection_
 #define _LibraryNetworkConnection_
 
-#include "core/definitions.h"
+#include "definitions.h"
 
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>

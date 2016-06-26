@@ -1,6 +1,6 @@
 #include "usermanagement.h"
 
-#include "core/definitions.h"
+#include "definitions.h"
 #include "core/library.h"
 
 #include <boost/algorithm/string/split.hpp>

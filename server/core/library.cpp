@@ -8,7 +8,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
-#include "core/definitions.h"
+#include "definitions.h"
 #include "core/usermanagement.h"
 #include "core/user.h"
 
