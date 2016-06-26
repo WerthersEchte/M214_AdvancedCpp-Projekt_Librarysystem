@@ -14,7 +14,7 @@ find_package( Qt5Concurrent REQUIRED )
 
 FIND_PACKAGE( Boost COMPONENTS system regex context coroutine REQUIRED )
 
-include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} )
+include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ../universal )
 
 set( SOURCE
    ${SOURCE}
@@ -32,7 +32,7 @@ set( SOURCE
 
 set( HEADERS
    ${HEADERS}
-   core/definitions.h
+   ../universal/definitions.h
    core/book.h
    core/library.h
    core/networkconnection.h

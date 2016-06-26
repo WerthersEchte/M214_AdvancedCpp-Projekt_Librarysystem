@@ -6,7 +6,9 @@ project ( ${TESTS_NAME} CXX )
 
 FIND_PACKAGE( Boost COMPONENTS system unit_test_framework REQUIRED )
 
-include_directories(    ../server
+include_directories(    ../client
+                        ../server
+                        ../universal
                         ${Boost_INCLUDE_DIR} )
 
 set( SOURCE

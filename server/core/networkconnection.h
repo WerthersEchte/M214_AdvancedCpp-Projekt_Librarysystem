@@ -1,7 +1,7 @@
 #ifndef _LibraryNetworkConnection_
 #define _LibraryNetworkConnection_
 
-#include "core/definitions.h"
+#include "definitions.h"
 
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -30,7 +30,7 @@ namespace library{
         void start();
 
     signals:
-        void networkActivity( QString aId, QString aActivity );
+        void networkActivity( const QString& aId, const QString& aActivity );
 
     private:
         boost::asio::ip::tcp::socket socket_;

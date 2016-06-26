@@ -1,7 +1,7 @@
 #ifndef _LibraryUser_
 #define _LibraryUser_
 
-#include "core/definitions.h"
+#include "definitions.h"
 
 #include <string>
 #include <vector>
@@ -24,30 +24,28 @@ class User: public QObject{
 
 public:
     User();
-    User( std::string mUserName, std::string mPassword, const std::vector<Permission>& aPermissions );
+    User( const std::string& mUserName, const std::string& mPassword, const std::vector<Permission>& aPermissions );
     User( const User& aUser );
     ~User();
 
-    int getId();
-    std::string getUserName();
+    int getId() const;
     std::string getUserName() const;
-    void editUserName( std::string aUserName );
-    std::string getPassword();
+    void editUserName( const std::string& aUserName );
     std::string getPassword() const;
-    void editPassword( std::string aPassword );
+    void editPassword( const std::string& aPassword );
 
-    bool hasPermission( Permission aPermission );
+    bool hasPermission( Permission aPermission ) const;
     void addPermission( Permission aPermission );
     void removePermission( Permission aPermission );
 
-    std::vector<int> getBorrowedBooks();
+    std::vector<int> getBorrowedBooks() const;
     bool addBorrowedBook( int aBookId );
     bool removeBorrowedBook( int aBookId );
 
-    std::string printUser( bool aEndLine = true );
+    std::string printUser( bool aEndLine = true ) const;
 
 signals:
-    void changed( QString vUserName );
+    void changed( const QString& vUserName );
 };
 
 }

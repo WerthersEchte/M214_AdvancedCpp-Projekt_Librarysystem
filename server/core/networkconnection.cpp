@@ -17,7 +17,6 @@
 
 #include <QString>
 
-#include "core/definitions.h"
 #include "core/library.h"
 #include "core/usermanagement.h"
 #include "core/user.h"
@@ -26,9 +25,10 @@
 namespace library {
 
     NetworkConnection::NetworkConnection(boost::asio::ip::tcp::socket socket) :
-        socket_(boost::move(socket)),
         mId(QString("UnkownUser(").append( QString::fromUtf8(socket.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket.remote_endpoint().port())).append(")")),
-        mUser()
+        mUser(),
+        socket_(boost::move(socket)),
+        buffer()
     { }
 
     NetworkConnection::~NetworkConnection(){
@@ -90,7 +90,7 @@ namespace library {
                     }
 
                 }
-            } catch( std::exception vException ){
+            } catch( const std::exception& vException ){
                 vMessage = "error parsing command";
                 std::cout << vException.what() << std::endl;
                 emit networkActivity( mId, QString("Exception: ").append( QString(vException.what()) ) );

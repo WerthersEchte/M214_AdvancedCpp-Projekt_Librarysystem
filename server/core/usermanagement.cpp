@@ -1,6 +1,6 @@
 #include "usermanagement.h"
 
-#include "core/definitions.h"
+#include "definitions.h"
 #include "core/library.h"
 
 #include <boost/algorithm/string/split.hpp>
@@ -63,7 +63,7 @@ bool UserManagement::addUser( const library::User& aUser ){
     return false;
 }
 
-int UserManagement::getNumberOfUsers(){
+int UserManagement::getNumberOfUsers() const{
 
     return mUsers.size();
 

@@ -8,7 +8,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
-#include "core/definitions.h"
+#include "definitions.h"
 #include "core/usermanagement.h"
 #include "core/user.h"
 
@@ -50,7 +50,7 @@ Book* Library::getBook( int aId )
     }
 };
 
-int Library::getNumberOfBooks()
+int Library::getNumberOfBooks() const
 {
     return mLibrary.size();
 };
@@ -179,9 +179,9 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
 
 }
 
-void Library::printLibrary(){
+void Library::printLibrary() const{
 
-    for( StoredBooks::iterator it = mLibrary.begin(); it != mLibrary.end(); ++it ) {
+    for( StoredBooks::const_iterator it = mLibrary.begin(); it != mLibrary.end(); ++it ) {
     	it->second.printBook();
     }
 

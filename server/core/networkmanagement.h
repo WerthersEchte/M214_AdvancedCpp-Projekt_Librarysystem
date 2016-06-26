@@ -24,21 +24,20 @@ namespace library{
         void acceptHandler( const boost::system::error_code& error );
         boost::asio::ip::tcp::socket socket;
         boost::asio::ip::tcp::acceptor acceptor;
-        unsigned short port;
 
         void run() Q_DECL_OVERRIDE;
 
     public:
-        NetworkManagement( const int aPort = 8080 );
+        explicit NetworkManagement( int aPort = 8080 );
 
         void startServer();
         void stopServer();
 
     signals:
-        void networkActivity( QString aId, QString aActivity );
+        void networkActivity( const QString& aId, const QString& aActivity );
 
     private slots:
-        void clientNetworkActivity( QString aId, QString aActivity );
+        void clientNetworkActivity( const QString& aId, const QString& aActivity );
 
     };
 }

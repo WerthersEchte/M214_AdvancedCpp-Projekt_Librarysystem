@@ -40,7 +40,7 @@ namespace library{
 
     }
 
-    NetworkManagement::NetworkManagement( const int aPort ) :
+    NetworkManagement::NetworkManagement( int aPort ) :
         mRuns(false),
         socket(boost::asio::ip::tcp::socket(io_service)),
         acceptor( boost::asio::ip::tcp::acceptor(
@@ -70,7 +70,7 @@ namespace library{
         }
     }
 
-    void NetworkManagement::clientNetworkActivity( QString aId, QString aActivity ){
+    void NetworkManagement::clientNetworkActivity( const QString& aId, const QString& aActivity ){
 
         emit networkActivity( aId, aActivity );
 

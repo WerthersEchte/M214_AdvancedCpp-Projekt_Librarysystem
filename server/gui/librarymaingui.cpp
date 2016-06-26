@@ -185,9 +185,9 @@ void MainGUI::networkStartStop( bool vChecked ){
 
 };
 
-void MainGUI::messageNetwork( QString aId, QString aMessage ){
+void MainGUI::messageNetwork( const QString& aId, const QString& aMessage ){
 
-    pTENetworkMessages->appendPlainText( aId.append(":").append(aMessage) );
+    pTENetworkMessages->appendPlainText( aId + ":" + aMessage );
 
 };
 
@@ -198,7 +198,7 @@ void MainGUI::on_actionLoad_books_triggered()
 	loadBooks( vModelFileName );
 }
 
-void MainGUI::loadBooks( std::string aFileWithBooks ){
+void MainGUI::loadBooks( const std::string& aFileWithBooks ){
 
 	if ( aFileWithBooks.empty() || !QDir::isAbsolutePath( aFileWithBooks.c_str() ) ){
 		return;
@@ -229,7 +229,7 @@ void MainGUI::loadBooks( std::string aFileWithBooks ){
             }
 
         }
-	} catch ( std::exception vEveryThing ){
+	} catch ( const std::exception& vEveryThing ){
 
 		std::string aHeader("Exception loading file " + aFileWithBooks);
 		QMessageBox::critical(this, tr( aHeader.c_str() ), tr( vEveryThing.what() ));

@@ -1,7 +1,7 @@
 #ifndef _LibraryBook_
 #define _LibraryBook_
 
-#include "core/definitions.h"
+#include "definitions.h"
 
 #include <string>
 
@@ -12,43 +12,34 @@ class Book{
     static int IDCOUNTER;
 
     int mId;
-    std::string mTitle, mISBN, mPublisher, mAuthor, mDatePublished;
+    std::string mTitle, mAuthor, mPublisher, mISBN, mDatePublished;
     Status mBurrowed;
 
 public:
     Book();
-    Book( std::string aTitle, std::string aAuthor = "", std::string aPublisher = "", std::string aISBN = "", std::string aDatePublished = "" );
+    Book( const std::string& aTitle, const std::string& aAuthor = "", const std::string& aPublisher = "", const std::string& aISBN = "", const std::string& aDatePublished = "" );
     ~Book();
 
-
-    bool isAvailable();
     bool isAvailable() const;
     bool burrow();
     bool bringBack();
 
-    Status getStatus();
     Status getStatus() const;
 
-    int getId();
     int getId() const;
 
-    std::string getTitle();
     std::string getTitle() const;
-    void editTitle( std::string aTitle );
-    std::string getAuthor();
+    void editTitle( const std::string& aTitle );
     std::string getAuthor() const;
-    void editAuthor( std::string aAuthor );
-    std::string getPublisher();
+    void editAuthor( const std::string& aAuthor );
     std::string getPublisher() const;
-    void editPublisher( std::string aPublisher );
-    std::string getISBN();
+    void editPublisher( const std::string& aPublisher );
     std::string getISBN() const;
-    void editISBN( std::string aISBN );
-    std::string getDatePublished();
+    void editISBN( const std::string& aISBN );
     std::string getDatePublished() const;
-    void editDatePublished( std::string aPublished );
+    void editDatePublished( const std::string& aPublished );
 
-    std::string printBook( bool aEndLine = true );
+    std::string printBook( bool aEndLine = true ) const;
 
 };
 

@@ -31,12 +31,12 @@ public:
     library::User* getUser( int aId );
     bool addUser( const library::User& aUser );
 
-    int getNumberOfUsers();
+    int getNumberOfUsers() const;
 
     std::string parseCommand( const std::string& aUser, const std::string& aCommand );
 
 signals:
-    void userAdded( QString aUserName );
+    void userAdded( const QString& aUserName );
 
 };
 
