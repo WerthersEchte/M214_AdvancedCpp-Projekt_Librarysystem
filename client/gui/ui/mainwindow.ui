@@ -32,6 +32,9 @@
          <widget class="QWidget" name="widget_2" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
+            <widget class="QLineEdit" name="lEUserLogin"/>
+           </item>
+           <item>
             <widget class="QLineEdit" name="lEIP">
              <property name="text">
               <string>localhost</string>

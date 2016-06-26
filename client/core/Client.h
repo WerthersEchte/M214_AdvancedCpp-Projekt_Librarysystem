@@ -28,7 +28,9 @@ public:
 	void write(std::string data);
 signals:
     void networkActivity( QString aActivity );
-	
+	//void changeLoginButton(bool state);
+	void closeServerConnection(bool state);
+
 private:
 	void do_connect(tcp::resolver::iterator endpoint_iterator);
 	boost::asio::io_service& io_service_;

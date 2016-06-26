@@ -19,11 +19,17 @@ class MainGUI: public QMainWindow, private Ui::ClientMainGUI {
     boost::asio::ip::tcp::socket s;
     Client* mClient;
 	std::string pendingUser;
+
+	void userLogin();
+	void userLogout();
+
 public:
     MainGUI( QWidget *vParent = 0 );
 
 signals:
 	void sendMessage( QString msg );
+	//void changeLoginButton(bool state);
+
 
 private slots:
     void connectToServer(bool);
@@ -32,9 +38,11 @@ private slots:
     void sendData(bool=true);
 	void addBook(bool vChecked);
 	void searchBook(bool vChecked);
-	void userLogin(bool vChecked);
+	//;
 	void getBook(bool vChecked);
 	void editBook(bool vChecked);
+	//
+	//void changeLoginButton(bool state);
 
 public slots:
     void getData(QString aData);
