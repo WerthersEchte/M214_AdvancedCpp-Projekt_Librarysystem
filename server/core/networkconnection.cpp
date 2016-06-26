@@ -94,21 +94,29 @@ namespace library {
                 } else {
 
                     if(!vMessageParts[0].compare(command::BOOK)){
-                        vMessage = Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1] );
+						responseMessage = command::BOOK;
+						responseMessage.append(1, static_cast<char>(Splitter::TYPE));
+                        //vMessage = Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1] );
+						responseMessage.append(Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1]));
                     } else if(!vMessageParts[0].compare(command::USER)){
-                        vMessage = UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] );
+						responseMessage = command::USER;
+						responseMessage.append(1, static_cast<char>(Splitter::TYPE));
+                        //vMessage = UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] );
+						responseMessage.append(UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] ));
                     } else if(!vMessageParts[0].compare(command::LOGOUT)){
 						responseMessage = command::LOGOUT;
 						responseMessage.append(1, 7);
                         boost::asio::async_write(socket_, boost::asio::buffer(responseMessage), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
                         return;
                     } else {
-                        vMessage = "need to send valid command to interact with library";
+						responseMessage = "error:need to send valid command to interact with library";
+                        //vMessage = "need to send valid command to interact with library";
                     }
 
                 }
             } catch( std::exception vException ){
-                vMessage = "error parsing command";
+				responseMessage = "error:Error parsing command";
+               // vMessage = "error parsing command";
                 std::cout << vException.what() << std::endl;
                 emit networkActivity( mId, QString("Exception: ").append( QString(vException.what()) ) );
             }
