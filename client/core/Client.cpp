@@ -56,6 +56,8 @@ namespace library {
 		//Process cmd
 		if(cmd == library::command::LOGIN && receiveData == "false") emit closeServerConnection(true);
 		else if(cmd == library::command::LOGOUT) emit closeServerConnection(true);
+		else if(cmd == library::command::BOOK) emit bookActivity(receiveData);
+		else if(cmd == library::command::USER) emit userActivity(receiveData);
 
 	}
 

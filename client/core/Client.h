@@ -28,6 +28,8 @@ public:
 	void write(std::string data);
 signals:
     void networkActivity( QString aActivity );
+	void bookActivity( QString aActivity );
+	void userActivity( QString aActivity );
 	//void changeLoginButton(bool state);
 	void closeServerConnection(bool state);
 
