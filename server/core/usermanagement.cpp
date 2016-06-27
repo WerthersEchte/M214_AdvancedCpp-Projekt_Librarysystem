@@ -94,7 +94,13 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
 
     } else if( vCommandParts.size() > 1 ){
 
-        if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare(command::user::ADD) ){
+        if( !getUser(aUser)->hasPermission( Permission::Users ) ){
+
+            return std::string("error:no right to use command");
+
+        }
+
+        if( !vCommandParts[0].compare(command::user::ADD) ){
 
             std::vector<Permission> mPermissions;
 
@@ -114,7 +120,7 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
                 return std::string("can not add user to library");
             }
 
-        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare(command::user::CHANGEPASSWORD) ){
+        } else if( !vCommandParts[0].compare(command::user::CHANGEPASSWORD) ){
 
             if( getUser(vCommandParts[1]) != nullptr ){
                 getUser(vCommandParts[1])->editPassword(vCommandParts.size() >= 3?vCommandParts[2]:"");
@@ -123,7 +129,7 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
                 return std::string("unknown user to changepassword");
             }
 
-        } else if( getUser(aUser)->hasPermission(Permission::Users) && !vCommandParts[0].compare(command::user::GET) ){
+        } else if( !vCommandParts[0].compare(command::user::GET) ){
 
             std::stringstream vUsers;
 
@@ -149,7 +155,6 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
         }
 
     }
-
 
     return std::string("unknown command");
 

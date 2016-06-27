@@ -64,30 +64,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
                   [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
 
     if( vCommandParts.size() > 1 ){
-        if( UserManagement::getUserManagement()->getUser(aUser)->hasPermission(Permission::Books) && !vCommandParts[0].compare(command::book::ADD) ){
-
-            if( addBook(Book(vCommandParts[1], vCommandParts.size() >= 3?vCommandParts[2]:"", vCommandParts.size() >= 4?vCommandParts[3]:"", vCommandParts.size() >= 5?vCommandParts[4]:"", vCommandParts.size() >= 6?vCommandParts[5]:"")) ){
-                return std::string("added book to library");
-            } else {
-                return std::string("can not add book to library");
-            }
-
-        } else if( UserManagement::getUserManagement()->getUser(aUser)->hasPermission(Permission::Books) && !vCommandParts[0].compare(command::book::EDIT) ){
-
-            if( getBook(stoi(vCommandParts[1])) != nullptr ){
-
-                getBook(stoi(vCommandParts[1]))->editTitle( vCommandParts.size() >= 3?vCommandParts[2]:"" );
-                getBook(stoi(vCommandParts[1]))->editAuthor( vCommandParts.size() >= 4?vCommandParts[3]:"" );
-                getBook(stoi(vCommandParts[1]))->editPublisher( vCommandParts.size() >= 5?vCommandParts[4]:"" );
-                getBook(stoi(vCommandParts[1]))->editISBN( vCommandParts.size() >= 6?vCommandParts[5]:"" );
-                getBook(stoi(vCommandParts[1]))->editDatePublished(  vCommandParts.size() >= 7?vCommandParts[6]:"" );
-
-                return std::string("edited book");
-            } else {
-                return std::string("unknown book to edit");
-            }
-
-        } else if( !vCommandParts[0].compare(command::book::SEARCH) ){
+        if( !vCommandParts[0].compare(command::book::SEARCH) ){
 
             std::vector<int> vBookIds;
 
@@ -171,6 +148,37 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
             }
 
             return vBooks.str();
+        }
+
+        if( !UserManagement::getUserManagement()->getUser(aUser)->hasPermission( Permission::Books ) ){
+
+            return std::string("error:no right to use command");
+
+        }
+
+        if( !vCommandParts[0].compare(command::book::ADD) ){
+
+            if( addBook(Book(vCommandParts[1], vCommandParts.size() >= 3?vCommandParts[2]:"", vCommandParts.size() >= 4?vCommandParts[3]:"", vCommandParts.size() >= 5?vCommandParts[4]:"", vCommandParts.size() >= 6?vCommandParts[5]:"")) ){
+                return std::string("added book to library");
+            } else {
+                return std::string("can not add book to library");
+            }
+
+        } else if( !vCommandParts[0].compare(command::book::EDIT) ){
+
+            if( getBook(stoi(vCommandParts[1])) != nullptr ){
+
+                getBook(stoi(vCommandParts[1]))->editTitle( vCommandParts.size() >= 3?vCommandParts[2]:"" );
+                getBook(stoi(vCommandParts[1]))->editAuthor( vCommandParts.size() >= 4?vCommandParts[3]:"" );
+                getBook(stoi(vCommandParts[1]))->editPublisher( vCommandParts.size() >= 5?vCommandParts[4]:"" );
+                getBook(stoi(vCommandParts[1]))->editISBN( vCommandParts.size() >= 6?vCommandParts[5]:"" );
+                getBook(stoi(vCommandParts[1]))->editDatePublished(  vCommandParts.size() >= 7?vCommandParts[6]:"" );
+
+                return std::string("edited book");
+            } else {
+                return std::string("unknown book to edit");
+            }
+
         }
 
     }
