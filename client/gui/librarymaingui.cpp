@@ -1,6 +1,6 @@
 #include "librarymaingui.h"
 #include "add+editbook.h"
-#include "../core/definitions.h"
+#include "definitions.h"
 #include <iostream>
 
 namespace library{

@@ -17,7 +17,7 @@
 
 #include <QString>
 
-#include "core/definitions.h"
+//#include "core/definitions.h"
 #include "core/library.h"
 #include "core/usermanagement.h"
 #include "core/user.h"

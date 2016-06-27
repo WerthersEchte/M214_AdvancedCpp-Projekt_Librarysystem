@@ -7,7 +7,7 @@
 
 #include "Client.h"
 #include <iostream>
-#include "core/definitions.h"
+#include "definitions.h"
 namespace library {
 
 	Client::Client(boost::asio::io_service& io_service,

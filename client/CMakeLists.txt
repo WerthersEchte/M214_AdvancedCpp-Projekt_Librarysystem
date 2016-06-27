@@ -14,7 +14,7 @@ find_package( Qt5Concurrent REQUIRED )
 
 FIND_PACKAGE( Boost COMPONENTS system REQUIRED )
 
-include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} )
+include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ../universal)
 
 set( SOURCE
    ${SOURCE}
@@ -28,14 +28,13 @@ set( HEADERS
    gui/librarymaingui.h
    core/Client.h
     gui/add+editbook.h
-    core/definitions.h
+    ../universal/definitions.h
 )
 
 set( UI_FILES
    ${UI_FILES}
    gui/ui/mainwindow.ui
     gui/ui/add+editbook.ui
-
 )
 
 QT5_WRAP_UI( UI_HEADERS
