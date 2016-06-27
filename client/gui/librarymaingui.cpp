@@ -62,10 +62,10 @@ MainGUI::MainGUI( QWidget *vParent ) : QMainWindow(vParent),
 					data.append(vAddEditBookDialog.property("ID").toString().toStdString());
 					data += static_cast<char>(library::Splitter::COMMAND);
 					data += vAddEditBookDialog.lETitle->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
-					data +=vAddEditBookDialog.lEAuthor->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
-					data +=vAddEditBookDialog.lEPublisher->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
-					data +=vAddEditBookDialog.lEISBN->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
-					data +=vAddEditBookDialog.lEDate->text().toStdString();
+					data += vAddEditBookDialog.lEAuthor->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
+					data += vAddEditBookDialog.lEPublisher->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
+					data += vAddEditBookDialog.lEISBN->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
+					data += vAddEditBookDialog.lEDate->text().toStdString();
 					mClient->write(data);
 				}
 			}

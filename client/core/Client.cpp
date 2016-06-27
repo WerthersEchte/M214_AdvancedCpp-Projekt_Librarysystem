@@ -1,10 +1,3 @@
-/*
- * Client.cpp
- *
- *  Created on: 24 Apr 2016
- *      Author: orobsonpires
- */
-
 #include "Client.h"
 #include <iostream>
 #include "definitions.h"
