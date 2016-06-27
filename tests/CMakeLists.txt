@@ -18,9 +18,13 @@ include_directories(    ../client
                         ${Boost_INCLUDE_DIR} )
 
 set( SOURCE
-   ${SOURCE}
-   server/book_test.cpp
-        server/main.cpp server/library_test.cpp)
+    ${SOURCE}
+    main.cpp 
+    server/book_test.cpp
+    server/library_test.cpp
+    server/user_test.cpp
+    server/usermanagement_test.cpp
+    server/networkconnection_test.cpp)
 
 set( HEADERS
    ${HEADERS}
