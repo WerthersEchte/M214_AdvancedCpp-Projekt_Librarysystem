@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="tWMain">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tBooks">
        <attribute name="title">
@@ -518,9 +518,6 @@
      <string>File</string>
     </property>
     <addaction name="actionLoad_books"/>
-    <addaction name="actionSave_books"/>
-    <addaction name="separator"/>
-    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
