@@ -12,36 +12,41 @@ find_package( Qt5Core REQUIRED )
 find_package( Qt5Gui REQUIRED )
 find_package( Qt5Concurrent REQUIRED )
 
-FIND_PACKAGE( Boost COMPONENTS system REQUIRED )
+find_package( Boost COMPONENTS system REQUIRED )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ../universal)
 
-set( SOURCE
-   ${SOURCE}
-   gui/librarymaingui.cpp
-   main.cpp
-   core/Client.cpp
+set(
+    SOURCE
+    ${SOURCE}
+    gui/librarymaingui.cpp
+    main.cpp
+    core/Client.cpp
     gui/add+editbook.cpp
 )
-set( HEADERS
-   ${HEADERS}
-   gui/librarymaingui.h
-   core/Client.h
+
+set(
+    HEADERS
+    ${HEADERS}
+    gui/librarymaingui.h
+    core/Client.h
     gui/add+editbook.h
     ../universal/definitions.h
 )
 
-set( UI_FILES
-   ${UI_FILES}
-   gui/ui/mainwindow.ui
+set(
+    UI_FILES
+    ${UI_FILES}
+    gui/ui/mainwindow.ui
     gui/ui/add+editbook.ui
 )
 
-QT5_WRAP_UI( UI_HEADERS
-   ${UI_FILES}
+QT5_WRAP_UI(
+    UI_HEADERS
+    ${UI_FILES}
 )
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 add_library (${MAIN_NAME}_library ${SOURCE} ${HEADERS} ${UI_HEADERS} ${UI_FILES} )
 add_executable( ${MAIN_NAME} WIN32 main.cpp )
 
