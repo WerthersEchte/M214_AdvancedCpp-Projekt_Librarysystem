@@ -28,7 +28,7 @@ Book::~Book()
 {};
 std::string Book::getTitle() const
 {
-    return getTitle();
+    return mTitle;
 };
 void Book::editTitle( const std::string& aTitle )
 {
