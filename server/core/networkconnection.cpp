@@ -11,16 +11,8 @@
 #include <boost/algorithm/string/classification.hpp>
 
 #include <thread>
-#include <vector>
-#include <string>
-#include <iostream>
-
-#include <QString>
-
-//#include "core/definitions.h"
 #include "core/library.h"
 #include "core/usermanagement.h"
-#include "core/user.h"
 
 
 namespace library {
@@ -48,11 +40,11 @@ namespace library {
 
     void NetworkConnection::receiveHandler(const boost::system::error_code& error, std::size_t bytes_transferred) {
 
-        if ((error.value() == boost::asio::error::connection_reset) || (error.value() == boost::asio::error::eof)){
+        if ((error.value() == boost::asio::error::connection_reset) || (error.value() == boost::asio::error::eof)) {
             emit networkActivity( mId, QString("Disconnected") );
-        } else {
 
-            emit networkActivity( mId, QString("Received message: ").append( QString( QByteArray(buffer, bytes_transferred) ) ) );
+        } else {
+            emit networkActivity(mId, QString("Received message: ").append(QString(QByteArray(buffer, bytes_transferred))));
             std::string vMessage(buffer, bytes_transferred);
             std::string responseMessage;
 
@@ -74,14 +66,12 @@ namespace library {
                             emit networkActivity( mId, mUser + QString(" logged in") );
 							responseMessage = command::LOGIN;
 							responseMessage.append(1, static_cast<char>(Splitter::TYPE));
-							responseMessage.append("true");
-                            //vMessage = "logged in";
+							responseMessage.append("true");//vMessage = "logged in";
 
                         } else {
 							responseMessage = command::LOGIN;
 							responseMessage.append(1, static_cast<char>(Splitter::TYPE));
-							responseMessage.append("false");
-                            //vMessage = "not logged in, wrong username or password";
+							responseMessage.append("false");//vMessage = "not logged in, wrong username or password";
                             emit networkActivity( mId, QString("User tried to log in") );
                         }
 
@@ -95,13 +85,11 @@ namespace library {
                     if(!vMessageParts[0].compare(command::BOOK)) {
 						responseMessage = command::BOOK;
 						responseMessage.append(1, static_cast<char>(Splitter::TYPE));
-                        //vMessage = Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1] );
 						responseMessage.append(Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1]));
 
                     } else if(!vMessageParts[0].compare(command::USER)) {
 						responseMessage = command::USER;
 						responseMessage.append(1, static_cast<char>(Splitter::TYPE));
-                        //vMessage = UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] );
 						responseMessage.append(UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] ));
 
                     } else if(!vMessageParts[0].compare(command::LOGOUT)) {
@@ -112,13 +100,11 @@ namespace library {
 
                     } else {
 						responseMessage = "error:need to send valid command to interact with library";
-                        //vMessage = "need to send valid command to interact with library";
                     }
                 }
 
             } catch(std::exception vException) {
 				responseMessage = "error:Error parsing command";
-               // vMessage = "error parsing command";
                 std::cout << vException.what() << std::endl;
                 emit networkActivity( mId, QString("Exception: ").append( QString(vException.what()) ) );
             }

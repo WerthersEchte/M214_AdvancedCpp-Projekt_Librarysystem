@@ -12,31 +12,27 @@
 #include <QString>
 
 namespace library {
-using boost::asio::ip::tcp;
+	using boost::asio::ip::tcp;
+	enum { max_length = 1024 };
 
-enum { max_length = 1024 };
+	class Client: public QObject{
+		Q_OBJECT
 
-class Client: public QObject{
+	public:
+		Client(boost::asio::io_service& io_service, tcp::resolver::iterator& endpoint_iterator, tcp::socket& socket);
+		~Client();
+		void write(std::string data);
 
-    Q_OBJECT
+	signals:
+		void networkActivity(QString aActivity);
+		void bookActivity(QString aActivity);
+		void userActivity(QString aActivity);
+		void closeServerConnection(bool state);
 
-public:
-	Client(boost::asio::io_service& io_service,
-	      tcp::resolver::iterator& endpoint_iterator,  tcp::socket& socket);
-	~Client();
-
-	void write(std::string data);
-signals:
-    void networkActivity( QString aActivity );
-	void bookActivity( QString aActivity );
-	void userActivity( QString aActivity );
-	//void changeLoginButton(bool state);
-	void closeServerConnection(bool state);
-
-private:
-	void do_connect(tcp::resolver::iterator endpoint_iterator);
-	boost::asio::io_service& io_service_;
-	tcp::socket& socket_;
-};
+	private:
+		void do_connect(tcp::resolver::iterator endpoint_iterator);
+		boost::asio::io_service& io_service_;
+		tcp::socket& socket_;
+	};
 
 }

@@ -3,6 +3,7 @@
 
 #include "ui_mainwindow.h"
 #include "core/Client.h"
+#include "add+editbook.h"
 
 #include <QWidget>
 #include <QMainWindow>
@@ -18,6 +19,7 @@ namespace library{
 		Client* mClient;
 		void userLogin();
 		void userLogout();
+		AddEditBook vAddEditBookDialog;
 
 	public:
 		MainGUI( QWidget *vParent = 0 );
