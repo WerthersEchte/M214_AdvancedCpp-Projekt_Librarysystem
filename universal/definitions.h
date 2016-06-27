@@ -26,7 +26,7 @@ namespace library{
             const std::string ADD = "add";
             const std::string CHANGEPASSWORD = "changepassword";
             const std::string GET = "get";
-            const std::string BURROWEDBOOKS = "burrowedbooks";
+            const std::string BORROWEDBOOKS = "borrowedbooks";
         }
     }
     enum Status{Burrowed, Available, None};

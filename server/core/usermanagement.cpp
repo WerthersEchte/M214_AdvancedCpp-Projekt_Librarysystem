@@ -78,7 +78,7 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
 
     if( vCommandParts.size() == 1  ){
 
-        if( !vCommandParts[0].compare(command::user::BURROWEDBOOKS) ){
+        if( !vCommandParts[0].compare(command::user::BORROWEDBOOKS) ){
 
             std::stringstream vBooks;
 
