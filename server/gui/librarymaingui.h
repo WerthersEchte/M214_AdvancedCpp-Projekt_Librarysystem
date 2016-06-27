@@ -34,7 +34,7 @@ private slots:
     void selectBook(const QModelIndex &vIndex);
 
     void selectUser(const QModelIndex &vIndex);
-    void changedPermissions(int aState);
+    void changedPermissions( bool vChecked );
 
     void networkStartStop( bool vChecked );
 

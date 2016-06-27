@@ -43,7 +43,7 @@ MainGUI::MainGUI( QWidget *vParent )
 
     for( std::map<library::Permission, QCheckBox*>::iterator it = mPermissions.begin(); it != mPermissions.end(); ++it ) {
     	wUserRights->layout()->addWidget(it->second);
-        connect(it->second, SIGNAL(stateChanged(int)), this, SLOT(changedPermissions(int)));
+        connect(it->second, SIGNAL(clicked(bool)), this, SLOT(changedPermissions(bool)));
     }
 
     connect(bNetworkStartStop, SIGNAL(clicked(bool)), this, SLOT(networkStartStop(bool)));
@@ -87,7 +87,7 @@ void MainGUI::editBook( bool vChecked )
 
 };
 
-void MainGUI::changedPermissions(int aState){
+void MainGUI::changedPermissions( bool vChecked ){
 
     if( lVUserList->selectionModel()->selectedIndexes().isEmpty() || UserManagement::getUserManagement()->getUser( lVUserList->selectionModel()->selectedIndexes().first().row() ) == nullptr ){
         return;
@@ -96,10 +96,10 @@ void MainGUI::changedPermissions(int aState){
     const std::string mUserName = UserManagement::getUserManagement()->getUser( lVUserList->selectionModel()->selectedIndexes().first().row() )->getUserName();
 
     for( std::map<library::Permission, QCheckBox*>::iterator it = mPermissions.begin(); it != mPermissions.end(); ++it ) {
-        if( Qt::Checked == aState && !UserManagement::getUserManagement()->getUser( mUserName )->hasPermission(it->first)){
+        if( vChecked && !UserManagement::getUserManagement()->getUser( mUserName )->hasPermission(it->first)){
             UserManagement::getUserManagement()->getUser( mUserName )->addPermission( it->first );
             return;
-        } else if( Qt::Unchecked == aState && UserManagement::getUserManagement()->getUser( mUserName )->hasPermission(it->first)){
+        } else if( !vChecked && UserManagement::getUserManagement()->getUser( mUserName )->hasPermission(it->first)){
             UserManagement::getUserManagement()->getUser( mUserName )->removePermission( it->first );
             return;
         }
