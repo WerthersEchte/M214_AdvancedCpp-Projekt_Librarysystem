@@ -8,13 +8,12 @@
 
 namespace library{
 
-class AddEditBook: public QDialog, public Ui::AddEditBook {
-    Q_OBJECT
+	class AddEditBook: public QDialog, public Ui::AddEditBook {
+		Q_OBJECT
 
-public:
-    AddEditBook(QWidget *parent = 0);
-
-};
+	public:
+		AddEditBook(QWidget *parent = 0);
+	};
 
 }
 

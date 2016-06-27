@@ -16,17 +16,21 @@ namespace library {
 		do_connect(endpoint_iterator);
 	};
 
+
+
 	Client::~Client() {
 		socket_.close();
 	};
+
+
 
 	void Client::write(std::string data) {
 		char request[max_length];
 		std::string fullData = "";
 		fullData.append(data);
-		if(fullData.empty()){
-			return;
-		}
+
+		if(fullData.empty()) return;
+
 		strncpy(request, fullData.c_str(), sizeof(request));
 		size_t request_length = std::strlen(request);
 		boost::asio::write(socket_, boost::asio::buffer(request, request_length));
@@ -35,13 +39,15 @@ namespace library {
 		char reply[max_length];
 		size_t reply_length;
 		QString receiveData = "";
+
 		do {
 			reply_length = socket_.receive(boost::asio::buffer(reply, max_length));
 			receiveData.append(QByteArray(reply, reply_length ) );
 		} while (receiveData[receiveData.length()-1] != 7);
 		receiveData.chop(1);  //Remove the EOT char
-
 		emit networkActivity(receiveData);
+
+
 		//Get the command from the response. The cmd max length is 10
 		std::string cmd = "";
 		for (int i=0; i<receiveData.length() || i>10; i++){
@@ -58,8 +64,9 @@ namespace library {
 		else if(cmd == library::command::LOGOUT) emit closeServerConnection(true);
 		else if(cmd == library::command::BOOK) emit bookActivity(receiveData);
 		else if(cmd == library::command::USER) emit userActivity(receiveData);
-
 	}
+
+
 
 	void Client::do_connect(tcp::resolver::iterator endpoint_iterator) {
 			boost::asio::connect(socket_, endpoint_iterator);

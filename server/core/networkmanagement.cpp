@@ -6,8 +6,8 @@
 #include <boost/asio/spawn.hpp>
 #include "networkmanagement.h"
 #include <thread>
-#include <memory>
-#include <QMetaType>
+//#include <memory>
+//#include <QMetaType>
 
 
 namespace library{
@@ -27,35 +27,29 @@ namespace library{
 
 
     void NetworkManagement::startServer(){
-
         mRuns = true;
         start();
-
     }
+
+
 
     void NetworkManagement::stopServer(){
-
         mRuns = false;
         io_service.stop();
-
     }
+
+
 
     NetworkManagement::NetworkManagement( int aPort ) :
         mRuns(false),
         socket(boost::asio::ip::tcp::socket(io_service)),
-        acceptor( boost::asio::ip::tcp::acceptor(
-                        io_service,
-                        boost::asio::ip::tcp::endpoint(
-                                boost::asio::ip::tcp::v4(),
-                                aPort)
-                        )
-        )
-    {
-    }
+        acceptor( boost::asio::ip::tcp::acceptor(io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), aPort))) { }
+
+
+
 
     void NetworkManagement::run() {
         try {
-
             emit networkActivity( "Main", QString("Started listen on Port ").append( QString::number( acceptor.local_endpoint().port() ) ) );
             acceptor.async_accept(socket, bind(&NetworkManagement::acceptHandler, this, std::placeholders::_1));
 
@@ -70,10 +64,10 @@ namespace library{
         }
     }
 
-    void NetworkManagement::clientNetworkActivity( const QString& aId, const QString& aActivity ){
 
+
+    void NetworkManagement::clientNetworkActivity( const QString& aId, const QString& aActivity){
         emit networkActivity( aId, aActivity );
-
     };
 }
 

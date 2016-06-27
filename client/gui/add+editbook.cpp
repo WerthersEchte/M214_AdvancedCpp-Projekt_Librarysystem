@@ -2,11 +2,9 @@
 
 namespace library{
 
-AddEditBook::AddEditBook(QWidget *parent)
-    : QDialog(parent)
-{
-    setupUi(this);
-};
+    AddEditBook::AddEditBook(QWidget *parent) : QDialog(parent) {
+        setupUi(this);
+    };
 
 }
 

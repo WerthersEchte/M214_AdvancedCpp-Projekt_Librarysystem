@@ -27,85 +27,86 @@ MainGUI::MainGUI( QWidget *vParent ) : QMainWindow(vParent),
 	connect(bChangePassword, SIGNAL(clicked(bool)), this, SLOT(changeUserPassword(bool)));
 	connect(bChangePassword, SIGNAL(clicked(bool)), this, SLOT(changeUserPassword(bool)));
 	connect(bAddUser, SIGNAL(clicked(bool)), this, SLOT(addUser(bool)));
-	//connect(bLogin, SIGNAL(clicked(bool)), this, SLOT(userLogin(bool)));
 
 	connect(this, SIGNAL(sendMessage(QString)), this, SLOT(messageNetwork(QString)));
-	//connect(this, SIGNAL(changeLoginButton(bool)), this, SLOT(setLoginButton(bool)));
-
-    
 };
 
+	/****************************************
+	 * Book implementation
+	 ****************************************/
 
-
-
-void MainGUI::getBook( bool vChecked ) {
-	if(mClient != nullptr){
-		std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::GET + static_cast<char>(library::Splitter::COMMAND);
-		data += lEBook->text().toStdString();
-		mClient->write(data);
-	}
-};
-
-
-
-void MainGUI::editBook( bool vChecked ) {
-	if(mClient != nullptr){
-		std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::EDIT + static_cast<char>(library::Splitter::COMMAND);
-		data += lEBook->text().toStdString();
-		mClient->write(data);
-	}
-};
-
-void MainGUI::borrowBook( bool vChecked ) {
-	if(mClient != nullptr){
-		std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::BURROW + static_cast<char>(library::Splitter::COMMAND);
-		data += lEBook->text().toStdString();
-		mClient->write(data);
-	}
-};
-
-void MainGUI::returnBook( bool vChecked ) {
-	if(mClient != nullptr){
-		std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::RETURN + static_cast<char>(library::Splitter::COMMAND);
-		data += lEBook->text().toStdString();
-		mClient->write(data);
-	}
-};
-
-
-
-
-void MainGUI::addBook( bool vChecked ) {
-	AddEditBook vAddEditBookDialog;
-	vAddEditBookDialog.setWindowTitle("Add Book");
-	vAddEditBookDialog.exec();
-	if( vAddEditBookDialog.result() == QDialog::Accepted ){
+	void MainGUI::getBook( bool vChecked ) {
 		if(mClient != nullptr){
-			std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::ADD + static_cast<char>(library::Splitter::COMMAND);
-			data += vAddEditBookDialog.lETitle->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
-			data +=vAddEditBookDialog.lEAuthor->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
-			data +=vAddEditBookDialog.lEPublisher->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
-			data +=vAddEditBookDialog.lEISBN->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
-			data +=vAddEditBookDialog.lEDate->text().toStdString();
+			std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::GET + static_cast<char>(library::Splitter::COMMAND);
+			data += lEBook->text().toStdString();
 			mClient->write(data);
 		}
-	}
-};
-
-
-void MainGUI::searchBook(bool vChecked){
-	if(mClient != nullptr){
-		std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::SEARCH + static_cast<char>(library::Splitter::COMMAND);
-		data += lEBook->text().toStdString();
-		mClient->write(data);
-	}
-};
+	};
 
 
 
-/****************************************
- * User implementation
- ****************************************/
+	void MainGUI::editBook( bool vChecked ) {
+		if(mClient != nullptr){
+			std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::EDIT + static_cast<char>(library::Splitter::COMMAND);
+			data += lEBook->text().toStdString();
+			mClient->write(data);
+		}
+	};
+
+
+
+	void MainGUI::borrowBook( bool vChecked ) {
+		if(mClient != nullptr){
+			std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::BURROW + static_cast<char>(library::Splitter::COMMAND);
+			data += lEBook->text().toStdString();
+			mClient->write(data);
+		}
+	};
+
+
+
+	void MainGUI::returnBook( bool vChecked ) {
+		if(mClient != nullptr){
+			std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::RETURN + static_cast<char>(library::Splitter::COMMAND);
+			data += lEBook->text().toStdString();
+			mClient->write(data);
+		}
+	};
+
+
+
+	void MainGUI::addBook( bool vChecked ) {
+		AddEditBook vAddEditBookDialog;
+		vAddEditBookDialog.setWindowTitle("Add Book");
+		vAddEditBookDialog.exec();
+		if( vAddEditBookDialog.result() == QDialog::Accepted ){
+			if(mClient != nullptr){
+				std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::ADD + static_cast<char>(library::Splitter::COMMAND);
+				data += vAddEditBookDialog.lETitle->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
+				data +=vAddEditBookDialog.lEAuthor->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
+				data +=vAddEditBookDialog.lEPublisher->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
+				data +=vAddEditBookDialog.lEISBN->text().toStdString() + static_cast<char>(library::Splitter::COMMAND);
+				data +=vAddEditBookDialog.lEDate->text().toStdString();
+				mClient->write(data);
+			}
+		}
+	};
+
+
+
+	void MainGUI::searchBook(bool vChecked){
+		if(mClient != nullptr){
+			std::string data = library::command::BOOK + static_cast<char>(library::Splitter::TYPE) + library::command::book::SEARCH + static_cast<char>(library::Splitter::COMMAND);
+			data += lEBook->text().toStdString();
+			mClient->write(data);
+		}
+	};
+
+
+
+	/****************************************
+	 * User implementation
+	 ****************************************/
 	void MainGUI::addUser(bool vChecked){
 		if(mClient != nullptr){
 			std::string data = library::command::USER + static_cast<char>(library::Splitter::TYPE) + library::command::user::ADD + static_cast<char>(library::Splitter::COMMAND);
@@ -141,62 +142,61 @@ void MainGUI::searchBook(bool vChecked){
 
 
 	/*******************************************
- * Network implenetation
- *******************************************/
+	 * Network implenetation
+	 *******************************************/
 
-void MainGUI::userLogin(){
-	if(mClient != nullptr){
-		std::string data = library::command::LOGIN + static_cast<char>(library::Splitter::TYPE);
-		data += lEUserLogin->text().toStdString();
-		mClient->write(data);
-		//lEUserLogin->setReadOnly(true);
-	}
-};
-
-void MainGUI::userLogout(){
-	if(mClient != nullptr){
-		std::string data = library::command::LOGOUT;
-		mClient->write(data);
-	}
-	//lEUserLogin->setReadOnly(false);;
-};
-
-
-
-void MainGUI::connectToServer(bool){
-	if(mClient == nullptr) {
-		try{
-			endpoint_iterator = resolver.resolve({lEIP->text().toStdString(), lEPort->text().toStdString()});
-			mClient = new Client(io_service, endpoint_iterator, s);
-			connect(mClient, SIGNAL(networkActivity(QString)), this, SLOT(messageNetwork(QString)));
-			connect(mClient, SIGNAL(bookActivity(QString)), this, SLOT(messageBook(QString)));
-			connect(mClient, SIGNAL(userActivity(QString)), this, SLOT(messageUser(QString)));
-
-			//connect(mClient, SIGNAL(changeLoginButton(bool)), this, SLOT(changeLoginButton(bool)));
-			connect(mClient, SIGNAL(closeServerConnection(bool)), this, SLOT(disconnectFromServer(bool)));
-
-
-			bConnect->disconnect();
-			connect(bConnect, SIGNAL(clicked(bool)), this, SLOT(disconnectFromServer(bool)));
-			bConnect->setText("Disconnect");
-			pTERecive->appendPlainText( "Connect to server: " + lEIP->text() + ":" + lEPort->text());
-			lEIP->setReadOnly(true);
-			lEPort->setReadOnly(true);
-			userLogin();
-		} catch (std::exception& e){
-			emit sendMessage( QString(e.what()) );
+	void MainGUI::userLogin(){
+		if(mClient != nullptr){
+			std::string data = library::command::LOGIN + static_cast<char>(library::Splitter::TYPE);
+			data += lEUserLogin->text().toStdString();
+			mClient->write(data);
+			//lEUserLogin->setReadOnly(true);
 		}
-	}
-};
+	};
 
 
 
-void MainGUI::disconnectFromServer(bool){
+	void MainGUI::userLogout(){
+		if(mClient != nullptr){
+			std::string data = library::command::LOGOUT;
+			mClient->write(data);
+		}
+		//lEUserLogin->setReadOnly(false);;
+	};
 
+
+
+	void MainGUI::connectToServer(bool){
+		if(mClient == nullptr) {
+			try{
+				endpoint_iterator = resolver.resolve({lEIP->text().toStdString(), lEPort->text().toStdString()});
+				mClient = new Client(io_service, endpoint_iterator, s);
+
+				connect(mClient, SIGNAL(networkActivity(QString)), this, SLOT(messageNetwork(QString)));
+				connect(mClient, SIGNAL(bookActivity(QString)), this, SLOT(messageBook(QString)));
+				connect(mClient, SIGNAL(userActivity(QString)), this, SLOT(messageUser(QString)));
+				connect(mClient, SIGNAL(closeServerConnection(bool)), this, SLOT(disconnectFromServer(bool)));
+
+				bConnect->disconnect();
+				connect(bConnect, SIGNAL(clicked(bool)), this, SLOT(disconnectFromServer(bool)));
+
+				bConnect->setText("Disconnect");
+				pTERecive->appendPlainText( "Connect to server: " + lEIP->text() + ":" + lEPort->text());
+				lEIP->setReadOnly(true);
+				lEPort->setReadOnly(true);
+				userLogin();
+			} catch (std::exception& e){
+				emit sendMessage( QString(e.what()) );
+			}
+		}
+	};
+
+
+
+	void MainGUI::disconnectFromServer(bool){
 		if(mClient != nullptr){
 			delete mClient;
 			mClient = nullptr;
-
 			bConnect->disconnect();
 			connect(bConnect, SIGNAL(clicked(bool)), this, SLOT(connectToServer(bool)));
 			bConnect->setText("Connect");
@@ -206,33 +206,32 @@ void MainGUI::disconnectFromServer(bool){
 			//userLogout();
 			//lEUserLogin->setReadOnly(false);
 		}
-};
+	};
 
-void MainGUI::sendData(bool){
-    if(mClient != nullptr){
-        mClient->write(lESend->text().toStdString());
-    }
-};
-/*
-void MainGUI::getData(QString aData){
-    pTERecive->appendPlainText( aData );
-};
-*/
 
-void MainGUI::messageNetwork(QString aMessage ){
-	pTERecive->appendPlainText(aMessage);
 
-};
+	void MainGUI::sendData(bool){
+		if(mClient != nullptr){
+			mClient->write(lESend->text().toStdString());
+		}
+	};
+
+
+
+	void MainGUI::messageNetwork(QString aMessage ){
+		pTERecive->appendPlainText(aMessage);
+	};
+
+
 
 	void MainGUI::messageBook(QString aMessage ){
 		pTEBookReceive->appendPlainText(aMessage);
 	};
 
+
+
 	void MainGUI::messageUser(QString aMessage ){
 		pTEUser->appendPlainText(aMessage);
 	};
-
-
-
 }
 

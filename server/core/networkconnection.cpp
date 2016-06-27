@@ -32,13 +32,19 @@ namespace library {
         buffer()
     { }
 
+
+
     NetworkConnection::~NetworkConnection(){
             socket_.close();
             emit networkActivity( mId, QString("Client closed") );
             // TODO: disconnect all slots
     }
 
+
+
     void NetworkConnection::writeHandler(const boost::system::error_code& error, std::size_t bytes_transferred) { }
+
+
 
     void NetworkConnection::receiveHandler(const boost::system::error_code& error, std::size_t bytes_transferred) {
 
@@ -47,35 +53,30 @@ namespace library {
         } else {
 
             emit networkActivity( mId, QString("Received message: ").append( QString( QByteArray(buffer, bytes_transferred) ) ) );
-
             std::string vMessage(buffer, bytes_transferred);
             std::string responseMessage;
 
-
             try {
                 std::vector< std::string > vMessageParts;
-
                 boost::split( vMessageParts,
                               vMessage,
                               [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::TYPE); } );
 
                 if( mUser.isEmpty() ){
-
                     if( vMessageParts.size() >= 2 && !vMessageParts[0].compare(command::LOGIN) ){
                         boost::split(   vMessageParts,
                                         vMessageParts[1],
                                         [](char aCharacter) { return aCharacter == static_cast<char>(Splitter::COMMAND); } );
+
                         if( UserManagement::getUserManagement()->getUser( vMessageParts[0] ) != nullptr && !UserManagement::getUserManagement()->getUser( vMessageParts[0] )->getPassword().compare(vMessageParts.size() >= 2?vMessageParts[1]:"") ){
                             mUser = QString( vMessageParts[0].c_str() );
                             mId = mUser + QString("(").append( QString::fromUtf8(socket_.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket_.remote_endpoint().port())).append(")");
                             emit networkActivity( mId, mUser + QString(" logged in") );
-
-
 							responseMessage = command::LOGIN;
 							responseMessage.append(1, static_cast<char>(Splitter::TYPE));
 							responseMessage.append("true");
-
                             //vMessage = "logged in";
+
                         } else {
 							responseMessage = command::LOGIN;
 							responseMessage.append(1, static_cast<char>(Splitter::TYPE));
@@ -91,28 +92,31 @@ namespace library {
 
                 } else {
 
-                    if(!vMessageParts[0].compare(command::BOOK)){
+                    if(!vMessageParts[0].compare(command::BOOK)) {
 						responseMessage = command::BOOK;
 						responseMessage.append(1, static_cast<char>(Splitter::TYPE));
                         //vMessage = Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1] );
 						responseMessage.append(Library::getLibrary()->parseCommand( mUser.toStdString(), vMessageParts[1]));
-                    } else if(!vMessageParts[0].compare(command::USER)){
+
+                    } else if(!vMessageParts[0].compare(command::USER)) {
 						responseMessage = command::USER;
 						responseMessage.append(1, static_cast<char>(Splitter::TYPE));
                         //vMessage = UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] );
 						responseMessage.append(UserManagement::getUserManagement()->parseCommand( mUser.toStdString(), vMessageParts[1] ));
-                    } else if(!vMessageParts[0].compare(command::LOGOUT)){
+
+                    } else if(!vMessageParts[0].compare(command::LOGOUT)) {
 						responseMessage = command::LOGOUT;
 						responseMessage.append(1, 7);
                         boost::asio::async_write(socket_, boost::asio::buffer(responseMessage), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
-                        return;
+                        return; //Return without rebind the receive handler
+
                     } else {
 						responseMessage = "error:need to send valid command to interact with library";
                         //vMessage = "need to send valid command to interact with library";
                     }
-
                 }
-            } catch( std::exception vException ){
+
+            } catch(std::exception vException) {
 				responseMessage = "error:Error parsing command";
                // vMessage = "error parsing command";
                 std::cout << vException.what() << std::endl;
@@ -124,10 +128,11 @@ namespace library {
         }
     }
 
+
+
     void NetworkConnection::start() {
 
         try {
-
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
             emit networkActivity( mId, QString("New client connected on ").append( QString::fromUtf8(socket_.remote_endpoint().address().to_string().c_str() ) ).append(":").append( QString::number(socket_.remote_endpoint().port())) );
 
