@@ -21,16 +21,21 @@ set( SOURCE
    gui/librarymaingui.cpp
    main.cpp
    core/Client.cpp
+    gui/add+editbook.cpp
 )
 set( HEADERS
    ${HEADERS}
    gui/librarymaingui.h
    core/Client.h
+    gui/add+editbook.h
+    core/definitions.h
 )
 
 set( UI_FILES
    ${UI_FILES}
    gui/ui/mainwindow.ui
+    gui/ui/add+editbook.ui
+
 )
 
 QT5_WRAP_UI( UI_HEADERS

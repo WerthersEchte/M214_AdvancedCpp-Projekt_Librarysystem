@@ -25,7 +25,7 @@ public:
 
     static Library* getLibrary();
 
-    bool addBook( const Book& aBook );
+    int addBook( const Book& aBook );
     Book* getBook( int aId );
 
     int getNumberOfBooks() const;
