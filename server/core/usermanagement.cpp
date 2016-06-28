@@ -125,6 +125,9 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
             if( getUser(vCommandParts[1]) != nullptr ){
                 getUser(vCommandParts[1])->editPassword(vCommandParts.size() >= 3?vCommandParts[2]:"");
                 return std::string("edited password");
+            } else if( getUser(std::stoi(vCommandParts[1])) != nullptr ){
+                getUser(std::stoi(vCommandParts[1]))->editPassword(vCommandParts.size() >= 3?vCommandParts[2]:"");
+                return std::string("edited password");
             } else {
                 return std::string("unknown user to changepassword");
             }
@@ -143,7 +146,9 @@ std::string UserManagement::parseCommand( const std::string& aUser, const std::s
             }
 
             for( int vI = 1; vI < vCommandParts.size(); ++vI ){
-                if( getUser(vCommandParts[vI]) != nullptr ){
+                if( getUser(std::stoi(vCommandParts[vI])) != nullptr ){
+                    vUsers << getUser(std::stoi(vCommandParts[vI]))->printUser();
+                } else if( getUser(vCommandParts[vI]) != nullptr ){
                     vUsers << getUser(vCommandParts[vI])->printUser();
                 } else {
                     vUsers << "unknown user: " << vCommandParts[vI] << "\n";

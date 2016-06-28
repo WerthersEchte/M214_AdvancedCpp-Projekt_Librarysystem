@@ -50,6 +50,47 @@ BOOST_FIXTURE_TEST_SUITE( UserManagementTests, UserManagementFixture )
 
 	}
 
+
+	BOOST_AUTO_TEST_CASE( UserManagement_test_command_getuser ) {
+        library::User *vTestUser1 = library::UserManagement::getUserManagement()->getUser( mUsers[0].getUserName() ),
+                      *vTestUser2 = library::UserManagement::getUserManagement()->getUser( mUsers[1].getUserName() );
+        std::string vPreCommand = library::command::user::GET + static_cast<char>(library::Splitter::COMMAND),
+                    vCommand = vPreCommand + std::to_string(vTestUser1->getId() ),
+                    vResponseString = "";
+
+        vResponseString = library::UserManagement::getUserManagement()->parseCommand(mUsers[3].getUserName(), vCommand);
+        BOOST_CHECK( vResponseString.find( vTestUser1->printUser() ) == std::string::npos );
+        vResponseString = library::UserManagement::getUserManagement()->parseCommand(mUsers[1].getUserName(), vCommand);
+        BOOST_CHECK( vResponseString.find( vTestUser1->printUser() ) == std::string::npos );
+        vResponseString = library::UserManagement::getUserManagement()->parseCommand(mUsers[2].getUserName(), vCommand);
+        BOOST_CHECK( vResponseString.find( vTestUser1->printUser() ) != std::string::npos );
+        vResponseString = library::UserManagement::getUserManagement()->parseCommand(mUsers[0].getUserName(), vCommand);
+        BOOST_CHECK( vResponseString.find( vTestUser1->printUser() ) != std::string::npos );
+        vCommand += static_cast<char>(library::Splitter::COMMAND) + std::to_string(vTestUser2->getId() );
+        vResponseString = library::UserManagement::getUserManagement()->parseCommand(mUsers[0].getUserName(), vCommand);
+        BOOST_CHECK( vResponseString.find( vTestUser1->printUser() ) != std::string::npos );
+        BOOST_CHECK( vResponseString.find( vTestUser2->printUser() ) != std::string::npos );
+        
+	}
+
+
+	BOOST_AUTO_TEST_CASE( UserManagement_test_command_changepassworduser ) {
+        library::User *vTestUser1 = library::UserManagement::getUserManagement()->getUser( mUsers[0].getUserName() ),
+                      *vTestUser2 = library::UserManagement::getUserManagement()->getUser( mUsers[1].getUserName() );
+        std::string vPreCommand = library::command::user::CHANGEPASSWORD + static_cast<char>(library::Splitter::COMMAND),
+                    vNewPassword = "Würste",
+                    vCommand = vPreCommand + std::to_string(vTestUser1->getId() ) + static_cast<char>(library::Splitter::COMMAND);
+
+        library::UserManagement::getUserManagement()->parseCommand(mUsers[3].getUserName(), vCommand + vNewPassword);
+        BOOST_CHECK_EQUAL( vTestUser1->getPassword(), mUsers[0].getPassword() );
+        library::UserManagement::getUserManagement()->parseCommand(mUsers[1].getUserName(), vCommand + vNewPassword);
+        BOOST_CHECK_EQUAL( vTestUser1->getPassword(), mUsers[0].getPassword() );
+        library::UserManagement::getUserManagement()->parseCommand(mUsers[2].getUserName(), vCommand + vNewPassword);
+        BOOST_CHECK_EQUAL( vTestUser1->getPassword(), vNewPassword );
+        library::UserManagement::getUserManagement()->parseCommand(mUsers[0].getUserName(), vCommand + vNewPassword + vNewPassword);
+        BOOST_CHECK_EQUAL( vTestUser1->getPassword(), vNewPassword + vNewPassword );
+	}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 
