@@ -153,7 +153,6 @@ MainGUI::MainGUI( QWidget *vParent ) : QMainWindow(vParent),
 	void MainGUI::getBorrowedBooks(bool vChecked){
 		if(mClient != nullptr){
 			std::string data = library::command::USER + static_cast<char>(library::Splitter::TYPE) + library::command::user::BORROWEDBOOKS;
-			data += lEUser->text().toStdString();
 			mClient->write(data);
 		}
 	};
