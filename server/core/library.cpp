@@ -158,8 +158,10 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
 
         if( !vCommandParts[0].compare(command::book::ADD) ){
 
-            if( addBook(Book(vCommandParts[1], vCommandParts.size() >= 3?vCommandParts[2]:"", vCommandParts.size() >= 4?vCommandParts[3]:"", vCommandParts.size() >= 5?vCommandParts[4]:"", vCommandParts.size() >= 6?vCommandParts[5]:"")) ){
-                return std::string("added book to library");
+            Book vNewBook(vCommandParts[1], vCommandParts.size() >= 3?vCommandParts[2]:"", vCommandParts.size() >= 4?vCommandParts[3]:"", vCommandParts.size() >= 5?vCommandParts[4]:"", vCommandParts.size() >= 6?vCommandParts[5]:"");   
+             
+            if( addBook(vNewBook) ){
+                return vNewBook.printBook();
             } else {
                 return std::string("can not add book to library");
             }

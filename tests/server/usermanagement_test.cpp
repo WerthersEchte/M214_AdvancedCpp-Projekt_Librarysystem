@@ -1,4 +1,3 @@
-//#define BOOST_TEST_MODULE ServerLibraryTest
 #include <boost/test/unit_test.hpp>
 #include "core/usermanagement.h"
 
@@ -70,7 +69,7 @@ BOOST_FIXTURE_TEST_SUITE( UserManagementTests, UserManagementFixture )
         vResponseString = library::UserManagement::getUserManagement()->parseCommand(mUsers[0].getUserName(), vCommand);
         BOOST_CHECK( vResponseString.find( vTestUser1->printUser() ) != std::string::npos );
         BOOST_CHECK( vResponseString.find( vTestUser2->printUser() ) != std::string::npos );
-        
+
 	}
 
 

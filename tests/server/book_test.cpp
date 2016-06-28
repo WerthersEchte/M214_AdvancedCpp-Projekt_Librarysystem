@@ -1,4 +1,3 @@
-//#define BOOST_TEST_MODULE ServerBookTest
 #include <boost/test/unit_test.hpp>
 #include "core/book.h"
 
