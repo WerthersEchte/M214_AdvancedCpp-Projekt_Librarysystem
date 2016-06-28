@@ -110,8 +110,10 @@ std::string User::printUser( bool aEndLine ) const{
         switch(vPermission){
         case Permission::Books:
             vUser << " Books";
+            break;
         case Permission::Users:
             vUser << " Users";
+            break;
         }
     }
     vUser << " }\",\"BorrowedBooks{";
