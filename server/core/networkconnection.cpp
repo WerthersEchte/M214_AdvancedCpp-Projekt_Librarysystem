@@ -76,7 +76,7 @@ namespace library {
                         }
 
                     } else {
-                        vMessage = "need to login to use library";
+                        responseMessage = "error:need to login to use library";
                     }
 
 
@@ -94,7 +94,7 @@ namespace library {
 
                     } else if(!vMessageParts[0].compare(command::LOGOUT)) {
 						responseMessage = command::LOGOUT;
-						responseMessage.append(1, 7);
+						responseMessage.append(1, static_cast<char>(Splitter::END));
                         boost::asio::async_write(socket_, boost::asio::buffer(responseMessage), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
                         return; //Return without rebind the receive handler
 
@@ -103,12 +103,12 @@ namespace library {
                     }
                 }
 
-            } catch(std::exception vException) {
+            } catch(const std::exception& vException) {
 				responseMessage = "error:Error parsing command";
                 std::cout << vException.what() << std::endl;
                 emit networkActivity( mId, QString("Exception: ").append( QString(vException.what()) ) );
             }
-			responseMessage.append(1, 7);
+			responseMessage.append(1, static_cast<char>(Splitter::END));
             socket_.async_receive(boost::asio::buffer(buffer, READ_DATA_BUFFER_LENGTH), 0, std::bind(&NetworkConnection::receiveHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
             boost::asio::async_write(socket_, boost::asio::buffer(responseMessage), std::bind(&NetworkConnection::writeHandler, shared_from_this(), std::placeholders::_1, std::placeholders::_2));
         }

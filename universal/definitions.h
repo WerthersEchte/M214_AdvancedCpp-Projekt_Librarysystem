@@ -31,7 +31,7 @@ namespace library{
     }
     enum Status{Burrowed, Available, None};
 
-    enum class Splitter: char{ TYPE=':', COMMAND=';'};
+    enum class Splitter: char{ TYPE=':', COMMAND=';', END=7};
     enum class Permission{Users, Books};
 
 }
