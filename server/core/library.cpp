@@ -38,7 +38,7 @@ int Library::addBook( const Book& aBook )
         emit changed(aBook.getId());
         return aBook.getId();
     }
-    return 0;
+    return -1;
 };
 
 Book* Library::getBook( int aId )
@@ -160,7 +160,7 @@ std::string Library::parseCommand( const std::string& aUser, const std::string& 
 
             Book vNewBook(vCommandParts[1], vCommandParts.size() >= 3?vCommandParts[2]:"", vCommandParts.size() >= 4?vCommandParts[3]:"", vCommandParts.size() >= 5?vCommandParts[4]:"", vCommandParts.size() >= 6?vCommandParts[5]:"");   
              
-            if( addBook(vNewBook) ){
+            if( addBook(vNewBook) != -1){
                 return vNewBook.printBook();
             } else {
                 return std::string("can not add book to library");

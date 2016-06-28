@@ -35,8 +35,8 @@ namespace library {
 
 		do {
 			reply_length = socket_.receive(boost::asio::buffer(reply, max_length));
-			receiveData.append(QByteArray(reply, reply_length ) );
-		} while (receiveData[receiveData.length()-1] != 7);
+			receiveData.append(QByteArray(reply, reply_length));
+		} while (receiveData[receiveData.length()-1] != static_cast<char>(Splitter::END));
 
 		receiveData.chop(1);  //Remove the EOT char
 		emit networkActivity(receiveData);
